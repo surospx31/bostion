@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="static/styles.css">
+
 </head>
 <body>
     <div class="container">
         <h1>Welcome to Wellact</h1>
-        <img src="{{ url_for('static', filename='butterfly.png') }}" alt="Butterfly">
+        <img src="static/butterfly.png" alt="Butterfly">
         <a href="{{ url_for('get_butterfly') }}" class="button">Get your Butterfly</a>
     </div>
 </body>

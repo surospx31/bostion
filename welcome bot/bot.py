@@ -20,7 +20,7 @@ def send_welcome(message):
 
     # Створюємо клавіатуру з посиланням на Mini Web App
     markup = types.InlineKeyboardMarkup()
-    web_app_url = "https://surospx31.github.io/butterfly-webapp/"  # Посилання на mini web app
+    web_app_url = "https://surospx31.github.io/bostion/"  # Посилання на mini web app
     web_app = types.WebAppInfo(web_app_url)  # Створюємо об'єкт WebAppInfo
     button = types.InlineKeyboardButton("Wellact app", web_app=web_app)
     markup.add(button)
