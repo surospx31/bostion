@@ -1,4 +1,4 @@
-
+/* Загальні стилі */
 body {
     font-family: Arial, sans-serif;
     background-color: #000000;
@@ -11,20 +11,26 @@ body {
 }
 
 .container {
+    width: 90%;
+    max-width: 400px;
     text-align: center;
-    background: #fff;
+    background: #000000;
     padding: 20px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
+    margin: 20px auto;
 }
 
 .button {
     background-color: #007bff;
     color: white;
-    padding: 10px 20px;
+    padding: 15px 20px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 16px;
+    margin: 10px 0;
+    width: 100%;
 }
 
 .button:hover {
@@ -46,6 +52,45 @@ body {
     transition: width 0.5s;
 }
 
-.hidden {
-    display: none;
+/* Медиа-запити для мобільних пристроїв */
+@media (max-width: 600px) {
+    body {
+        flex-direction: column;
+    }
+
+    .container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+        padding: 15px;
+    }
+
+    .button {
+        font-size: 18px;
+        padding: 12px;
+        width: 100%;
+    }
+
+    h1, h2 {
+        font-size: 24px;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    img {
+        width: 80%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .progress-bar {
+        margin: 10px 0;
+    }
+
+    #progress {
+        height: 25px;
+    }
 }
