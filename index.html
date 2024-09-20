@@ -1,0 +1,53 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Butterfly Project</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" id="welcome">
+        <h1>Welcome to Wellact</h1>
+        <button id="getButterflyButton" class="button">Get your Butterfly</button>
+    </div>
+
+    <div class="container" id="butterflySection" style="display: none;">
+        <h1>Your Butterfly</h1>
+        <img src="butterfly.png" alt="Butterfly">
+        <p>Level: <span id="level">1</span></p>
+        <div class="progress-bar">
+            <div id="progress" style="width: 0%;"></div>
+        </div>
+        <p>Points: <span id="points">0</span></p>
+        <div>
+            <button class="button" id="homeButton">Home</button>
+            <button class="button" id="friendsButton">Friends</button>
+            <button class="button" id="tasksButton">Tasks</button>
+            <button class="button" id="marketButton">Market</button>
+        </div>
+    </div>
+
+    <div class="container" id="friendsSection" style="display: none;">
+        <h2>Friends</h2>
+        <p>Your referral link: <span id="referralLink">Generating...</span></p>
+        <button class="button" id="backToHome">Back to Home</button>
+    </div>
+
+    <div class="container" id="tasksSection" style="display: none;">
+        <h2>Tasks</h2>
+        <p>Complete tasks to earn points!</p>
+        <button class="button" id="taskButton">Complete Task</button>
+        <button class="button" id="backToHomeFromTasks">Back to Home</button>
+    </div>
+
+    <div class="container" id="marketSection" style="display: none;">
+        <h2>Market</h2>
+        <p>Coming Soon...</p>
+        <button class="button" id="backToHomeFromMarket">Back to Home</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
