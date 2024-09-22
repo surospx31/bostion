@@ -1,6 +1,6 @@
 body, html {
     width: 100%;
-    height: 100%;
+    height: var(--tg-viewport-height, 100vh); /* Використання змінної Telegram для висоти */
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* Вимкнути горизонтальний скрол */
@@ -18,7 +18,7 @@ body {
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів на початку сторінки */
     align-items: center;
-    height: 100vh;
+    height: var(--tg-viewport-height, 100vh); /* Використання висоти від Telegram */
     overflow-y: hidden; /* Вимкнути вертикальний скрол */
 }
 
@@ -27,10 +27,11 @@ body {
     padding: 10px;
     width: 90%; /* Зменшення ширини контейнера */
     max-width: 400px; /* Максимальна ширина */
-    max-height: 90vh; /* Обмеження висоти контейнера */
+    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
     overflow-y: auto; /* Додає вертикальний скрол тільки для контейнера, якщо потрібен */
     margin: 10px;
     color: #fff; /* Білий текст */
+    box-sizing: border-box;
 }
 
 #butterflySection {
@@ -156,7 +157,7 @@ img {
 @media (max-width: 600px) {
     body {
         flex-direction: column;
-        height: 100vh; /* Забезпечення 100% висоти для мобільних */
+        height: var(--tg-viewport-height, 100vh); /* Забезпечення висоти для мобільних */
         overflow-y: hidden; /* Вимкнути скролл на мобільних */
     }
 

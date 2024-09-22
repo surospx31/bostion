@@ -1,4 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Підключення Telegram Web Apps API
+    const tg = window.Telegram.WebApp;
+
+    // Розгорнути додаток на весь екран
+    tg.expand();
+
+    // Інші наявні функції
     const getButterflyButton = document.getElementById('getButterflyButton');
     const butterflySection = document.getElementById('butterflySection');
     const welcomeSection = document.getElementById('welcome');
