@@ -3,43 +3,55 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Вимкнути горизонтальний скролл */
+    overflow-x: hidden; /* Вимкнути горизонтальний скрол */
+    background-color: #1c1c1c; /* Темний фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #1c1c1c; /* Темний фон */
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-start; /* Вирівнювання елементів на початку сторінки */
     align-items: center;
     height: 100vh;
-    overflow-y: hidden; /* Вимкнути вертикальний скролл */
+    overflow-y: hidden; /* Вимкнути вертикальний скрол */
 }
 
 .container {
     text-align: center;
-    background: #2c2c2c; /* Темно-сірий фон контейнера */
-    padding: 20px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    padding: 10px;
     width: 90%; /* Зменшення ширини контейнера */
-    max-width: 350px; /* Максимальна ширина */
+    max-width: 400px; /* Максимальна ширина */
     max-height: 90vh; /* Обмеження висоти контейнера */
-    overflow-y: auto; /* Додає вертикальний скролл тільки для контейнера, якщо потрібен */
+    overflow-y: auto; /* Додає вертикальний скрол тільки для контейнера, якщо потрібен */
     margin: 10px;
     color: #fff; /* Білий текст */
-    box-sizing: border-box; /* Враховувати padding та border у ширині */
+}
+
+#butterflySection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+img {
+    width: 150px; /* Розмір метелика */
+    margin-bottom: 20px;
 }
 
 .button-group {
     display: flex; /* Розташування кнопок в ряд */
-    justify-content: space-between; /* Простір між кнопками */
+    justify-content: center; /* Центрування кнопок */
     align-items: center; /* Вирівнювання по центру */
-    margin-top: 15px; /* Відступ від верхніх елементів */
-    width: 100%; /* Займати всю ширину контейнера */
-    flex-wrap: nowrap; /* Забороняє перенесення кнопок на наступний ряд */
+    margin-top: 20px; /* Відступ від верхніх елементів */
+    width: 100%; /* Займати всю ширину */
+    flex-wrap: wrap; /* Переносити кнопки, якщо не вистачає місця */
 }
 
 .button {
@@ -50,7 +62,7 @@ body {
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    margin: 0 5px; /* Відступ між кнопками */
+    margin: 5px; /* Відступ між кнопками */
     flex-grow: 1; /* Дозволяє кнопкам розтягуватися рівномірно */
     max-width: 100px; /* Максимальна ширина кнопки */
     text-align: center;
@@ -185,6 +197,7 @@ body {
     }
 
     .button-group {
-        flex-direction: column; /* Вертикальне розташування кнопок на мобільних пристроях */
+        flex-direction: row-reverse; /* Горизонтальне розташування кнопок на мобільних пристроях */
+        flex-wrap: nowrap; /* Вимкнути перенесення кнопок */
     }
 }
