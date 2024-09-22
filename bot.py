@@ -16,7 +16,7 @@ def send_welcome(message):
     
     # Створюємо клавіатуру з посиланням на Mini Web App
     markup = types.InlineKeyboardMarkup()
-    web_app = types.WebAppInfo("https://bostion-au8uuttd6-surospx31s-projects.vercel.app/")  # Посилання на mini web app
+    web_app = types.WebAppInfo("https://bostion-surospx31s-projects.vercel.app/")  # Посилання на mini web app
     button = types.InlineKeyboardButton("Wellact app", web_app=web_app)
     markup.add(button)
     

@@ -1,4 +1,3 @@
-
 document.addEventListener('DOMContentLoaded', () => {
     const getButterflyButton = document.getElementById('getButterflyButton');
     const butterflySection = document.getElementById('butterflySection');
@@ -17,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToHomeFromTasks = document.getElementById('backToHomeFromTasks');
     const backToHomeFromMarket = document.getElementById('backToHomeFromMarket');
     const referralLinkElement = document.getElementById('referralLink');
-    const taskButton = document.getElementById('taskButton');
+    const taskItems = document.querySelectorAll('.task-item');
 
     let points = 0;
     let level = 1;
@@ -73,19 +72,34 @@ document.addEventListener('DOMContentLoaded', () => {
         butterflySection.style.display = 'block';
     });
 
-    // Виконання завдання
-    taskButton.addEventListener('click', () => {
-        points += 10; // Додати поінти за виконане завдання
-        updateProgress();
+    // Додавання очок за завдання з анімацією завантаження
+    taskItems.forEach((task) => {
+        task.addEventListener('click', () => {
+            if (task.classList.contains('completed') || task.classList.contains('loading')) {
+                return; // Якщо завдання вже завершене або в процесі завантаження, нічого не робимо
+            }
+
+            task.classList.add('loading'); // Додаємо клас завантаження
+            setTimeout(() => {
+                task.classList.remove('loading');
+                task.classList.add('completed'); // Додаємо клас завершеного завдання
+                points += 5; // Додаємо 5 очок за кожне завдання
+                updateProgress();
+            }, 10000); // 10 секунд очікування
+
+            // Переадресація на посилання
+            const link = task.getAttribute('data-link');
+            window.open(link, '_blank'); // Відкриття посилання у новій вкладці
+        });
     });
 
     // Оновлення прогрес бару та рівня
     function updateProgress() {
         pointsElement.textContent = points;
-        let progress = (points % 100) + '%'; // Прогрес бар на основі поінтів
+        let progress = (points % (level * 5)) / (level * 5) * 100 + '%'; // Прогрес бар на основі поінтів
         progressElement.style.width = progress;
 
-        // Підвищення рівня кожні 100 поінтів
+        // Підвищення рівня кожні 5 * рівень поінтів
         if (points >= level * 5) {
             level += 1;
             points = 0;

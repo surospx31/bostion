@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,25 +8,26 @@
 </head>
 <body>
     <div class="container" id="welcome">
-        <h1>Welcome to Wellact</h1>
+        <h1>Welcome to Butterfly Game</h1>
         <button id="getButterflyButton" class="button">Get your Butterfly</button>
     </div>
 
     <div class="container" id="butterflySection" style="display: none;">
         <h1>Your Butterfly</h1>
-        <img src="butterfly.png" alt="Butterfly">
+        <img src="static/butterfly.png" alt="Butterfly">
         <p>Level: <span id="level">1</span></p>
         <div class="progress-bar">
             <div id="progress" style="width: 0%;"></div>
         </div>
         <p>Points: <span id="points">0</span></p>
-        <div>
+        <div class="button-group"> <!-- Новий контейнер для кнопок -->
             <button class="button" id="homeButton">Home</button>
             <button class="button" id="friendsButton">Friends</button>
             <button class="button" id="tasksButton">Tasks</button>
             <button class="button" id="marketButton">Market</button>
         </div>
     </div>
+    
 
     <div class="container" id="friendsSection" style="display: none;">
         <h2>Friends</h2>
@@ -37,8 +37,29 @@
 
     <div class="container" id="tasksSection" style="display: none;">
         <h2>Tasks</h2>
-        <p>Complete tasks to earn points!</p>
-        <button class="button" id="taskButton">Complete Task</button>
+        <p>Select a task to earn points:</p>
+        <div class="task-list">
+            <div class="task-item" data-link="https://t.me/wellact">
+                <img src="static/icon.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to Wellact on Telegram</span>
+                <span class="task-points">+5 points</span>
+            </div>
+            <div class="task-item" data-link="https://example.com/task2">
+                <img src="static/icon.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to Wellact on Instagram</span>
+                <span class="task-points">+5 points</span>
+            </div>
+            <div class="task-item" data-link="https://example.com/task3">
+                <img src="static/icon.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to Pulse on Telegram</span>
+                <span class="task-points">+5 points</span>
+            </div>
+            <div class="task-item" data-link="https://example.com/task4">
+                <img src="static/icon.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to DevionsxCrypto on Telegram</span>
+                <span class="task-points">+5 points</span>
+            </div>
+        </div>
         <button class="button" id="backToHomeFromTasks">Back to Home</button>
     </div>
 
