@@ -24,9 +24,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const pointsElement = document.getElementById('points');
     const progressElement = document.getElementById('progress');
     const levelElement = document.getElementById('level');
+    const currentPointsElement = document.getElementById('currentPoints');
+    const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
     let points = 0;
     let level = 1;
+
+    // Початкове значення необхідних поінтів для наступного рівня
+    pointsForNextLevelElement.textContent = level * 5;
 
     // Показати секцію з метеликом після натискання Get
     getButterflyButton.addEventListener('click', () => {
@@ -102,14 +107,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Оновлення прогрес бару та рівня
     function updateProgress() {
         pointsElement.textContent = points;
-        let progress = (points % (level * 5)) / (level * 5) * 100 + '%'; // Прогрес бар на основі поінтів
+        currentPointsElement.textContent = points;
+        let pointsForNextLevel = level * 5;
+        pointsForNextLevelElement.textContent = pointsForNextLevel; // Оновлення необхідних поінтів
+        let progress = (points % pointsForNextLevel) / pointsForNextLevel * 100 + '%'; // Прогрес бар на основі поінтів
         progressElement.style.width = progress;
 
         // Підвищення рівня кожні 5 * рівень поінтів
-        if (points >= level * 5) {
+        if (points >= pointsForNextLevel) {
             level += 1;
             points = 0;
             levelElement.textContent = level;
+            pointsForNextLevelElement.textContent = level * 5; // Оновлення необхідних поінтів для нового рівня
         }
     }
 
@@ -129,4 +138,3 @@ document.addEventListener('DOMContentLoaded', () => {
         marketSection.style.display = 'none';
     }
 });
-// 123

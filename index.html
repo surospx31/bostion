@@ -21,17 +21,23 @@
         <h1>Your Butterfly</h1>
         <img src="static/butterfly.png" alt="Butterfly">
         <p>Level: <span id="level">1</span></p>
-        <div class="progress-bar">
-            <div id="progress" style="width: 0%;"></div>
+        <div class="progress-bar-container">
+            <div class="progress-bar">
+                <div id="progress" style="width: 0%;"></div>
+            </div>
+            <p class="points-info">
+                <span id="currentPoints">0</span>/<span id="pointsForNextLevel">5</span> Points
+            </p>
         </div>
         <p>Points: <span id="points">0</span></p>
-        <div class="button-group"> <!-- Новий контейнер для кнопок -->
+        <div class="button-group">
             <button class="button" id="homeButton">Home</button>
             <button class="button" id="friendsButton">Friends</button>
             <button class="button" id="tasksButton">Tasks</button>
             <button class="button" id="marketButton">Market</button>
         </div>
     </div>
+    
     
 
     <div class="container" id="friendsSection" style="display: none;">

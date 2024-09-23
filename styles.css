@@ -116,20 +116,35 @@ img {
     background-color: #0056b3;
 }
 
-.progress-bar {
+.progress-bar-container {
+    display: flex; /* Розташування в ряд */
+    align-items: center; /* Вирівнювання по вертикалі */
+    justify-content: space-between; /* Розташування прогрес-бару та інформації поінтів */
     width: 100%;
-    background-color: #3c3c3c; /* Темніший фон прогрес-бара */
-    border-radius: 5px;
-    overflow: hidden;
     margin: 10px 0;
 }
 
+.progress-bar {
+    width: 70%; /* Зменшений розмір прогрес-бару */
+    background-color: #3c3c3c; /* Темний фон прогрес-бару */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
 #progress {
-    height: 20px;
+    height: 15px; /* Зменшена висота прогрес-бару */
     background-color: #76c7c0;
     width: 0;
     transition: width 0.5s;
 }
+
+.points-info {
+    margin-left: 10px; /* Відступ від прогрес-бару */
+    color: #FFD700; /* Жовтий колір для інформації поінтів */
+    font-weight: bold;
+    white-space: nowrap; /* Запобігання переносу тексту */
+}
+
 
 .task-list {
     text-align: left; /* Вирівнювання тексту по лівому краю */
