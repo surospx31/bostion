@@ -164,6 +164,33 @@ img {
     font-weight: 500;
 }
 
+.wheel-button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px; /* Відступ від колеса */
+}
+
+.spin-button {
+    background-color: #007bff;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 25px; /* Зробити кнопки закругленими */
+    cursor: pointer;
+    font-size: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4); /* Додаємо тінь для кнопки */
+    transition: all 0.3s ease; /* Плавна зміна стилів */
+}
+
+.spin-button:hover {
+    background-color: #0056b3; /* Зміна кольору при наведенні */
+    box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.6); /* Посилена тінь при наведенні */
+}
+
 .wheel-container {
     display: flex;
     justify-content: center;
