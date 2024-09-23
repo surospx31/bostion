@@ -7,33 +7,20 @@ body, html {
     background-color: #000000; /* Темний фон */
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start; /* Вирівнювання контенту по верхньому краю */
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
-
 
 .footer-content {
     display: flex;
     flex-direction: column;
-    align-items: center; /* Вирівнювання по центру */
-    margin-bottom: 300px; /* Відступ від нижнього краю */
+    align-items: center;
+    margin-top: 100px; /* Додамо більше відступу зверху */
 }
-
 
 .footer-content img {
     width: 100%;
     max-width: 200px; /* Максимальна ширина зображення */
-}
-body, html {
-    width: 100%;
-    height: var(--tg-viewport-height, 100vh); /* Використання змінної Telegram для висоти */
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden; /* Вимкнути горизонтальний скрол */
-    background-color: #000000; /* Темний фон */
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
 body {
@@ -47,6 +34,23 @@ body {
     overflow-y: hidden; /* Вимкнути вертикальний скрол */
 }
 
+.container {
+    text-align: center;
+    padding: 10px;
+    width: 90%; /* Зменшення ширини контейнера */
+    max-width: 400px; /* Максимальна ширина */
+    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
+    overflow-y: hidden; /* Вимкнення вертикального скролу */
+    margin-top: 50px; /* Додамо відступ зверху */
+    margin-bottom: 20px; /* Додамо невеликий відступ знизу */
+    color: #fff; /* Білий текст */
+    box-sizing: border-box;
+    flex-grow: 1; /* Розширює контейнер */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Вирівнювання елементів на початку */
+}
+
 .task-item.completed {
     background-color: #1a1a1a; /* Темніший колір для завершеного завдання */
     color: #76c7c0; /* Колір тексту для завершеного завдання */
@@ -57,24 +61,6 @@ body {
 .task-item.completed .task-icon {
     filter: grayscale(100%); /* Іконка стає сірою */
 }
-
-
-.container {
-    text-align: center;
-    padding: 10px;
-    width: 90%; /* Зменшення ширини контейнера */
-    max-width: 400px; /* Максимальна ширина */
-    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
-    overflow-y: hidden; /* Вимкнення вертикального скролу */
-    margin: 10px;
-    color: #fff; /* Білий текст */
-    box-sizing: border-box;
-    flex-grow: 1; /* Розширює контейнер */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end; /* Вирівнювання елементів внизу */
-}
-
 
 #butterflySection {
     display: flex;
@@ -92,7 +78,7 @@ img {
     display: flex; /* Розташування кнопок в ряд */
     justify-content: center; /* Центрування кнопок */
     align-items: center; /* Вирівнювання по центру */
-    margin-top: 20px; /* Відступ від верхніх елементів */
+    margin-top: 50px; /* Додамо більше відступу зверху */
     width: 100%; /* Займати всю ширину */
     flex-wrap: wrap; /* Переносити кнопки, якщо не вистачає місця */
 }
@@ -285,4 +271,3 @@ img {
         flex-wrap: nowrap; /* Вимкнути перенесення кнопок */
     }
 }
-/* 123
