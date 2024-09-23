@@ -8,6 +8,14 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+}
+
+.crypto-icon {
+    width: 18px; /* Ширина значка, можна налаштувати під розмір тексту */
+    height: auto; /* Автоматичне коригування висоти */
+    vertical-align: middle; /* Вирівнювання значка по центру тексту */
+    margin-left: 5px; /* Відступ між текстом і значком */
 }
 
 .footer-content {
@@ -35,7 +43,6 @@ body, html {
 }
 
 body {
-    font-family: Georgia, serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -98,7 +105,8 @@ img {
 
 .button {
     background-color: #007bff;
-    font-family: Georgia, serif;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500; /* Використання жирного шрифту */
     color: white;
     padding: 10px 15px;
     border: none;
@@ -151,6 +159,8 @@ img {
     align-items: flex-start; /* Вирівнювання тексту по лівому краю */
     margin-left: 20px; /* Відступ від лівого краю */
     margin-bottom: 20px; /* Відступ від елементів нижче */
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500; /* Використання жирного шрифту */
 }
 
 .user-info p {
@@ -158,6 +168,8 @@ img {
     color: #ffffff; /* Жовтий колір тексту */
     font-weight: bold;
     font-size: 18px;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500; /* Використання жирного шрифту */
 }
 
 .task-list {
@@ -173,6 +185,8 @@ img {
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500; /* Використання жирного шрифту */
 }
 
 .task-item.loading {
@@ -248,10 +262,14 @@ img {
 
     h1, h2 {
         font-size: 24px;
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 500; /* Використання жирного шрифту */
     }
 
     p {
         font-size: 18px;
+        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+        font-weight: 500; /* Використання жирного шрифту */
     }
 
     img {
