@@ -1,21 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Підключення Telegram Web Apps API
-    const tg = window.Telegram.WebApp;
+    // Перевірка наявності об'єкту Telegram Web Apps API
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Розгортає міні-додаток на весь екран
+    }
 
-    // Розгорнути додаток на весь екран
-    tg.expand();
-
-    // Інші наявні функції
+    // Змінні для секцій та елементів
     const getButterflyButton = document.getElementById('getButterflyButton');
-    const butterflySection = document.getElementById('butterflySection');
     const welcomeSection = document.getElementById('welcome');
+    const butterflySection = document.getElementById('butterflySection');
     const homeButton = document.getElementById('homeButton');
     const friendsButton = document.getElementById('friendsButton');
     const tasksButton = document.getElementById('tasksButton');
     const marketButton = document.getElementById('marketButton');
-    const pointsElement = document.getElementById('points');
-    const progressElement = document.getElementById('progress');
-    const levelElement = document.getElementById('level');
     const friendsSection = document.getElementById('friendsSection');
     const tasksSection = document.getElementById('tasksSection');
     const marketSection = document.getElementById('marketSection');
@@ -24,6 +21,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const backToHomeFromMarket = document.getElementById('backToHomeFromMarket');
     const referralLinkElement = document.getElementById('referralLink');
     const taskItems = document.querySelectorAll('.task-item');
+    const pointsElement = document.getElementById('points');
+    const progressElement = document.getElementById('progress');
+    const levelElement = document.getElementById('level');
 
     let points = 0;
     let level = 1;
@@ -36,46 +36,44 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Повернутися на головну
     homeButton.addEventListener('click', () => {
-        friendsSection.style.display = 'none';
-        tasksSection.style.display = 'none';
-        marketSection.style.display = 'none';
+        hideAllSections();
         butterflySection.style.display = 'block';
     });
 
     // Відкрити секцію друзів
     friendsButton.addEventListener('click', () => {
-        butterflySection.style.display = 'none';
+        hideAllSections();
         friendsSection.style.display = 'block';
         generateReferralLink();
     });
 
     // Відкрити секцію завдань
     tasksButton.addEventListener('click', () => {
-        butterflySection.style.display = 'none';
+        hideAllSections();
         tasksSection.style.display = 'block';
     });
 
     // Відкрити секцію маркету
     marketButton.addEventListener('click', () => {
-        butterflySection.style.display = 'none';
+        hideAllSections();
         marketSection.style.display = 'block';
     });
 
     // Повернення на головну з друзів
     backToHome.addEventListener('click', () => {
-        friendsSection.style.display = 'none';
+        hideAllSections();
         butterflySection.style.display = 'block';
     });
 
     // Повернення на головну з завдань
     backToHomeFromTasks.addEventListener('click', () => {
-        tasksSection.style.display = 'none';
+        hideAllSections();
         butterflySection.style.display = 'block';
     });
 
     // Повернення на головну з маркету
     backToHomeFromMarket.addEventListener('click', () => {
-        marketSection.style.display = 'none';
+        hideAllSections();
         butterflySection.style.display = 'block';
     });
 
@@ -90,6 +88,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 task.classList.remove('loading');
                 task.classList.add('completed'); // Додаємо клас завершеного завдання
+                task.querySelector('.task-points').textContent = 'Completed'; // Зміна тексту на Completed
                 points += 5; // Додаємо 5 очок за кожне завдання
                 updateProgress();
             }, 10000); // 10 секунд очікування
@@ -120,4 +119,14 @@ document.addEventListener('DOMContentLoaded', () => {
         let referralLink = window.location.origin + '?ref=' + userId;
         referralLinkElement.textContent = referralLink;
     }
+
+    // Сховати всі секції
+    function hideAllSections() {
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'none';
+        friendsSection.style.display = 'none';
+        tasksSection.style.display = 'none';
+        marketSection.style.display = 'none';
+    }
 });
+// 123

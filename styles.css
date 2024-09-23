@@ -46,6 +46,18 @@ body {
     overflow-y: hidden; /* Вимкнути вертикальний скрол */
 }
 
+.task-item.completed {
+    background-color: #1a1a1a; /* Темніший колір для завершеного завдання */
+    color: #76c7c0; /* Колір тексту для завершеного завдання */
+    border: 2px solid #76c7c0; /* Виділення рамкою завершеного завдання */
+    cursor: default; /* Вказівник курсору */
+}
+
+.task-item.completed .task-icon {
+    filter: grayscale(100%); /* Іконка стає сірою */
+}
+
+
 .container {
     text-align: center;
     padding: 10px;
@@ -232,3 +244,4 @@ img {
         flex-wrap: nowrap; /* Вимкнути перенесення кнопок */
     }
 }
+/* 123
