@@ -133,14 +133,14 @@ img {
 
 #progress {
     height: 15px; /* Зменшена висота прогрес-бару */
-    background-color: #76c7c0;
+    background-color: #0870e7;
     width: 0;
     transition: width 0.5s;
 }
 
 .points-info {
     margin-top: 5px; /* Відступ від прогрес-бару */
-    color: #FFD700; /* Жовтий колір для інформації поінтів */
+    color: #ffffff; /* Жовтий колір для інформації поінтів */
     font-weight: bold;
     white-space: nowrap; /* Запобігання переносу тексту */
 }
