@@ -131,6 +131,21 @@ img {
     overflow: hidden;
 }
 
+.user-info {
+    display: flex;
+    flex-direction: column; /* Розташування нікнейму та балансу в стовпчик */
+    align-items: flex-start; /* Вирівнювання тексту по лівому краю */
+    margin-left: 20px; /* Відступ від лівого краю */
+    margin-bottom: 20px; /* Відступ від елементів нижче */
+}
+
+.user-info p {
+    margin: 0;
+    color: #FFD700; /* Жовтий колір тексту */
+    font-weight: bold;
+    font-size: 18px;
+}
+
 #progress {
     height: 15px; /* Зменшена висота прогрес-бару */
     background-color: #76c7c0;
