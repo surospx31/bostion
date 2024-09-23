@@ -294,7 +294,7 @@ img {
     }
 
     .button-group {
-        flex-direction: row-reverse;
+        flex-direction: row;
         flex-wrap: nowrap;
     }
 }
