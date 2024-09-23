@@ -133,7 +133,7 @@ img {
 
 #progress {
     height: 15px; /* Зменшена висота прогрес-бару */
-    background-color: #0056b3;
+    background-color: #007bff;
     width: 0;
     transition: width 0.5s;
 }
