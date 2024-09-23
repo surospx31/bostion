@@ -177,7 +177,7 @@ img {
     width: 100%;
     max-width: 300px; /* Максимальна ширина колеса */
     height: auto;
-    transform: translateY(75%); /* Підняти зображення вгору */
+    transform: translateY(65%); /* Підняти зображення вгору */
 }
 
 .task-list {
