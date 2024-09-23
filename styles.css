@@ -3,7 +3,7 @@ body, html {
     height: var(--tg-viewport-height, 100vh);
     margin: 0;
     padding: 0;
-    background: linear-gradient(290deg, #000000, #007bff);;
+    background: linear-gradient(290deg, #000000, #007bff);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -71,26 +71,26 @@ body {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: flex-start; /* Вирівнювання елементів зверху */
 }
 
 #butterflySection {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start; /* Вирівнювання елементів зверху */
 }
 
 img {
     width: 150px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .button-group {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
+    margin-top: 10px; /* Менший відступ між кнопками і елементами */
     width: 100%;
     flex-wrap: wrap;
 }
@@ -171,14 +171,14 @@ img {
     width: 100%;
     height: 100px; /* Висота контейнера для обрізки зображення */
     overflow: hidden; /* Приховати нижню частину колеса */
-    margin-top: 20px;
+    margin-top: 10px; /* Менший відступ */
 }
 
 .wheel-container img {
     width: 100%;
     max-width: 300px; /* Максимальна ширина колеса */
     height: auto;
-    transform: translateY(73%); /* Підняти зображення вгору */
+    transform: translateY(65%); /* Підняти зображення вище */
 }
 
 .task-list {
@@ -190,7 +190,7 @@ img {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0px 15px;
+    padding: 10px 15px;
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
@@ -281,7 +281,7 @@ img {
     }
 
     img {
-        width: 100%;
+        width: 80%;
         height: auto;
         margin: 20px 0;
     }
