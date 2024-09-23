@@ -1,7 +1,7 @@
 body, html {
     width: 100%;
     height: var(--tg-viewport-height, 100vh); /* Використання змінної Telegram для висоти */
-    margin: 0;
+    margin: auto;
     padding: 0;
     overflow-x: hidden; /* Вимкнути горизонтальний скрол */
     background-color: #000000; /* Темний фон */
@@ -24,7 +24,7 @@ body, html {
 }
 
 body {
-    margin: 0;
+    margin: auto;
     padding: 0;
     display: flex;
     flex-direction: column;
