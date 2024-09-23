@@ -1,21 +1,21 @@
 body, html {
     width: 100%;
     height: var(--tg-viewport-height, 100vh); /* Використання змінної Telegram для висоти */
-    margin: auto;
+    margin: 0;
     padding: 0;
     overflow-x: hidden; /* Вимкнути горизонтальний скрол */
     background-color: #000000; /* Темний фон */
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Вирівнювання контенту по верхньому краю */
+    align-items: center;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
 .footer-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    
+    align-items: center; /* Вирівнювання по центру */
+    margin-bottom: 300px; /* Відступ від нижнього краю */
 }
 
 .footer-content img {
@@ -24,7 +24,7 @@ body, html {
 }
 
 body {
-    margin: auto;
+    margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
@@ -32,23 +32,6 @@ body {
     align-items: center;
     height: var(--tg-viewport-height, 100vh); /* Використання висоти від Telegram */
     overflow-y: hidden; /* Вимкнути вертикальний скрол */
-}
-
-.container {
-    text-align: center;
-    padding: 10px;
-    width: 90%; /* Зменшення ширини контейнера */
-    max-width: 400px; /* Максимальна ширина */
-    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
-    overflow-y: hidden; /* Вимкнення вертикального скролу */
-    margin-top: 50px; /* Додамо відступ зверху */
-    margin-bottom: 20px; /* Додамо невеликий відступ знизу */
-    color: #fff; /* Білий текст */
-    box-sizing: border-box;
-    flex-grow: 1; /* Розширює контейнер */
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Вирівнювання елементів на початку */
 }
 
 .task-item.completed {
@@ -60,6 +43,22 @@ body {
 
 .task-item.completed .task-icon {
     filter: grayscale(100%); /* Іконка стає сірою */
+}
+
+.container {
+    text-align: center;
+    padding: 10px;
+    width: 90%; /* Зменшення ширини контейнера */
+    max-width: 400px; /* Максимальна ширина */
+    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
+    overflow-y: hidden; /* Вимкнення вертикального скролу */
+    margin: 10px;
+    color: #fff; /* Білий текст */
+    box-sizing: border-box;
+    flex-grow: 1; /* Розширює контейнер */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end; /* Вирівнювання елементів внизу */
 }
 
 #butterflySection {
@@ -78,7 +77,7 @@ img {
     display: flex; /* Розташування кнопок в ряд */
     justify-content: center; /* Центрування кнопок */
     align-items: center; /* Вирівнювання по центру */
-    margin-top: 50px; /* Додамо більше відступу зверху */
+    margin-top: 20px; /* Відступ від верхніх елементів */
     width: 100%; /* Займати всю ширину */
     flex-wrap: wrap; /* Переносити кнопки, якщо не вистачає місця */
 }
@@ -150,6 +149,19 @@ img {
     font-size: 18px;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     font-weight: 500; /* Використання жирного шрифту */
+}
+
+.wheel-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 20px; /* Відступ від кнопок */
+}
+
+.wheel-container img {
+    max-width: 100%;
+    height: auto;
 }
 
 .task-list {

@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
 </head>
 <body>
     <div class="container" id="welcome">
@@ -17,12 +16,10 @@
         </div>
     </div>
     
-
     <div class="container" id="butterflySection" style="display: none;">
         <div class="user-info">
             <p id="userNickname">Username</p>
-            <p id="userBalance">Balance: 0.00</p>
-            
+            <p id="userBalance">Balance: 12.71</p>
         </div>
         <img src="static/butterfly1.jpg" alt="Butterfly">
         <p>Level: <span id="level">1</span></p>
@@ -41,11 +38,12 @@
             <button class="button" id="tasksButton">Tasks</button>
             <button class="button" id="marketButton">Market</button>
         </div>
+
+        <!-- Додаємо зображення колеса -->
+        <div class="wheel-container">
+            <img src="static/wheel.png" alt="Wheel">
+        </div>
     </div>
-    
-    
-    
-    
 
     <div class="container" id="friendsSection" style="display: none;">
         <h2>Friends</h2>
@@ -90,4 +88,3 @@
     <script src="app.js"></script>
 </body>
 </html>
-<!---->
