@@ -117,18 +117,32 @@ img {
 }
 
 .progress-bar-container {
-    display: flex; /* Розташування в ряд */
-    align-items: center; /* Вирівнювання по вертикалі */
-    justify-content: space-between; /* Розташування прогрес-бару та інформації поінтів */
+    display: flex;
+    flex-direction: column; /* Розташування по вертикалі */
+    align-items: center; /* Центрування контенту */
     width: 100%;
     margin: 10px 0;
 }
 
 .progress-bar {
-    width: 70%; /* Зменшений розмір прогрес-бару */
+    width: 90%; /* Збільшена ширина прогрес-бару */
     background-color: #3c3c3c; /* Темний фон прогрес-бару */
     border-radius: 5px;
     overflow: hidden;
+}
+
+#progress {
+    height: 15px; /* Зменшена висота прогрес-бару */
+    background-color: #76c7c0;
+    width: 0;
+    transition: width 0.5s;
+}
+
+.points-info {
+    margin-top: 5px; /* Відступ від прогрес-бару */
+    color: #FFD700; /* Жовтий колір для інформації поінтів */
+    font-weight: bold;
+    white-space: nowrap; /* Запобігання переносу тексту */
 }
 
 .user-info {
@@ -145,21 +159,6 @@ img {
     font-weight: bold;
     font-size: 18px;
 }
-
-#progress {
-    height: 15px; /* Зменшена висота прогрес-бару */
-    background-color: #76c7c0;
-    width: 0;
-    transition: width 0.5s;
-}
-
-.points-info {
-    margin-left: 10px; /* Відступ від прогрес-бару */
-    color: #FFD700; /* Жовтий колір для інформації поінтів */
-    font-weight: bold;
-    white-space: nowrap; /* Запобігання переносу тексту */
-}
-
 
 .task-list {
     text-align: left; /* Вирівнювання тексту по лівому краю */
