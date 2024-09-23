@@ -11,12 +11,6 @@ body, html {
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.crypto-icon {
-    width: 18px; /* Ширина значка, можна налаштувати під розмір тексту */
-    height: auto; /* Автоматичне коригування висоти */
-    vertical-align: middle; /* Вирівнювання значка по центру тексту */
-    margin-left: 5px; /* Відступ між текстом і значком */
-}
 
 .footer-content {
     display: flex;
