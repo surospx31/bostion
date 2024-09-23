@@ -178,7 +178,7 @@ img {
     width: 100%;
     max-width: 300px; /* Максимальна ширина колеса */
     height: auto;
-    transform: translateY(60%); /* Підняти зображення вгору */
+    transform: translateY(73%); /* Підняти зображення вгору */
 }
 
 .task-list {
@@ -283,7 +283,7 @@ img {
     img {
         width: 80%;
         height: auto;
-        margin: 10px 0;
+        margin: 50px 0;
     }
 
     .progress-bar {

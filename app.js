@@ -5,11 +5,11 @@ document.addEventListener('DOMContentLoaded', () => {
         tg.expand(); // Розгортає міні-додаток на весь екран
 
         // Отримання нікнейму користувача з Telegram WebApp API
-        const userNicknameElement = document.getElementById('userNickname');
+         const userNicknameElement = document.getElementById('userNickname');
         
 
         // Встановлення початкових значень
-        userNicknameElement.textContent = tg.initDataUnsafe.user.first_name || "Username";
+         userNicknameElement.textContent = tg.initDataUnsafe.user.first_name || "Username";
         
     }
 
