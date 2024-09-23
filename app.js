@@ -6,11 +6,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Отримання нікнейму користувача з Telegram WebApp API
         const userNicknameElement = document.getElementById('userNickname');
-        const userBalanceElement = document.getElementById('userBalance');
+        
 
         // Встановлення початкових значень
         userNicknameElement.textContent = tg.initDataUnsafe.user.first_name || "Username";
-        userBalanceElement.textContent = `Balance: ${tg.initDataUnsafe.user.balance || 0}`;
+        
     }
 
     // Змінні для секцій та елементів
