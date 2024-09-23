@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Змінні для секцій та елементів
+    document.addEventListener('touchmove', function(event) {
+        event.preventDefault(); // Забороняє прокрутку на мобільних пристроях
+    }, { passive: false });
+    
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
