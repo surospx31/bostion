@@ -1,101 +1,106 @@
 body, html {
     width: 100%;
-    height: var(--tg-viewport-height, 100vh); /* Використання змінної Telegram для висоти */
+    height: var(--tg-viewport-height, 100vh);
     margin: 0;
     padding: 0;
-    overflow-x: hidden; /* Вимкнути горизонтальний скрол */
-    background-color: #000000; /* Темний фон */
+    overflow-x: hidden;
+    background-color: #000000;
     display: flex;
     justify-content: center;
-    align-items: flex-start; /* Вирівнювання контенту по верхньому краю */
+    align-items: center;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.footer-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 100px; /* Додамо більше відступу зверху */
-}
-
-.footer-content img {
-    width: 100%;
-    max-width: 200px; /* Максимальна ширина зображення */
-}
-
-body {
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* Простір між елементами */
-    align-items: center;
-    height: var(--tg-viewport-height, 100vh); /* Використання висоти від Telegram */
-    overflow-y: hidden; /* Вимкнути вертикальний скрол */
+.crypto-icon {
+    width: 18px; /* Ширина значка криптовалюти */
+    height: auto; /* Автоматичне коригування висоти */
+    vertical-align: middle; /* Вирівнювання значка по центру тексту */
+    margin-left: 5px; /* Відступ між текстом і значком */
 }
 
 .container {
     text-align: center;
     padding: 10px;
-    width: 90%; /* Зменшення ширини контейнера */
-    max-width: 400px; /* Максимальна ширина */
-    max-height: calc(var(--tg-viewport-height, 100vh) - 20px); /* Обмеження висоти контейнера з урахуванням відступу */
-    overflow-y: hidden; /* Вимкнення вертикального скролу */
-    margin-top: 50px; /* Додамо відступ зверху */
-    margin-bottom: 20px; /* Додамо невеликий відступ знизу */
-    color: #fff; /* Білий текст */
+    width: 90%;
+    max-width: 400px;
+    max-height: calc(var(--tg-viewport-height, 100vh) - 20px);
+    overflow-y: hidden;
+    margin: 10px;
+    color: #fff;
     box-sizing: border-box;
-    flex-grow: 1; /* Розширює контейнер */
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Вирівнювання елементів на початку */
+    justify-content: space-around; /* Додаємо більше простору між елементами */
 }
 
-.task-item.completed {
-    background-color: #1a1a1a; /* Темніший колір для завершеного завдання */
-    color: #76c7c0; /* Колір тексту для завершеного завдання */
-    border: 2px solid #76c7c0; /* Виділення рамкою завершеного завдання */
-    cursor: default; /* Вказівник курсору */
-}
-
-.task-item.completed .task-icon {
-    filter: grayscale(100%); /* Іконка стає сірою */
-}
-
-#butterflySection {
+.user-info {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    justify-content: center; /* Вирівнювання по центру */
+    align-items: center; /* Вирівнювання по вертикалі */
+    font-size: 24px; /* Збільшуємо шрифт */
+    font-weight: bold;
+    margin-bottom: 20px; /* Відступ знизу */
 }
 
-img {
-    width: 150px; /* Розмір метелика */
+.user-info img {
+    width: 30px; /* Зменшити іконку */
+    height: auto;
+    margin-left: 10px;
+}
+
+#butterflySection img {
+    width: 200px; /* Збільшений розмір метелика */
     margin-bottom: 20px;
 }
 
+.progress-bar-container {
+    width: 80%;
+    margin: 10px auto; /* Вирівнювання по центру */
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #3c3c3c;
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+#progress {
+    height: 25px;
+    background-color: #ffcc00;
+    width: 0;
+    transition: width 0.5s;
+}
+
+.points-info {
+    margin-top: 5px;
+    color: #ffffff;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
 .button-group {
-    display: flex; /* Розташування кнопок в ряд */
-    justify-content: center; /* Центрування кнопок */
-    align-items: center; /* Вирівнювання по центру */
-    margin-top: 50px; /* Додамо більше відступу зверху */
-    width: 100%; /* Займати всю ширину */
-    flex-wrap: wrap; /* Переносити кнопки, якщо не вистачає місця */
+    display: flex;
+    justify-content: space-around; /* Розміщення кнопок рівномірно */
+    align-items: center;
+    width: 100%;
+    padding: 10px 0; /* Відступи для кнопок */
 }
 
 .button {
     background-color: #007bff;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500; /* Використання жирного шрифту */
+    font-weight: 500;
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
-    margin: 5px; /* Відступ між кнопками */
-    flex-grow: 1; /* Дозволяє кнопкам розтягуватися рівномірно */
-    max-width: 100px; /* Максимальна ширина кнопки */
+    margin: 5px;
+    width: 23%;
     text-align: center;
     box-sizing: border-box;
 }
@@ -104,60 +109,23 @@ img {
     background-color: #0056b3;
 }
 
-.progress-bar-container {
-    display: flex;
-    flex-direction: column; /* Розташування по вертикалі */
-    align-items: center; /* Центрування контенту */
-    width: 100%;
-    margin: 10px 0;
+.task-item.completed {
+    background-color: #1a1a1a;
+    color: #76c7c0;
+    border: 2px solid #76c7c0;
+    cursor: default;
 }
 
-.progress-bar {
-    width: 90%; /* Збільшена ширина прогрес-бару */
-    background-color: #3c3c3c; /* Темний фон прогрес-бару */
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-#progress {
-    height: 15px; /* Зменшена висота прогрес-бару */
-    background-color: #007bff;
-    width: 0;
-    transition: width 0.5s;
-}
-
-.points-info {
-    margin-top: 5px; /* Відступ від прогрес-бару */
-    color: #ffffff; /* Жовтий колір для інформації поінтів */
-    font-weight: bold;
-    white-space: nowrap; /* Запобігання переносу тексту */
-}
-
-.user-info {
-    display: flex;
-    flex-direction: column; /* Розташування нікнейму та балансу в стовпчик */
-    align-items: flex-start; /* Вирівнювання тексту по лівому краю */
-    margin-left: 20px; /* Відступ від лівого краю */
-    margin-bottom: 20px; /* Відступ від елементів нижче */
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500; /* Використання жирного шрифту */
-}
-
-.user-info p {
-    margin: 0;
-    color: #ffffff; /* Жовтий колір тексту */
-    font-weight: bold;
-    font-size: 18px;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500; /* Використання жирного шрифту */
+.task-item.completed .task-icon {
+    filter: grayscale(100%);
 }
 
 .task-list {
-    text-align: left; /* Вирівнювання тексту по лівому краю */
+    text-align: left;
 }
 
 .task-item {
-    background-color: #333; /* Темний фон завдань */
+    background-color: #333;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -166,16 +134,16 @@ img {
     border-radius: 5px;
     cursor: pointer;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500; /* Використання жирного шрифту */
+    font-weight: 500;
 }
 
 .task-item.loading {
-    opacity: 0.6; /* Напівпрозорий для завантаження */
-    cursor: not-allowed; /* Заборонений курсор */
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .task-item.loading .task-points {
-    display: none; /* Сховати поінти */
+    display: none;
 }
 
 .task-item.loading .task-icon {
@@ -203,8 +171,8 @@ img {
 }
 
 .task-item.completed {
-    background-color: #1a1a1a; /* Змінити колір для завершеного завдання */
-    cursor: default; /* Змінити курсор */
+    background-color: #1a1a1a;
+    cursor: default;
 }
 
 .task-icon {
@@ -215,15 +183,14 @@ img {
 
 .task-points {
     font-weight: bold;
-    color: #FFD700; /* Жовтий колір для очок */
+    color: #FFD700;
 }
 
-/* Медиа-запити для мобільних пристроїв */
 @media (max-width: 600px) {
     body {
         flex-direction: column;
-        height: var(--tg-viewport-height, 100vh); /* Забезпечення висоти для мобільних */
-        overflow-y: hidden; /* Вимкнути скролл на мобільних */
+        height: var(--tg-viewport-height, 100vh);
+        overflow-y: hidden;
     }
 
     .container {
@@ -242,14 +209,10 @@ img {
 
     h1, h2 {
         font-size: 24px;
-        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-        font-weight: 500; /* Використання жирного шрифту */
     }
 
     p {
         font-size: 18px;
-        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-        font-weight: 500; /* Використання жирного шрифту */
     }
 
     img {
@@ -268,6 +231,6 @@ img {
 
     .button-group {
         flex-direction: row-reverse; /* Горизонтальне розташування кнопок на мобільних пристроях */
-        flex-wrap: nowrap; /* Вимкнути перенесення кнопок */
+        flex-wrap: nowrap;
     }
 }
