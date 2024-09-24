@@ -1,6 +1,6 @@
 body, html {
     width: 100%;
-    height: var(--tg-viewport-height, 100vh);
+    height: var(--tg-viewport-height);
     margin: 0;
     padding: 0;
     background: linear-gradient(290deg, #000000, #007bff);
@@ -26,7 +26,7 @@ body, html {
 
 body, html {
     width: 100%;
-    height: var(--tg-viewport-height, 100vh);
+    height: var(--tg-viewport-height);
     margin: 0;
     padding: 0;
     overflow-x: hidden;
@@ -43,7 +43,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    height: var(--tg-viewport-height, 100vh);
+    height: var(--tg-viewport-height);
     overflow-y: hidden;
 }
 
@@ -63,7 +63,7 @@ body {
     padding: 10px;
     width: 90%;
     max-width: 400px;
-    height: calc(var(--tg-viewport-height, 100vh) - 40px); /* Повна висота з врахуванням відступів */
+    height: calc(var(--tg-viewport-height) - 40px); /* Повна висота з врахуванням відступів */
     overflow-y: hidden;
     margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
@@ -87,17 +87,12 @@ img {
 }
 
 .button-group {
-    position: fixed; /* Закріпити кнопки до нижньої частини екрану */
-    bottom: 0; /* Вирівнювання по нижньому краю */
-    left: 0;
-    width: 100%; /* Ширина на весь екран */
     display: flex;
-    justify-content: space-around; /* Розподіл кнопок рівномірно */
+    justify-content: center;
     align-items: center;
-    padding: 10px; /* Відступи */
-    background-color: rgba(0, 0, 0, 0.8); /* Напівпрозорий фон */
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.5); /* Тінь зверху */
-    z-index: 100; /* Впевнитись, що кнопки на передньому плані */
+    margin-top: 10px; /* Менший відступ між кнопками і елементами */
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .button {
@@ -285,7 +280,7 @@ img {
 @media (max-height: 100vh) {
     body {
         flex-direction: column;
-        height: var(--tg-viewport-height, 100vh);
+        height: var(--tg-viewport-height);
         overflow-y: hidden;
     }
 
