@@ -68,7 +68,7 @@ body {
     margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
     box-sizing: border-box;
-    flex-grow: 4;
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
@@ -279,7 +279,7 @@ img {
 @media (max-width: 600px) {
     body {
         flex-direction: column;
-        height: var(--tg-viewport-height, 100vh);
+        height: var(--tg-viewport-height, 200vh);
         overflow-y: hidden;
     }
 
