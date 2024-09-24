@@ -68,7 +68,7 @@ body {
     margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
     box-sizing: border-box;
-    flex-grow: 2;
+    flex-grow: 4;
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
