@@ -113,7 +113,7 @@ img {
 }
 
 .button:hover {
-    background-color: #000000;
+    background-color: #0056b3;
 }
 
 .progress-bar-container {
@@ -288,7 +288,7 @@ img {
         margin: 0;
         border-radius: 0;
         box-shadow: none;
-        padding: 15px;
+        padding: 0px;
     }
 
     .button {
