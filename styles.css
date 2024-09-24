@@ -276,16 +276,16 @@ img {
     color: #FFD700;
 }
 
-@media (max-height: 1000px) {
+@media screen {
     body {
         flex-direction: column;
-        height: 1;
+        height: var(--tg-viewport-height, 100vh);
         overflow-y: hidden;
     }
 
     .container {
         width: 100%;
-        margin: auto;
+        margin: 0;
         border-radius: 0;
         box-shadow: none;
         padding: 15px;
