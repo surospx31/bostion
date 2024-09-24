@@ -276,7 +276,7 @@ img {
     color: #FFD700;
 }
 
-@media only screen and (max-height: 1000px)  {
+@media (min-height: 600px) {
     body {
         flex-direction: column;
         height: var(--tg-viewport-height, 100vh);
