@@ -16,7 +16,7 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 300px;
+    margin: auto;
 }
 
 .footer-content img {
@@ -63,9 +63,9 @@ body {
     padding: 10px;
     width: 90%;
     max-width: 400px;
-    max-height: calc(var(--tg-viewport-height, 100vh) - 20px);
+    height: calc(var(--tg-viewport-height, 100vh) - 40px); /* Повна висота з врахуванням відступів */
     overflow-y: hidden;
-    margin: 10px;
+    margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
     box-sizing: border-box;
     flex-grow: 1;
@@ -79,9 +79,6 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
-    flex-grow: 1; /* Дозволяє секції займати весь доступний простір */
-    width: 100%; /* Займати всю ширину */
-    padding-bottom: 20px; /* Відступ знизу для нижнього контенту */
 }
 
 img {
@@ -96,7 +93,6 @@ img {
     margin-top: 10px; /* Менший відступ між кнопками і елементами */
     width: 100%;
     flex-wrap: wrap;
-    margin-bottom: 20px; /* Додаємо відступ знизу для кнопок */
 }
 
 .button {
@@ -154,7 +150,7 @@ img {
     flex-direction: column;
     align-items: flex-start;
     margin-left: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 10px; /* Зменшений відступ */
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     font-weight: 500;
 }
@@ -173,7 +169,9 @@ img {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: -40px; /* Переміщення кнопки вгору над колесом */
+    position: relative;
+    bottom: -5px; /* Відступ щоб кнопка заходила на колесо */
+    z-index: 10;
 }
 
 .spin-button {
@@ -200,7 +198,7 @@ img {
     justify-content: center;
     align-items: flex-end; /* Вирівнювання по нижньому краю */
     width: 100%;
-    height: 150px; /* Збільшена висота контейнера */
+    height: 80px; /* Висота контейнера для обрізки зображення */
     overflow: hidden; /* Приховати нижню частину колеса */
     margin-top: 10px; /* Менший відступ */
 }
@@ -209,7 +207,7 @@ img {
     width: 100%;
     max-width: 300px; /* Максимальна ширина колеса */
     height: auto;
-    transform: translateY(50%); /* Зміщення колеса для покриття кнопки */
+    transform: translateY(65%); /* Підняти зображення вище */
 }
 
 .task-list {
@@ -278,7 +276,7 @@ img {
     color: #FFD700;
 }
 
-@media (max-width: 600px) {
+@media (max-height: 100vh) {
     body {
         flex-direction: column;
         height: var(--tg-viewport-height, 100vh);
@@ -313,7 +311,7 @@ img {
 
     img {
         width: 80%;
-        height: auto;
+        height: 1;
         margin: 0px 0;
     }
 
