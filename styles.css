@@ -90,7 +90,7 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px; /* Відступ між кнопками і елементами */
+    margin-top: 10px; /* Менший відступ між кнопками і елементами */
     width: 100%;
     flex-wrap: wrap;
 }
@@ -198,9 +198,9 @@ img {
     justify-content: center;
     align-items: flex-end; /* Вирівнювання по нижньому краю */
     width: 100%;
-    height: 100px; /* Висота контейнера для обрізки зображення */
+    height: 80px; /* Висота контейнера для обрізки зображення */
     overflow: hidden; /* Приховати нижню частину колеса */
-    margin-top: 20px;
+    margin-top: 10px; /* Менший відступ */
 }
 
 .wheel-container img {
