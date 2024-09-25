@@ -63,7 +63,7 @@ body {
     padding: 10px;
     width: 90%;
     max-width: 400px;
-    height: 100%; /* Повна висота з врахуванням відступів */
+    height: calc(var(--tg-viewport-height) - 40px); /* Повна висота з врахуванням відступів */
     overflow-y: hidden;
     margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
@@ -72,7 +72,6 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
-    background: transparent;
 }
 
 #butterflySection {
@@ -176,7 +175,7 @@ img {
     align-items: center;
     width: 100%;
     position: relative;
-    bottom: -5px; /* Відступ щоб кнопка заходила на колесо */
+    bottom: 15px; /* Відступ щоб кнопка заходила на колесо */
     z-index: 10;
 }
 
@@ -185,7 +184,7 @@ img {
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     font-weight: 500;
     color: white;
-    padding: 10px 20px;
+    padding: 10px 50px;
     border: none;
     border-radius: 25px; /* Зробити кнопки закругленими */
     cursor: pointer;
@@ -204,7 +203,7 @@ img {
     justify-content: center;
     align-items: flex-end; /* Вирівнювання по нижньому краю */
     width: 100%;
-    height: 80px; /* Висота контейнера для обрізки зображення */
+    height: 90px; /* Висота контейнера для обрізки зображення */
     overflow: hidden; /* Приховати нижню частину колеса */
     margin-top: 10px; /* Менший відступ */
 }
