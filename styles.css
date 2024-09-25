@@ -90,8 +90,12 @@ img {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 10px; /* Менший відступ між кнопками і елементами */
-    width: 100%;
+    position: fixed; /* Закріпити кнопки на певному місці */
+    bottom: 10px; /* Відступ від нижнього краю */
+    width: 90%; /* Ширина контейнера з кнопками */
+    margin: 0 auto; /* Центрування контейнера */
+    left: 50%; /* Вирівнювання по центру */
+    transform: translateX(-50%); /* Центрування контейнера по горизонталі */
     flex-wrap: wrap;
 }
 
