@@ -63,7 +63,7 @@ body {
     padding: 10px;
     width: 90%;
     max-width: 400px;
-    height: calc(var(--tg-viewport-height) - 40px); /* Повна висота з врахуванням відступів */
+    height: 100%; /* Повна висота з врахуванням відступів */
     overflow-y: hidden;
     margin: 0; /* Прибираємо зайві відступи */
     color: #fff;
@@ -72,6 +72,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
+    background: transparent;
 }
 
 #butterflySection {
