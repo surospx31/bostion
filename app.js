@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Перевірка наявності об'єкту Telegram Web Apps API
     let userId = null; // Ініціалізація значення для telegram_id
-    let name = null;
+    let name = 'Username';
     let hasButterfly = false;
     let points = 0;
     let level = 1;
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Отримуємо дані користувача з Telegram WebApp API
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id; // Telegram ID
-            name = tg.initDataUnsafe.user.first_name ;
+            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
