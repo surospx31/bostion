@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Перевірка наявності об'єкту Telegram Web Apps API
-    let userId = null; 
+    let userId = null;
     let name = 'Username';
     let hasButterfly = false;
     let points = 0;
@@ -13,7 +12,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const tg = window.Telegram.WebApp;
         tg.expand(); 
 
-        // Отримуємо дані користувача з Telegram WebApp API
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id; 
             name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
@@ -79,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function calculatePointsForNextLevel(level) {
-        return level * 5;
+        return level * 5; // Обчислюємо кількість поінтів, необхідних для досягнення наступного рівня
     }
 
     function updateUI() {
@@ -123,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
         hasButterfly = true;
 
@@ -132,6 +131,7 @@ document.addEventListener('DOMContentLoaded', () => {
         await saveUserData();
     });
 
+    // Логіка обертання колеса
     startSpinButton.addEventListener('click', async () => {
         startSpinButton.disabled = true;
 
@@ -145,13 +145,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             points += prize.points;
             let pointsForNextLevel = calculatePointsForNextLevel(level);
-            if (points >= pointsForNextLevel) {
-                level += 1;
-                points = 0;
-            }
-            updateUI();
 
-            await saveUserData();
+            // Перевірка, чи поінти достатні для переходу на новий рівень
+            while (points >= pointsForNextLevel) {
+                points -= pointsForNextLevel; // Віднімаємо необхідну кількість поінтів для переходу
+                level += 1; // Підвищуємо рівень
+                pointsForNextLevel = calculatePointsForNextLevel(level); // Оновлюємо поінти для наступного рівня
+            }
+
+            updateUI(); // Оновлюємо інтерфейс
+
+            await saveUserData(); // Зберігаємо оновлені дані
             startSpinButton.disabled = false;
         }, 5000);
     });
@@ -215,8 +219,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 task.querySelector('.task-points').textContent = 'Completed';
                 points += 5;
                 let pointsForNextLevel = calculatePointsForNextLevel(level);
-                updateProgress(pointsForNextLevel);
 
+                // Перевірка на підвищення рівня
+                while (points >= pointsForNextLevel) {
+                    points -= pointsForNextLevel;
+                    level += 1;
+                    pointsForNextLevel = calculatePointsForNextLevel(level);
+                }
+
+                updateProgress(pointsForNextLevel);
                 await saveUserData();
             }, 10000);
 
