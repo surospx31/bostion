@@ -81,24 +81,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Оновлюємо інтерфейс користувача після завантаження даних
+    function calculatePointsForNextLevel(level) {
+        return level * 5; // Обчислюємо кількість поінтів, необхідних для досягнення наступного рівня
+    }
+    
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
-
-        // Якщо користувач вже отримав метелика, показуємо основний екран
-        if (hasButterfly) {
-            welcomeSection.style.display = 'none';
-            butterflySection.style.display = 'block';
-        } else {
-            welcomeSection.style.display = 'block'; // Показуємо кнопку GET
-            butterflySection.style.display = 'none';
-        }
+    
+        let pointsForNextLevel = calculatePointsForNextLevel(level);
+        pointsForNextLevelElement.textContent = pointsForNextLevel;
+        updateProgress(pointsForNextLevel);
     }
 
     // Функція для збереження даних користувача
     async function saveUserData() {
+        console.log('Зберігаємо дані користувача...');
         try {
-            await fetch(`/api/user/${userId}`, {
+            const response = await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,10 +107,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     name,
                     has_butterfly: hasButterfly,
                     level,
-                    points,
+                    points, // Зберігаємо кількість поінтів
                     referral_code: referralCode,
-                    referred_by: null, // Поки не реалізовано
-                    friends: 0, // Поки не реалізовано
+                    referred_by: null, 
+                    friends: 0, 
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
                 }),
@@ -241,20 +241,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Оновлення прогрес бару та рівня
-    function updateProgress() {
-        currentPointsElement.textContent = points;
-        let pointsForNextLevel = level * 5;
-        pointsForNextLevelElement.textContent = pointsForNextLevel; // Оновлення необхідних поінтів
-        let progress = (points % pointsForNextLevel) / pointsForNextLevel * 100 + '%'; // Прогрес бар на основі поінтів
-        progressElement.style.width = progress;
-
-        // Підвищення рівня кожні 5 * рівень поінтів
-        if (points >= pointsForNextLevel) {
-            level += 1;
-            points = 0;
-            levelElement.textContent = level;
-            pointsForNextLevelElement.textContent = level * 5; // Оновлення необхідних поінтів для нового рівня
-        }
+    function updateProgress(pointsForNextLevel) {
+        let progress = (points / pointsForNextLevel) * 100 + '%'; // Обчислюємо прогрес
+        progressElement.style.width = progress; // Оновлюємо ширину прогрес-бара
     }
 
     // Генерація реферального посилання
