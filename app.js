@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement = name; // Встановлення імені користувача
+        userNicknameElement.textContent = name; // Встановлення імені користувача
     }
 
     // Якщо telegram_id не вдалося отримати, виводимо повідомлення про помилку
