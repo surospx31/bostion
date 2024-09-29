@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Перевірка наявності об'єкту Telegram Web Apps API
     let userId = null; // Ініціалізація значення для telegram_id
-    let name = 'Username';
+    let name = null;
     let hasButterfly = false;
     let points = 0;
     let level = 1;
