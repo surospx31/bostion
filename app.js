@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name; // Встановлення імені користувача
+        userNicknameElement = name; // Встановлення імені користувача
     }
 
     // Якщо telegram_id не вдалося отримати, виводимо повідомлення про помилку
@@ -84,6 +84,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
+
+        // Якщо користувач вже отримав метелика, показуємо основний екран
+        if (hasButterfly) {
+            welcomeSection.style.display = 'none';
+            butterflySection.style.display = 'block';
+        } else {
+            welcomeSection.style.display = 'block'; // Показуємо кнопку GET
+            butterflySection.style.display = 'none';
+        }
     }
 
     // Функція для збереження даних користувача
@@ -110,6 +119,19 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Error saving user data:', error);
         }
     }
+
+    // Подія для кнопки GET
+    getButterflyButton.addEventListener('click', async () => {
+        // Відзначаємо, що користувач отримав метелика
+        hasButterfly = true;
+
+        // Оновлюємо інтерфейс
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'block';
+
+        // Зберігаємо це в базу даних
+        await saveUserData();
+    });
 
     // Логіка обертання колеса
     startSpinButton.addEventListener('click', async () => {
@@ -149,12 +171,6 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         return prizes[Math.floor(Math.random() * prizes.length)];
     }
-
-    // Показати секцію з метеликом після натискання Get
-    getButterflyButton.addEventListener('click', () => {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'block';
-    });
 
     // Повернутися на головну
     homeButton.addEventListener('click', () => {
