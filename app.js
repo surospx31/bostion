@@ -38,11 +38,103 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPointsElement = document.getElementById('currentPoints');
     const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
+    const startSpinButton = document.getElementById('startSpinButton'); // Додаємо кнопку для Spin
+    const luckyWheel = document.getElementById('luckyWheel'); // Колесо удачі
+
+    let userId = '72117712'; // Тимчасовий ідентифікатор користувача, заміни на реальний telegram_id
     let points = 0;
     let level = 1;
+    let name = "Username";
+    let hasButterfly = false;
+    let walletAddress = "";
+    let referralCode = "";
+    let claimedButterfly = false;
 
-    // Початкове значення необхідних поінтів для наступного рівня
-    pointsForNextLevelElement.textContent = level * 5;
+    // Завантаження даних користувача при завантаженні сторінки
+    async function loadUserData() {
+        try {
+            const response = await fetch(`/api/user/${userId}`);
+            const data = await response.json();
+
+            points = data.points;
+            level = data.level;
+            name = data.name;
+            hasButterfly = data.has_butterfly;
+            referralCode = data.referral_code;
+            walletAddress = data.wallet_address;
+            claimedButterfly = data.claimedbutterfly;
+
+            updateUI();
+        } catch (error) {
+            console.error('Error loading user data:', error);
+        }
+    }
+
+    // Оновлюємо інтерфейс користувача після завантаження даних
+    function updateUI() {
+        currentPointsElement.textContent = points;
+        levelElement.textContent = level;
+    }
+
+    // Логіка обертання колеса
+    startSpinButton.addEventListener('click', async () => {
+        startSpinButton.disabled = true;
+
+        // Анімація обертання
+        luckyWheel.style.transition = 'transform 5s ease-out';
+        const randomDegree = Math.floor(Math.random() * 360) + 1440; // Випадкове число обертів
+        luckyWheel.style.transform = `rotate(${randomDegree}deg)`;
+
+        // Після обертання — результат
+        setTimeout(async () => {
+            const prize = getRandomPrize();
+            alert(`You won ${prize.text}`);
+
+            // Оновлюємо очки
+            points += prize.points;
+            if (points >= level * 5) {
+                level += 1;
+                points = 0; // Скидаємо очки після досягнення нового рівня
+            }
+            updateUI();
+
+            // Відправляємо оновлені дані на сервер
+            try {
+                await fetch(`/api/user/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        name,
+                        has_butterfly: hasButterfly,
+                        level,
+                        points,
+                        referral_code: referralCode,
+                        referred_by: null, // Поки не реалізовано
+                        friends: 0, // Поки не реалізовано
+                        wallet_address: walletAddress,
+                        claimedbutterfly: claimedButterfly
+                    }),
+                });
+            } catch (error) {
+                console.error('Error saving user data:', error);
+            }
+
+            startSpinButton.disabled = false;
+        }, 5000); // Час завершення анімації обертання
+    });
+
+    // Випадковий виграш
+    function getRandomPrize() {
+        const prizes = [
+            { text: '0.5 TON', points: 0 },
+            { text: '5 Points', points: 5 },
+            { text: '10 Points', points: 10 },
+            { text: '1 TON', points: 0 },
+        ];
+        return prizes[Math.floor(Math.random() * prizes.length)];
+    }
 
     // Показати секцію з метеликом після натискання Get
     getButterflyButton.addEventListener('click', () => {
@@ -147,4 +239,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tasksSection.style.display = 'none';
         marketSection.style.display = 'none';
     }
+
+    loadUserData(); // Завантаження даних користувача при старті
 });
