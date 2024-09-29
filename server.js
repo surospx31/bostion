@@ -10,6 +10,9 @@ const pool = new Pool({
     database: 'verceldb',
     password: 'ad0U6MnWmZvH',
     port: 5432,
+    ssl: {
+        rejectUnauthorized: false // Дозволяє незахищене підключення через SSL
+    }
 });
 
 // Отримання даних користувача
