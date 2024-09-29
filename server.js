@@ -18,6 +18,11 @@ const pool = new Pool({
 // Маршрут для отримання даних користувача або створення нового, якщо його немає
 app.get('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
+
+    if (!telegramId) {
+        return res.status(400).json({ error: "telegram_id не отримано" });
+    }
+
     try {
         // Шукаємо користувача в базі даних за telegram_id
         const result = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
@@ -63,6 +68,10 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         name, has_butterfly, level, points, referral_code,
         referred_by, friends, wallet_address, claimedbutterfly
     } = req.body;
+
+    if (!telegramId) {
+        return res.status(400).json({ error: "telegram_id не отримано" });
+    }
 
     try {
         // Оновлюємо дані користувача в базі даних
