@@ -1,19 +1,21 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Перевірка наявності об'єкту Telegram Web Apps API
     let userId = 'defaultUserId'; // Значення за замовчуванням, якщо Telegram Web App недоступний
     let name = 'Username';
 
+    // Перевірка наявності об'єкту Telegram Web Apps API
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.expand(); // Розгортає міні-додаток на весь екран
 
-        // Отримання нікнейму користувача з Telegram WebApp API
-        const userNicknameElement = document.getElementById('userNickname');
-        userId = tg.initDataUnsafe.user.id; // Використовуємо telegram_id
-        name = tg.initDataUnsafe.user.first_name || 'Username';
+        // Отримуємо ID та ім'я користувача з Telegram WebApp API
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id; // Використовуємо telegram_id
+            name = tg.initDataUnsafe.user.first_name || 'Username';
+        } else {
+            console.error("Telegram WebApp не повертає дані користувача");
+        }
 
-        // Встановлення початкових значень
-        userNicknameElement.textContent = name;
+        console.log(`Telegram User ID: ${userId}`); // Додаємо логування
     }
 
     // Змінні для секцій та елементів
