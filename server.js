@@ -24,17 +24,14 @@ app.get('/api/user/:telegram_id', async (req, res) => {
     }
 
     try {
-        // Шукаємо користувача в базі даних за telegram_id
         const result = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
 
-        // Якщо користувача знайшли, повертаємо його дані
         if (result.rows.length) {
             res.json(result.rows[0]);
         } else {
-            // Якщо користувача немає, створюємо нового користувача з дефолтними даними
             const newUser = {
                 telegram_id: telegramId,
-                name: 'Username',
+                name: 'Username', // Заміни на дефолтне значення
                 has_butterfly: false,
                 level: 1,
                 points: 0,
@@ -45,14 +42,12 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 claimedbutterfly: false,
             };
 
-            // Збереження нового користувача в базу даних
             await pool.query(
                 `INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly) 
                  VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
                 [telegramId, newUser.name, newUser.has_butterfly, newUser.level, newUser.points, newUser.referral_code, newUser.referred_by, newUser.friends, newUser.wallet_address, newUser.claimedbutterfly]
             );
 
-            // Повертаємо новоствореного користувача
             res.json(newUser);
         }
     } catch (err) {
@@ -74,7 +69,6 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 
     try {
-        // Оновлюємо дані користувача в базі даних
         await pool.query(
             `UPDATE users
              SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10

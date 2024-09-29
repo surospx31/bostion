@@ -2,6 +2,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // Перевірка наявності об'єкту Telegram Web Apps API
     let userId = null; // Ініціалізація значення для telegram_id
     let name = 'Username';
+    let hasButterfly = false;
+    let points = 0;
+    let level = 1;
+    let walletAddress = "";
+    let referralCode = "";
+    let claimedButterfly = false;
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -10,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Отримуємо дані користувача з Telegram WebApp API
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id; // Telegram ID
-            name = tg.initDataUnsafe.user.first_name || 'Username';
+            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
@@ -53,22 +59,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const startSpinButton = document.getElementById('startSpinButton'); // Додаємо кнопку для Spin
     const luckyWheel = document.getElementById('luckyWheel'); // Колесо удачі
 
-    let points = 0;
-    let level = 1;
-    let hasButterfly = false;
-    let walletAddress = "";
-    let referralCode = "";
-    let claimedButterfly = false;
-
     // Завантаження даних користувача при завантаженні сторінки
     async function loadUserData() {
         try {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
 
+            // Оновлюємо змінні з отриманими даними
             points = data.points;
             level = data.level;
-            name = data.name;
+            name = data.name || name;
             hasButterfly = data.has_butterfly;
             referralCode = data.referral_code;
             walletAddress = data.wallet_address;
@@ -84,6 +84,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
+    }
+
+    // Функція для збереження даних користувача
+    async function saveUserData() {
+        try {
+            await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    has_butterfly: hasButterfly,
+                    level,
+                    points,
+                    referral_code: referralCode,
+                    referred_by: null, // Поки не реалізовано
+                    friends: 0, // Поки не реалізовано
+                    wallet_address: walletAddress,
+                    claimedbutterfly: claimedButterfly
+                }),
+            });
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
     }
 
     // Логіка обертання колеса
@@ -108,29 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             updateUI();
 
-            // Відправляємо оновлені дані на сервер
-            try {
-                await fetch(`/api/user/${userId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name,
-                        has_butterfly: hasButterfly,
-                        level,
-                        points,
-                        referral_code: referralCode,
-                        referred_by: null, // Поки не реалізовано
-                        friends: 0, // Поки не реалізовано
-                        wallet_address: walletAddress,
-                        claimedbutterfly: claimedButterfly
-                    }),
-                });
-            } catch (error) {
-                console.error('Error saving user data:', error);
-            }
-
+            // Зберігаємо оновлені дані
+            await saveUserData();
             startSpinButton.disabled = false;
         }, 5000); // Час завершення анімації обертання
     });
@@ -203,12 +207,15 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             task.classList.add('loading'); // Додаємо клас завантаження
-            setTimeout(() => {
+            setTimeout(async () => {
                 task.classList.remove('loading');
                 task.classList.add('completed'); // Додаємо клас завершеного завдання
                 task.querySelector('.task-points').textContent = 'Completed'; // Зміна тексту на Completed
                 points += 5; // Додаємо 5 очок за кожне завдання
                 updateProgress();
+
+                // Зберігаємо оновлені дані після виконання завдання
+                await saveUserData();
             }, 10000); // 10 секунд очікування
 
             // Переадресація на посилання
