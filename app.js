@@ -80,19 +80,19 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Функція для обчислення кількості поінтів для наступного рівня
+    function calculatePointsForNextLevel(level) {
+        return level * 5; // Для кожного рівня кількість поінтів для підвищення збільшується
+    }
+
     // Оновлюємо інтерфейс користувача після завантаження даних
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
 
-        // Якщо користувач вже отримав метелика, показуємо основний екран
-        if (hasButterfly) {
-            welcomeSection.style.display = 'none';
-            butterflySection.style.display = 'block';
-        } else {
-            welcomeSection.style.display = 'block'; // Показуємо кнопку GET
-            butterflySection.style.display = 'none';
-        }
+        let pointsForNextLevel = calculatePointsForNextLevel(level); // Обчислюємо поінти для наступного рівня
+        pointsForNextLevelElement.textContent = pointsForNextLevel;
+        updateProgress(pointsForNextLevel);
     }
 
     // Функція для збереження даних користувача
@@ -120,19 +120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Подія для кнопки GET
-    getButterflyButton.addEventListener('click', async () => {
-        // Відзначаємо, що користувач отримав метелика
-        hasButterfly = true;
-
-        // Оновлюємо інтерфейс
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'block';
-
-        // Зберігаємо це в базу даних
-        await saveUserData();
-    });
-
     // Логіка обертання колеса
     startSpinButton.addEventListener('click', async () => {
         startSpinButton.disabled = true;
@@ -149,7 +136,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Оновлюємо очки
             points += prize.points;
-            if (points >= level * 5) {
+            let pointsForNextLevel = calculatePointsForNextLevel(level); // Оновлюємо поінти для наступного рівня
+
+            if (points >= pointsForNextLevel) {
                 level += 1;
                 points = 0; // Скидаємо очки після досягнення нового рівня
             }
@@ -228,7 +217,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 task.classList.add('completed'); // Додаємо клас завершеного завдання
                 task.querySelector('.task-points').textContent = 'Completed'; // Зміна тексту на Completed
                 points += 5; // Додаємо 5 очок за кожне завдання
-                updateProgress();
+                let pointsForNextLevel = calculatePointsForNextLevel(level);
+                updateProgress(pointsForNextLevel);
 
                 // Зберігаємо оновлені дані після виконання завдання
                 await saveUserData();
@@ -241,20 +231,11 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Оновлення прогрес бару та рівня
-    function updateProgress() {
+    function updateProgress(pointsForNextLevel) {
         currentPointsElement.textContent = points;
-        let pointsForNextLevel = level * 5;
         pointsForNextLevelElement.textContent = pointsForNextLevel; // Оновлення необхідних поінтів
-        let progress = (points % pointsForNextLevel) / pointsForNextLevel * 100 + '%'; // Прогрес бар на основі поінтів
+        let progress = (points / pointsForNextLevel) * 100 + '%'; // Прогрес бар на основі поінтів
         progressElement.style.width = progress;
-
-        // Підвищення рівня кожні 5 * рівень поінтів
-        if (points >= pointsForNextLevel) {
-            level += 1;
-            points = 0;
-            levelElement.textContent = level;
-            pointsForNextLevelElement.textContent = level * 5; // Оновлення необхідних поінтів для нового рівня
-        }
     }
 
     // Генерація реферального посилання
