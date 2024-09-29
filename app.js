@@ -242,9 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Оновлення прогрес бару та рівня
     function updateProgress(pointsForNextLevel) {
-        let progress = (points / pointsForNextLevel) * 100 + '%'; // Обчислюємо прогрес
-        progressElement.style.width = progress; // Оновлюємо ширину прогрес-бара
-    }
+    let progress = (points / pointsForNextLevel) * 100 + '%'; // Обчислюємо прогрес
+    progressElement.style.width = progress; // Оновлюємо ширину прогрес-бара
+}
 
     // Генерація реферального посилання
     function generateReferralLink() {
