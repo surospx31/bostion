@@ -1,23 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Перевірка наявності об'єкту Telegram Web Apps API
+    let userId = 'defaultUserId'; // Значення за замовчуванням, якщо Telegram Web App недоступний
+    let name = 'Username';
+
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.expand(); // Розгортає міні-додаток на весь екран
 
         // Отримання нікнейму користувача з Telegram WebApp API
-         const userNicknameElement = document.getElementById('userNickname');
-        
+        const userNicknameElement = document.getElementById('userNickname');
+        userId = tg.initDataUnsafe.user.id; // Використовуємо telegram_id
+        name = tg.initDataUnsafe.user.first_name || 'Username';
 
         // Встановлення початкових значень
-         userNicknameElement.textContent = tg.initDataUnsafe.user.first_name || "Username";
-        
+        userNicknameElement.textContent = name;
     }
 
     // Змінні для секцій та елементів
     document.addEventListener('touchmove', function(event) {
         event.preventDefault(); // Забороняє прокрутку на мобільних пристроях
     }, { passive: false });
-    
+
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
@@ -41,17 +44,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const startSpinButton = document.getElementById('startSpinButton'); // Додаємо кнопку для Spin
     const luckyWheel = document.getElementById('luckyWheel'); // Колесо удачі
 
-    let userId = '72117712'; // Тимчасовий ідентифікатор користувача, заміни на реальний telegram_id
     let points = 0;
     let level = 1;
-    let name = "Username";
     let hasButterfly = false;
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
 
     // Завантаження даних користувача при завантаженні сторінки
-    async function loadUserData() {
+    async function loadUserData(userId) {
         try {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
@@ -99,27 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateUI();
 
             // Відправляємо оновлені дані на сервер
-            try {
-                await fetch(`/api/user/${userId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name,
-                        has_butterfly: hasButterfly,
-                        level,
-                        points,
-                        referral_code: referralCode,
-                        referred_by: null, // Поки не реалізовано
-                        friends: 0, // Поки не реалізовано
-                        wallet_address: walletAddress,
-                        claimedbutterfly: claimedButterfly
-                    }),
-                });
-            } catch (error) {
-                console.error('Error saving user data:', error);
-            }
+            await saveUserData(userId, name, hasButterfly, level, points, referralCode, walletAddress, claimedButterfly);
 
             startSpinButton.disabled = false;
         }, 5000); // Час завершення анімації обертання
@@ -136,69 +117,49 @@ document.addEventListener('DOMContentLoaded', () => {
         return prizes[Math.floor(Math.random() * prizes.length)];
     }
 
-    // Показати секцію з метеликом після натискання Get
-    getButterflyButton.addEventListener('click', () => {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'block';
-    });
+    // Відправляємо дані користувача на сервер для оновлення
+    async function saveUserData(userId, name, hasButterfly, level, points, referralCode, walletAddress, claimedButterfly) {
+        try {
+            await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    has_butterfly: hasButterfly,
+                    level,
+                    points,
+                    referral_code: referralCode,
+                    referred_by: null, // Поки не реалізовано
+                    friends: 0, // Поки не реалізовано
+                    wallet_address: walletAddress,
+                    claimedbutterfly: claimedButterfly
+                }),
+            });
+        } catch (error) {
+            console.error('Error saving user data:', error);
+        }
+    }
 
-    // Повернутися на головну
-    homeButton.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    // Відкрити секцію друзів
-    friendsButton.addEventListener('click', () => {
-        hideAllSections();
-        friendsSection.style.display = 'block';
-        generateReferralLink();
-    });
-
-    // Відкрити секцію завдань
-    tasksButton.addEventListener('click', () => {
-        hideAllSections();
-        tasksSection.style.display = 'block';
-    });
-
-    // Відкрити секцію маркету
-    marketButton.addEventListener('click', () => {
-        hideAllSections();
-        marketSection.style.display = 'block';
-    });
-
-    // Повернення на головну з друзів
-    backToHome.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    // Повернення на головну з завдань
-    backToHomeFromTasks.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    // Повернення на головну з маркету
-    backToHomeFromMarket.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    // Додавання очок за завдання з анімацією завантаження
+    // Інші події та функції...
+    // Наприклад, робота з завданнями та їх обробка:
     taskItems.forEach((task) => {
-        task.addEventListener('click', () => {
+        task.addEventListener('click', async () => {
             if (task.classList.contains('completed') || task.classList.contains('loading')) {
                 return; // Якщо завдання вже завершене або в процесі завантаження, нічого не робимо
             }
 
             task.classList.add('loading'); // Додаємо клас завантаження
-            setTimeout(() => {
+            setTimeout(async () => {
                 task.classList.remove('loading');
                 task.classList.add('completed'); // Додаємо клас завершеного завдання
                 task.querySelector('.task-points').textContent = 'Completed'; // Зміна тексту на Completed
                 points += 5; // Додаємо 5 очок за кожне завдання
                 updateProgress();
+
+                // Зберігаємо дані після виконання завдання
+                await saveUserData(userId, name, hasButterfly, level, points, referralCode, walletAddress, claimedButterfly);
             }, 10000); // 10 секунд очікування
 
             // Переадресація на посилання
@@ -214,7 +175,7 @@ document.addEventListener('DOMContentLoaded', () => {
         pointsForNextLevelElement.textContent = pointsForNextLevel; // Оновлення необхідних поінтів
         let progress = (points % pointsForNextLevel) / pointsForNextLevel * 100 + '%'; // Прогрес бар на основі поінтів
         progressElement.style.width = progress;
-
+    
         // Підвищення рівня кожні 5 * рівень поінтів
         if (points >= pointsForNextLevel) {
             level += 1;
@@ -223,14 +184,14 @@ document.addEventListener('DOMContentLoaded', () => {
             pointsForNextLevelElement.textContent = level * 5; // Оновлення необхідних поінтів для нового рівня
         }
     }
-
+    
     // Генерація реферального посилання
     function generateReferralLink() {
         let userId = 'user' + Math.floor(Math.random() * 10000);
         let referralLink = window.location.origin + '?ref=' + userId;
         referralLinkElement.textContent = referralLink;
     }
-
+    
     // Сховати всі секції
     function hideAllSections() {
         welcomeSection.style.display = 'none';
@@ -239,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
         tasksSection.style.display = 'none';
         marketSection.style.display = 'none';
     }
-
+    
     loadUserData(); // Завантаження даних користувача при старті
-});
+    });
+    
