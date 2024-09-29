@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Перевірка наявності об'єкту Telegram Web Apps API
-    let userId = null; // Ініціалізація значення для telegram_id
+    let userId = null; 
     let name = 'Username';
     let hasButterfly = false;
     let points = 0;
@@ -11,29 +11,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
-        tg.expand(); // Розгортає міні-додаток на весь екран
+        tg.expand(); 
 
         // Отримуємо дані користувача з Telegram WebApp API
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id; // Telegram ID
+            userId = tg.initDataUnsafe.user.id; 
             name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
 
         const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name; // Встановлення імені користувача
+        userNicknameElement.textContent = name; 
     }
 
-    // Якщо telegram_id не вдалося отримати, виводимо повідомлення про помилку
     if (!userId) {
         console.error('Не вдалося отримати telegram_id користувача');
         return;
     }
 
-    // Змінні для секцій та елементів
     document.addEventListener('touchmove', function(event) {
-        event.preventDefault(); // Забороняє прокрутку на мобільних пристроях
+        event.preventDefault();
     }, { passive: false });
 
     const getButterflyButton = document.getElementById('getButterflyButton');
@@ -56,8 +54,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPointsElement = document.getElementById('currentPoints');
     const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
-    const startSpinButton = document.getElementById('startSpinButton'); // Додаємо кнопку для Spin
-    const luckyWheel = document.getElementById('luckyWheel'); // Колесо удачі
+    const startSpinButton = document.getElementById('startSpinButton');
+    const luckyWheel = document.getElementById('luckyWheel');
 
     // Завантаження даних користувача при завантаженні сторінки
     async function loadUserData() {
@@ -80,25 +78,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Оновлюємо інтерфейс користувача після завантаження даних
     function calculatePointsForNextLevel(level) {
-        return level * 5; // Обчислюємо кількість поінтів, необхідних для досягнення наступного рівня
+        return level * 5;
     }
-    
+
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
-    
+
         let pointsForNextLevel = calculatePointsForNextLevel(level);
         pointsForNextLevelElement.textContent = pointsForNextLevel;
         updateProgress(pointsForNextLevel);
     }
 
-    // Функція для збереження даних користувача
+    // Оновлення прогресу
+    function updateProgress(pointsForNextLevel) {
+        let progress = (points / pointsForNextLevel) * 100 + '%';
+        progressElement.style.width = progress;
+    }
+
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
-            const response = await fetch(`/api/user/${userId}`, {
+            await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -107,61 +109,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     name,
                     has_butterfly: hasButterfly,
                     level,
-                    points, // Зберігаємо кількість поінтів
+                    points,
                     referral_code: referralCode,
-                    referred_by: null, 
-                    friends: 0, 
+                    referred_by: null,
+                    friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
                 }),
             });
+            console.log('Дані успішно збережені');
         } catch (error) {
             console.error('Error saving user data:', error);
         }
     }
 
-    // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
-        // Відзначаємо, що користувач отримав метелика
         hasButterfly = true;
 
-        // Оновлюємо інтерфейс
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'block';
 
-        // Зберігаємо це в базу даних
         await saveUserData();
     });
 
-    // Логіка обертання колеса
     startSpinButton.addEventListener('click', async () => {
         startSpinButton.disabled = true;
 
-        // Анімація обертання
         luckyWheel.style.transition = 'transform 5s ease-out';
-        const randomDegree = Math.floor(Math.random() * 360) + 1440; // Випадкове число обертів
+        const randomDegree = Math.floor(Math.random() * 360) + 1440;
         luckyWheel.style.transform = `rotate(${randomDegree}deg)`;
 
-        // Після обертання — результат
         setTimeout(async () => {
             const prize = getRandomPrize();
             alert(`You won ${prize.text}`);
 
-            // Оновлюємо очки
             points += prize.points;
-            if (points >= level * 5) {
+            let pointsForNextLevel = calculatePointsForNextLevel(level);
+            if (points >= pointsForNextLevel) {
                 level += 1;
-                points = 0; // Скидаємо очки після досягнення нового рівня
+                points = 0;
             }
             updateUI();
 
-            // Зберігаємо оновлені дані
             await saveUserData();
             startSpinButton.disabled = false;
-        }, 5000); // Час завершення анімації обертання
+        }, 5000);
     });
 
-    // Випадковий виграш
     function getRandomPrize() {
         const prizes = [
             { text: '0.5 TON', points: 0 },
@@ -172,87 +166,70 @@ document.addEventListener('DOMContentLoaded', () => {
         return prizes[Math.floor(Math.random() * prizes.length)];
     }
 
-    // Повернутися на головну
     homeButton.addEventListener('click', () => {
         hideAllSections();
         butterflySection.style.display = 'block';
     });
 
-    // Відкрити секцію друзів
     friendsButton.addEventListener('click', () => {
         hideAllSections();
         friendsSection.style.display = 'block';
         generateReferralLink();
     });
 
-    // Відкрити секцію завдань
     tasksButton.addEventListener('click', () => {
         hideAllSections();
         tasksSection.style.display = 'block';
     });
 
-    // Відкрити секцію маркету
     marketButton.addEventListener('click', () => {
         hideAllSections();
         marketSection.style.display = 'block';
     });
 
-    // Повернення на головну з друзів
     backToHome.addEventListener('click', () => {
         hideAllSections();
         butterflySection.style.display = 'block';
     });
 
-    // Повернення на головну з завдань
     backToHomeFromTasks.addEventListener('click', () => {
         hideAllSections();
         butterflySection.style.display = 'block';
     });
 
-    // Повернення на головну з маркету
     backToHomeFromMarket.addEventListener('click', () => {
         hideAllSections();
         butterflySection.style.display = 'block';
     });
 
-    // Додавання очок за завдання з анімацією завантаження
     taskItems.forEach((task) => {
         task.addEventListener('click', () => {
             if (task.classList.contains('completed') || task.classList.contains('loading')) {
-                return; // Якщо завдання вже завершене або в процесі завантаження, нічого не робимо
+                return;
             }
 
-            task.classList.add('loading'); // Додаємо клас завантаження
+            task.classList.add('loading');
             setTimeout(async () => {
                 task.classList.remove('loading');
-                task.classList.add('completed'); // Додаємо клас завершеного завдання
-                task.querySelector('.task-points').textContent = 'Completed'; // Зміна тексту на Completed
-                points += 5; // Додаємо 5 очок за кожне завдання
-                updateProgress();
+                task.classList.add('completed');
+                task.querySelector('.task-points').textContent = 'Completed';
+                points += 5;
+                let pointsForNextLevel = calculatePointsForNextLevel(level);
+                updateProgress(pointsForNextLevel);
 
-                // Зберігаємо оновлені дані після виконання завдання
                 await saveUserData();
-            }, 10000); // 10 секунд очікування
+            }, 10000);
 
-            // Переадресація на посилання
             const link = task.getAttribute('data-link');
-            window.open(link, '_blank'); // Відкриття посилання у новій вкладці
+            window.open(link, '_blank');
         });
     });
 
-    // Оновлення прогрес бару та рівня
-    function updateProgress(pointsForNextLevel) {
-        let progress = (points / pointsForNextLevel) * 100 + '%'; // Обчислюємо прогрес
-        progressElement.style.width = progress; // Оновлюємо ширину прогрес-бара
-    }
-
-    // Генерація реферального посилання
     function generateReferralLink() {
         let referralLink = window.location.origin + '?ref=' + userId;
         referralLinkElement.textContent = referralLink;
     }
 
-    // Сховати всі секції
     function hideAllSections() {
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'none';
@@ -261,5 +238,5 @@ document.addEventListener('DOMContentLoaded', () => {
         marketSection.style.display = 'none';
     }
 
-    loadUserData(); // Завантаження даних користувача при старті
+    loadUserData();
 });
