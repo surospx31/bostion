@@ -83,6 +83,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 butterflySection.style.display = 'none';
             }
 
+            // Якщо у користувача немає реферального коду, генеруємо новий унікальний код
+            if (!referralCode) {
+                referralCode = await generateUniqueReferralCode(); // Генерація унікального коду
+                saveUserData(); // Зберігаємо реферальний код після його генерації
+            }
+
+            displayReferralLink(referralCode); // Виводимо реферальне посилання
+
             updateUI(); // Оновлюємо інтерфейс після завантаження даних
         } catch (error) {
             console.error('Error loading user data:', error);
@@ -138,6 +146,47 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error saving user data:', error);
         }
+    }
+
+    // Генерація випадкового реферального коду
+    function generateReferralCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
+    }
+
+    // Перевірка унікальності реферального коду через сервер
+    async function checkReferralCodeUniqueness(referralCode) {
+        try {
+            const response = await fetch(`/api/check-referral/${referralCode}`);
+            const data = await response.json();
+            return data.isUnique;  // Повертає true, якщо код унікальний
+        } catch (error) {
+            console.error('Error checking referral code uniqueness:', error);
+            return false;
+        }
+    }
+
+    // Генерація унікального реферального коду
+    async function generateUniqueReferralCode() {
+        let isUnique = false;
+        let referralCode = '';
+
+        while (!isUnique) {
+            referralCode = generateReferralCode(); // Генеруємо новий код
+            isUnique = await checkReferralCodeUniqueness(referralCode);  // Перевіряємо його на унікальність
+        }
+
+        return referralCode;
+    }
+
+    // Виведення реферального посилання на сторінку
+    function displayReferralLink(referralCode) {
+        const referralLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`;
+        referralLinkElement.textContent = referralLink;
     }
 
     // Подія для кнопки GET
@@ -196,7 +245,7 @@ document.addEventListener('DOMContentLoaded', () => {
     friendsButton.addEventListener('click', () => {
         hideAllSections();
         friendsSection.style.display = 'block';
-        generateReferralLink();
+        displayReferralLink(referralCode);
     });
 
     tasksButton.addEventListener('click', () => {
@@ -252,23 +301,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(link, '_blank');
         });
     });
-
-    function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    }
-    
-    function generateReferralLink() {
-        const referralCode = generateReferralCode(); // Генерація коду
-        const telegramBotLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`; // Формуємо посилання
-        
-        referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
-    }
-    
 
     function hideAllSections() {
         welcomeSection.style.display = 'none';
