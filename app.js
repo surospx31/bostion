@@ -56,6 +56,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startSpinButton = document.getElementById('startSpinButton');
     const luckyWheel = document.getElementById('luckyWheel');
+    const loadingTextElement = document.getElementById('loadingText');
+    const mainContent = document.getElementById('mainContent');
+    const loadingScreen = document.getElementById('loadingScreen');
+
+    // Анімація крапок в тексті Loading
+    let dotCount = 0;
+    const maxDots = 3;
+    const maxCycles = 5;  // Кількість циклів
+    let cyclesCompleted = 0;
+
+    const loadingInterval = setInterval(() => {
+        if (dotCount < maxDots) {
+            dotCount++;
+        } else {
+            dotCount = 0;
+            cyclesCompleted++;
+        }
+
+        // Оновлюємо текст з крапками
+        loadingTextElement.textContent = 'Loading' + '.'.repeat(dotCount);
+
+        // Після 5 циклів анімації, приховуємо екран завантаження і показуємо основний контент
+        if (cyclesCompleted >= maxCycles) {
+            clearInterval(loadingInterval);
+            loadingScreen.style.display = 'none';
+            mainContent.style.display = 'block';
+        }
+    }, 250); // Інтервал 0.25 секунд між змінами крапок
 
     // Завантаження даних користувача при завантаженні сторінки
     async function loadUserData() {
