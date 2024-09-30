@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
+    // Спочатку ховаємо всі секції
+    hideAllSections();
+
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.expand();
@@ -72,15 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            // Перевірка наявності метелика
+            // Після завантаження даних показуємо правильну секцію
             if (hasButterfly) {
-                // Якщо метелик вже отриманий, одразу переходимо до основного екрану
-                welcomeSection.style.display = 'none';
-                butterflySection.style.display = 'block';
+                butterflySection.style.display = 'block'; // Показуємо головний екран, якщо метелик отриманий
             } else {
-                // Якщо метелик ще не отриманий, показуємо кнопку GET
-                welcomeSection.style.display = 'block';
-                butterflySection.style.display = 'none';
+                welcomeSection.style.display = 'block'; // Показуємо екран з кнопкою GET, якщо метелик не отриманий
             }
 
             updateUI(); // Оновлюємо інтерфейс після завантаження даних
@@ -166,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             let pointsForNextLevel = calculatePointsForNextLevel(level);
 
             // Перевірка, чи поінти достатні для переходу на новий рівень
-            while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
+            while (points >= pointsForNextLevel && level < 5) {
                 points -= pointsForNextLevel;
                 level += 1;
                 pointsForNextLevel = calculatePointsForNextLevel(level);
@@ -238,7 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 points += 5;
                 let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-                while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
+                while (points >= pointsForNextLevel && level < 5) {
                     points -= pointsForNextLevel;
                     level += 1;
                     pointsForNextLevel = calculatePointsForNextLevel(level);
