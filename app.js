@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let referralCode = "";
     let claimedButterfly = false;
 
-    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня (індекс відповідає рівню)
+    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -63,6 +63,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
 
+            // Оновлюємо змінні з отриманими даними
             points = data.points;
             level = data.level;
             name = data.name || name;
@@ -71,7 +72,18 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            updateUI();
+            // Перевірка наявності метелика
+            if (hasButterfly) {
+                // Якщо метелик вже отриманий, одразу переходимо до основного екрану
+                welcomeSection.style.display = 'none';
+                butterflySection.style.display = 'block';
+            } else {
+                // Якщо метелик ще не отриманий, показуємо кнопку GET
+                welcomeSection.style.display = 'block';
+                butterflySection.style.display = 'none';
+            }
+
+            updateUI(); // Оновлюємо інтерфейс після завантаження даних
         } catch (error) {
             console.error('Error loading user data:', error);
         }
