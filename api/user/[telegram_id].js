@@ -35,7 +35,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 has_butterfly: false,
                 level: 1,
                 points: 0,
-                referral_code: referralCode,
+                referral_code: null,
                 referred_by: null,
                 friends: 0,
                 wallet_address: null,
