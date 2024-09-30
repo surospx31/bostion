@@ -10,17 +10,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
-        tg.expand(); 
+        tg.expand();
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id; 
+            userId = tg.initDataUnsafe.user.id;
             name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
 
         const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name; 
+        userNicknameElement.textContent = name;
     }
 
     if (!userId) {
@@ -61,7 +61,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
 
-            // Оновлюємо змінні з отриманими даними
             points = data.points;
             level = data.level;
             name = data.name || name;
@@ -70,14 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            updateUI();
+            updateUI();  // Оновлення інтерфейсу після завантаження даних
         } catch (error) {
             console.error('Error loading user data:', error);
         }
     }
 
     function calculatePointsForNextLevel(level) {
-        return level * 5; // Обчислюємо кількість поінтів, необхідних для досягнення наступного рівня
+        return level * 5;  // Обчислюємо кількість поінтів для наступного рівня
     }
 
     function updateUI() {
@@ -116,6 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
             console.log('Дані успішно збережені');
+            updateUI();  // Оновлюємо інтерфейс після збереження даних
         } catch (error) {
             console.error('Error saving user data:', error);
         }
@@ -148,14 +148,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Перевірка, чи поінти достатні для переходу на новий рівень
             while (points >= pointsForNextLevel) {
-                points -= pointsForNextLevel; // Віднімаємо необхідну кількість поінтів для переходу
-                level += 1; // Підвищуємо рівень
-                pointsForNextLevel = calculatePointsForNextLevel(level); // Оновлюємо поінти для наступного рівня
+                points -= pointsForNextLevel;
+                level += 1;
+                pointsForNextLevel = calculatePointsForNextLevel(level);
             }
 
-            updateUI(); // Оновлюємо інтерфейс
-
-            await saveUserData(); // Зберігаємо оновлені дані
+            updateUI();  // Оновлюємо інтерфейс одразу після зміни рівня
+            await saveUserData();  // Зберігаємо оновлені дані
             startSpinButton.disabled = false;
         }, 5000);
     });
