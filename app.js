@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let referralCode = "";
     let claimedButterfly = false;
 
+    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня (індекс відповідає рівню)
+
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
         tg.expand();
@@ -69,14 +71,19 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            updateUI();  // Оновлення інтерфейсу після завантаження даних
+            updateUI();
         } catch (error) {
             console.error('Error loading user data:', error);
         }
     }
 
+    // Функція для обчислення кількості поінтів, необхідних для наступного рівня
     function calculatePointsForNextLevel(level) {
-        return level * 5;  // Обчислюємо кількість поінтів для наступного рівня
+        if (level < levels.length) {
+            return levels[level]; // Повертаємо поінти для поточного рівня
+        } else {
+            return levels[levels.length - 1]; // Якщо рівень більше 5, повертаємо максимальне значення
+        }
     }
 
     function updateUI() {
@@ -115,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }),
             });
             console.log('Дані успішно збережені');
-            updateUI();  // Оновлюємо інтерфейс після збереження даних
+            updateUI();
         } catch (error) {
             console.error('Error saving user data:', error);
         }
@@ -147,13 +154,13 @@ document.addEventListener('DOMContentLoaded', () => {
             let pointsForNextLevel = calculatePointsForNextLevel(level);
 
             // Перевірка, чи поінти достатні для переходу на новий рівень
-            while (points >= pointsForNextLevel) {
+            while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
                 points -= pointsForNextLevel;
                 level += 1;
                 pointsForNextLevel = calculatePointsForNextLevel(level);
             }
 
-            updateUI();  // Оновлюємо інтерфейс одразу після зміни рівня
+            updateUI();  // Оновлюємо інтерфейс
             await saveUserData();  // Зберігаємо оновлені дані
             startSpinButton.disabled = false;
         }, 5000);
@@ -219,8 +226,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 points += 5;
                 let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-                // Перевірка на підвищення рівня
-                while (points >= pointsForNextLevel) {
+                while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
                     points -= pointsForNextLevel;
                     level += 1;
                     pointsForNextLevel = calculatePointsForNextLevel(level);
