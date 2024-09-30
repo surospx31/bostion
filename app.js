@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let points = 0;
     let level = 1;
     let walletAddress = "";
-    let referralCode = "";
+    let referralCode = ""; // Ініціалізуємо реферальний код
     let claimedButterfly = false;
 
     const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
@@ -68,9 +68,14 @@ document.addEventListener('DOMContentLoaded', () => {
             level = data.level;
             name = data.name || name;
             hasButterfly = data.has_butterfly;
-            referralCode = data.referral_code;
+            referralCode = data.referral_code || generateReferralCode(); // Генеруємо, якщо немає
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
+
+            // Якщо реферального коду немає, зберігаємо його в базу
+            if (!data.referral_code) {
+                await saveReferralCode(referralCode);
+            }
 
             // Перевірка наявності метелика
             if (hasButterfly) {
@@ -83,27 +88,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 butterflySection.style.display = 'none';
             }
 
-            // Якщо у користувача немає реферального коду, генеруємо новий унікальний код
-            if (!referralCode) {
-                referralCode = await generateUniqueReferralCode(); // Генерація унікального коду
-                saveUserData(); // Зберігаємо реферальний код після його генерації
-            }
-
-            displayReferralLink(referralCode); // Виводимо реферальне посилання
-
             updateUI(); // Оновлюємо інтерфейс після завантаження даних
         } catch (error) {
             console.error('Error loading user data:', error);
         }
     }
 
-    // Функція для обчислення кількості поінтів, необхідних для наступного рівня
-    function calculatePointsForNextLevel(level) {
-        if (level < levels.length) {
-            return levels[level]; // Повертаємо поінти для поточного рівня
-        } else {
-            return levels[levels.length - 1]; // Якщо рівень більше 5, повертаємо максимальне значення
+    // Функція для збереження реферального коду в базу даних
+    async function saveReferralCode(referralCode) {
+        try {
+            await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    referral_code: referralCode,
+                }),
+            });
+            console.log('Реферальний код успішно збережено:', referralCode);
+        } catch (error) {
+            console.error('Error saving referral code:', error);
         }
+    }
+
+    // Функція для генерації унікального реферального коду
+    function generateReferralCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
     }
 
     function updateUI() {
@@ -146,47 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error('Error saving user data:', error);
         }
-    }
-
-    // Генерація випадкового реферального коду
-    function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    }
-
-    // Перевірка унікальності реферального коду через сервер
-    async function checkReferralCodeUniqueness(referralCode) {
-        try {
-            const response = await fetch(`/api/check-referral/${referralCode}`);
-            const data = await response.json();
-            return data.isUnique;  // Повертає true, якщо код унікальний
-        } catch (error) {
-            console.error('Error checking referral code uniqueness:', error);
-            return false;
-        }
-    }
-
-    // Генерація унікального реферального коду
-    async function generateUniqueReferralCode() {
-        let isUnique = false;
-        let referralCode = '';
-
-        while (!isUnique) {
-            referralCode = generateReferralCode(); // Генеруємо новий код
-            isUnique = await checkReferralCodeUniqueness(referralCode);  // Перевіряємо його на унікальність
-        }
-
-        return referralCode;
-    }
-
-    // Виведення реферального посилання на сторінку
-    function displayReferralLink(referralCode) {
-        const referralLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`;
-        referralLinkElement.textContent = referralLink;
     }
 
     // Подія для кнопки GET
@@ -245,7 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     friendsButton.addEventListener('click', () => {
         hideAllSections();
         friendsSection.style.display = 'block';
-        displayReferralLink(referralCode);
+        generateReferralLink();
     });
 
     tasksButton.addEventListener('click', () => {
@@ -302,6 +277,11 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    function generateReferralLink() {
+        const telegramBotLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`; // Формуємо посилання
+        referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
+    }
+
     function hideAllSections() {
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'none';
@@ -310,5 +290,5 @@ document.addEventListener('DOMContentLoaded', () => {
         marketSection.style.display = 'none';
     }
 
-    loadUserData();
+    loadUserData(); // Завантажуємо дані при старті
 });
