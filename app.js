@@ -253,10 +253,22 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function generateReferralLink() {
-        let referralLink = window.location.origin + '?ref=' + userId;
-        referralLinkElement.textContent = referralLink;
+    function generateReferralCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
     }
+    
+    function generateReferralLink() {
+        const referralCode = generateReferralCode(); // Генерація коду
+        const telegramBotLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`; // Формуємо посилання
+        
+        referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
+    }
+    
 
     function hideAllSections() {
         welcomeSection.style.display = 'none';
