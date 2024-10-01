@@ -68,14 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
             level = data.level;
             name = data.name || name;
             hasButterfly = data.has_butterfly;
-            referralCode = data.referral_code || generateReferralCode(); // Генерація коду, якщо він не існує
+            referralCode = data.referral_code;
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
-
-            // Якщо реферальний код не існує в базі, зберігаємо його
-            if (!data.referral_code) {
-                await saveUserData(); // Оновлюємо дані в базі
-            }
 
             // Перевірка наявності метелика
             if (hasButterfly) {
@@ -110,7 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let pointsForNextLevel = calculatePointsForNextLevel(level);
         pointsForNextLevelElement.textContent = pointsForNextLevel;
         updateProgress(pointsForNextLevel);
-        generateReferralLink(); // Генеруємо посилання
     }
 
     // Оновлення прогресу
@@ -260,42 +254,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'; // Символи для коду
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
         let code = '';
-        for (let i = 0; i < 10; i++) { // Генеруємо код з 10 символів
+        for (let i = 0; i < 6; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        return `ref_${code}`; // Додаємо префікс ref_
+        return code;
     }
     
     function generateReferralLink() {
-        const referralCode = generateReferralCode(); // Генерація унікального коду
-        const telegramBotLink = `https://t.me/devionsxtest_bot/app?startapp=${referralCode}`; // Формуємо посилання
+        const referralCode = generateReferralCode(); // Генерація коду
+        const telegramBotLink = `https://t.me/devionsxtest_bot?start=${referralCode}`; // Формуємо посилання
+        
         referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
-    
-        // Зберігаємо реферальний код у базі, якщо він не існує
-        saveReferralCode(referralCode);
     }
     
-    // Функція для збереження реферального коду в базі даних
-    async function saveReferralCode(referralCode) {
-        try {
-            const response = await fetch(`/api/user/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    referral_code: referralCode,  // Передаємо реферальний код на сервер
-                }),
-            });
-            if (response.ok) {
-                console.log("Referral code saved successfully");
-            }
-        } catch (error) {
-            console.error("Error saving referral code:", error);
-        }
-    }
+
     function hideAllSections() {
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'none';
