@@ -20,7 +20,7 @@ connection = psycopg2.connect(
 )
 cursor = connection.cursor()
 
-# Обробник для команди /start
+# Обробник для команди /start з обробкою реферальних кодів і кнопкою
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
     # Перевірка на реферальний код
@@ -30,7 +30,15 @@ def send_welcome(message):
         handle_referral_code(message.chat.id, ref_code)
     else:
         bot.send_message(message.chat.id, "Welcome to the bot!")
+    
+    # Додаємо кнопку з посиланням на mini web app
+    markup = types.InlineKeyboardMarkup()
+    web_app = types.WebAppInfo("https://bostion-surospx31s-projects.vercel.app/")  # URL mini web app
+    button = types.InlineKeyboardButton("Open Web App", web_app=web_app)
+    markup.add(button)
+    bot.send_message(message.chat.id, "Click to open the app", reply_markup=markup)
 
+# Функція для обробки реферального коду
 def handle_referral_code(invited_user_id, ref_code):
     """
     Обробка реферального коду: додаємо поінти рефереру та новому користувачу
