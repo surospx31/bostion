@@ -82,24 +82,6 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 });
 
-// Маршрут для перевірки унікальності реферального коду
-app.get('/api/check-referral/:referral_code', async (req, res) => {
-    const referralCode = req.params.referral_code;
-
-    try {
-        const result = await pool.query('SELECT referral_code FROM users WHERE referral_code = $1', [referralCode]);
-        
-        if (result.rows.length > 0) {
-            res.json({ isUnique: false }); // Код не унікальний
-        } else {
-            res.json({ isUnique: true }); // Код унікальний
-        }
-    } catch (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: 'Database error', details: err.message });
-    }
-});
-
 // Запуск сервера на порту 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
