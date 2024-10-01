@@ -262,10 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
         return code;
     }
     
-    function generateReferralLink() {
-        const referralCode = generateReferralCode(); // Генерація коду
-        const telegramBotLink = `https://t.me/devionsxtest_bot?start=${referralCode}`; // Формуємо посилання
+    async function generateReferralLink() {
+        if (!referralCode) {
+            // Генерація реферального коду, якщо його ще немає
+            referralCode = generateReferralCode();
+            await saveUserData();
+        }
         
+        const telegramBotLink = `https://t.me/devionsxtest_bot?start=${referralCode}`; // Формуємо посилання
         referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
     }
     
