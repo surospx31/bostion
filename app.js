@@ -260,20 +260,42 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz'; // Символи для коду
         let code = '';
-        for (let i = 0; i < 6; i++) {
+        for (let i = 0; i < 10; i++) { // Генеруємо код з 10 символів
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-        return code;
+        return `ref_${code}`; // Додаємо префікс ref_
     }
     
     function generateReferralLink() {
-        const telegramBotLink = `https://t.me/devionsxtest_bot?ref=${referralCode}`; // Формуємо посилання
-        
+        const referralCode = generateReferralCode(); // Генерація унікального коду
+        const telegramBotLink = `https://t.me/devionsxtest_bot/app?startapp=${referralCode}`; // Формуємо посилання
         referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
+    
+        // Зберігаємо реферальний код у базі, якщо він не існує
+        saveReferralCode(referralCode);
     }
-
+    
+    // Функція для збереження реферального коду в базі даних
+    async function saveReferralCode(referralCode) {
+        try {
+            const response = await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    referral_code: referralCode,  // Передаємо реферальний код на сервер
+                }),
+            });
+            if (response.ok) {
+                console.log("Referral code saved successfully");
+            }
+        } catch (error) {
+            console.error("Error saving referral code:", error);
+        }
+    }
     function hideAllSections() {
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'none';
