@@ -56,6 +56,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
     }
 });
 
+
 // Маршрут для оновлення даних користувача
 app.post('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
@@ -69,11 +70,14 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 
     try {
+        // Додаємо обробку `referred_by` тільки якщо воно не null
+        let referredByValue = referred_by || null;  // Якщо null, залишаємо null
+
         await pool.query(
             `UPDATE users
              SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
              WHERE telegram_id = $1`,
-            [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
+            [telegramId, name, has_butterfly, level, points, referral_code, referredByValue, friends, wallet_address, claimedbutterfly]
         );
         res.status(200).json({ success: true });
     } catch (err) {
