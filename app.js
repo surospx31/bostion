@@ -116,6 +116,9 @@ document.addEventListener('DOMContentLoaded', () => {
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
+            // Якщо referredBy не встановлено, використовуємо null
+            const referredByValue = referredBy ? referredBy : null;
+    
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
@@ -123,11 +126,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 },
                 body: JSON.stringify({
                     name,
-                    has_butterfly: hasButterfly,
+                    has_butterfly: has_butterfly,
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: null,
+                    referred_by: referredByValue,  // Тут використовуємо перевірену змінну
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
@@ -140,6 +143,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function handleReferralLink(referralCode) {
+        if (referralCode) {
+            referredBy = referralCode;  // Задаємо значення реферального коду, хто запросив
+        } else {
+            referredBy = null;  // Якщо реферального коду немає, використовуємо null
+        }
+    }
+    
     // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
         hasButterfly = true;
