@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: refferedBy,
+                    referred_by,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
