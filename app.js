@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasButterfly = false;
     let points = 0;
     let level = 1;
+    let reffered_by = null;
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
@@ -127,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: null,
+                    referred_by,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
