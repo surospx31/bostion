@@ -16,10 +16,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const refCode = urlParams.get('startapp'); // Шукаємо параметр startapp
     console.log("Параметр startapp:", refCode); // Перевірка, чи правильно зчитано код
 
-    if (refCode) {
-        referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
-        console.log(`Реферальний код отримано: ${referredBy}`);
-    }
+    
+if (refCode) {
+    referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
+    console.log(`Реферальний код отримано: ${referredBy}`);
+} else {
+    console.warn('Реферальний код не знайдено у URL');
+}
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;

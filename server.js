@@ -65,6 +65,8 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         referred_by, friends, wallet_address, claimedbutterfly
     } = req.body;
 
+    console.log('Referred by:', referred_by); // Додаємо логування
+
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
@@ -82,6 +84,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         res.status(500).json({ error: 'Database error', details: err.message });
     }
 });
+
 
 
 // Запуск сервера на порту 3000
