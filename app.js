@@ -125,6 +125,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
+        console.log('Дані для збереження:', {
+            name,
+            has_butterfly: hasButterfly,
+            level,
+            points,
+            referral_code: referralCode,
+            referred_by: referredBy,
+            friends: 0,
+            wallet_address: walletAddress,
+            claimedbutterfly: claimedButterfly
+        }); // Перевірка даних
+    
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -136,8 +148,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     has_butterfly: hasButterfly,
                     level,
                     points,
-                    referral_code: referralCode,  // Записуємо реферальний код
-                    referred_by: referredBy,  // Записуємо хто запросив
+                    referral_code: referralCode,
+                    referred_by: referredBy,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
