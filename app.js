@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasButterfly = false;
     let points = 0;
     let level = 1;
-    let reffered_by = null;
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
@@ -117,22 +116,27 @@ document.addEventListener('DOMContentLoaded', () => {
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
+            const bodyData = {
+                name,
+                has_butterfly: hasButterfly,
+                level,
+                points,
+                referral_code: referralCode,
+                friends: 0,
+                wallet_address: walletAddress,
+                claimedbutterfly: claimedButterfly
+            };
+    
+            if (referredBy) {
+                bodyData.referred_by = referredBy;  // Додаємо реферальний код, якщо він існує
+            }
+    
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    name,
-                    has_butterfly: hasButterfly,
-                    level,
-                    points,
-                    referral_code: referralCode,
-                    referred_by,
-                    friends: 0,
-                    wallet_address: walletAddress,
-                    claimedbutterfly: claimedButterfly
-                }),
+                body: JSON.stringify(bodyData),
             });
             console.log('Дані успішно збережені');
             updateUI();

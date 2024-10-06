@@ -3,7 +3,7 @@ from telebot import types
 import psycopg2
 import time
 # Токен бота
-TOKEN = '7024273953:AAGDkJM5Yl_Yus2vwyTFbqGhK4PqsFHM3_A'
+TOKEN = '6540307506:AAFlc4_ZMwmKScwO8mRaJrs38d-Dm3gB_d0'
 
 # Ініціалізація бота
 bot = telebot.TeleBot(TOKEN)
@@ -32,24 +32,26 @@ def send_welcome(message):
     
     # Додаємо кнопку з посиланням на mini web app
     markup = types.InlineKeyboardMarkup()
-    web_app = types.WebAppInfo("https://bostion-surospx31s-projects.vercel.app/")  # URL mini web app
+    web_app = types.WebAppInfo("https://www.wellactcodepages.xyz/")  # URL mini web app
     button = types.InlineKeyboardButton("Відкрити додаток", web_app=web_app)
     markup.add(button)
     bot.send_message(message.chat.id, "Натисніть для відкриття додатку", reply_markup=markup)
 
 # Функція для перевірки наявності користувача в базі та створення нового, якщо його немає
+# Перевірка наявності користувача в базі та створення нового з реферальним кодом
 def ensure_user_exists(telegram_id, ref_code=None):
     cursor.execute("SELECT telegram_id FROM users WHERE telegram_id = %s", (str(telegram_id),))
     user = cursor.fetchone()
 
     if not user:
-        # Створюємо нового користувача з базовими налаштуваннями
+        # Створюємо нового користувача та записуємо реферальний код
         cursor.execute(
             "INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (str(telegram_id), 'Username', False, 1, 0, None, None, 0, None, False)
+            (str(telegram_id), 'Username', False, 1, 0, None, ref_code, 0, None, False)
         )
         connection.commit()
+
 
 # Функція для обробки реферального коду
 def handle_referral_code(invited_user_id, ref_code):
