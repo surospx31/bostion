@@ -14,11 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обробка параметрів URL (включно з реферальним кодом startapp)
     const urlParams = new URLSearchParams(window.location.search);
-    const referralCodeFromUrl = urlParams.get('startapp');
+const referralCodeFromUrl = urlParams.get('startapp');
 
-    if (referralCodeFromUrl) {
-        referredBy = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
-    }
+if (referralCodeFromUrl) {
+    console.log("Реферальний код із URL:", referralCodeFromUrl); // Додаємо для перевірки
+    referredBy = referralCodeFromUrl; // Зберігаємо код того, хто запросив
+} else {
+    console.log("Реферальний код не знайдено");
+}
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
