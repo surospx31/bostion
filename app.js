@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const referralCodeFromUrl = urlParams.get('startapp');
 
     if (referralCodeFromUrl) {
-        referralCode1 = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
+        referralCode = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
     }
 
     if (window.Telegram && window.Telegram.WebApp) {
@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,  // Записуємо реферальний код
-                    referred_by: referralCode1,  // Записуємо хто запросив
+                    referred_by: referralCode,  // Записуємо хто запросив
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
