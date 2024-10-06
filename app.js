@@ -1,4 +1,3 @@
-// Додаємо обробку реферального коду через параметри URL
 document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
     let name = 'Username';
@@ -8,20 +7,9 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null;  // Це нова змінна для збереження того, хто запросив
+    let referred_by = null; // Змінна для збереження реферального коду
 
-    const levels = [0, 50, 500, 1000, 5000];
-
-    // Обробка параметрів URL (включно з реферальним кодом startapp)
-    const urlParams = new URLSearchParams(window.location.search);
-const refCode = urlParams.get('ref');
-
-if (refCode) {
-    console.log("Реферальний код із URL:", referralCodeFromUrl); // Додаємо для перевірки
-    referredBy = refCode; // Зберігаємо код того, хто запросив
-} else {
-    console.log("Реферальний код не знайдено");
-}
+    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -41,6 +29,14 @@ if (refCode) {
     if (!userId) {
         console.error('Не вдалося отримати telegram_id користувача');
         return;
+    }
+
+    // Отримання параметру startapp з URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const refCode = urlParams.get('startapp');
+    if (refCode) {
+        referred_by = refCode; // Присвоюємо реферальний код змінній referred_by
+        console.log(`Реферальний код отримано: ${referred_by}`);
     }
 
     document.addEventListener('touchmove', function(event) {
@@ -102,15 +98,6 @@ if (refCode) {
         }
     }
 
-    // Функція для обчислення кількості поінтів, необхідних для наступного рівня
-    function calculatePointsForNextLevel(level) {
-        if (level < levels.length) {
-            return levels[level]; // Повертаємо поінти для поточного рівня
-        } else {
-            return levels[levels.length - 1]; // Якщо рівень більше 5, повертаємо максимальне значення
-        }
-    }
-
     function updateUI() {
         currentPointsElement.textContent = points;
         levelElement.textContent = level;
@@ -128,18 +115,6 @@ if (refCode) {
 
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
-        console.log('Дані для збереження:', {
-            name,
-            has_butterfly: hasButterfly,
-            level,
-            points,
-            referral_code: referralCode,
-            referred_by: referredBy,
-            friends: 0,
-            wallet_address: walletAddress,
-            claimedbutterfly: claimedButterfly
-        }); // Перевірка даних
-    
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -152,7 +127,7 @@ if (refCode) {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy,
+                    referred_by: referred_by || null, // Зберігаємо реферальний код
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly

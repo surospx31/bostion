@@ -57,6 +57,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
 });
 
 // Маршрут для оновлення даних користувача
+// Маршрут для оновлення даних користувача
 app.post('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
     const {
