@@ -14,11 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Обробка параметрів URL (включно з реферальним кодом startapp)
     const urlParams = new URLSearchParams(window.location.search);
-const referralCodeFromUrl = urlParams.get('startapp');
+const refCode = urlParams.get('ref');
 
-if (referralCodeFromUrl) {
+if (refCode) {
     console.log("Реферальний код із URL:", referralCodeFromUrl); // Додаємо для перевірки
-    referredBy = referralCodeFromUrl; // Зберігаємо код того, хто запросив
+    referredBy = refCode; // Зберігаємо код того, хто запросив
 } else {
     console.log("Реферальний код не знайдено");
 }
