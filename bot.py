@@ -38,20 +38,18 @@ def send_welcome(message):
     bot.send_message(message.chat.id, "Натисніть для відкриття додатку", reply_markup=markup)
 
 # Функція для перевірки наявності користувача в базі та створення нового, якщо його немає
-# Перевірка наявності користувача в базі та створення нового з реферальним кодом
 def ensure_user_exists(telegram_id, ref_code=None):
     cursor.execute("SELECT telegram_id FROM users WHERE telegram_id = %s", (str(telegram_id),))
     user = cursor.fetchone()
 
     if not user:
-        # Створюємо нового користувача та записуємо реферальний код
+        # Створюємо нового користувача з базовими налаштуваннями
         cursor.execute(
             "INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly) "
             "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-            (str(telegram_id), 'Username', False, 1, 0, None, ref_code, 0, None, False)
+            (str(telegram_id), 'Username', False, 1, 0, None, None, 0, None, False)
         )
         connection.commit()
-
 
 # Функція для обробки реферального коду
 def handle_referral_code(invited_user_id, ref_code):
