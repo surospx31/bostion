@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await saveUserData();
         }
         
-        const telegramBotLink = `https://t.me/devionsxtest_bot?startapp=${referralCode}`; // Формуємо посилання
+        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`; // Формуємо посилання
         referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
     }
     
