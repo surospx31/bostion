@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
+    let referredBy = null;  // Це нова змінна для збереження того, хто запросив
 
     const levels = [0, 50, 500, 1000, 5000];
 
@@ -16,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const referralCodeFromUrl = urlParams.get('startapp');
 
     if (referralCodeFromUrl) {
-        referralCode = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
+        referredBy = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
     }
 
     if (window.Telegram && window.Telegram.WebApp) {
@@ -136,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,  // Записуємо реферальний код
-                    referred_by: referralCode,  // Записуємо хто запросив
+                    referred_by: referredBy,  // Записуємо хто запросив
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
