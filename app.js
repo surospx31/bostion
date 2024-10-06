@@ -1,3 +1,4 @@
+// Додаємо обробку реферального коду через параметри URL
 document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
     let name = 'Username';
@@ -8,7 +9,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let referralCode = "";
     let claimedButterfly = false;
 
-    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
+    const levels = [0, 50, 500, 1000, 5000];
+
+    // Обробка параметрів URL (включно з реферальним кодом startapp)
+    const urlParams = new URLSearchParams(window.location.search);
+    const referralCodeFromUrl = urlParams.get('startapp');
+
+    if (referralCodeFromUrl) {
+        referralCode = referralCodeFromUrl; // Зберігаємо реферальний код, якщо він є в URL
+    }
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -126,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     has_butterfly: hasButterfly,
                     level,
                     points,
-                    referral_code: referralCode,
-                    referred_by: null,
+                    referral_code: referralCode,  // Записуємо реферальний код
+                    referred_by: referralCode,  // Записуємо хто запросив
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
