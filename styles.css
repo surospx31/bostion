@@ -90,6 +90,16 @@ body {
     box-sizing: border-box;
 }
 
+.user-info-container {
+    background: #0067d4; /* Напівпрозорий синій фон */
+    border-radius: 15px; /* Закруглені кути */
+    padding: 20px; /* Відступи всередині блоку */
+    margin: 10px 0; /* Відступ зверху та знизу */
+    width: 90%; /* Ширина контейнера */
+    text-align: center;
+    color: #fff; /* Білий текст для контрасту */
+}
+
 .back-button {
     background-color: #007bff;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
