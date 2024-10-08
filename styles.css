@@ -72,6 +72,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: flex-start; /* Вирівнювання елементів зверху */
+    background: #0167d4;
 }
 
 #butterflySection, #luckyWheelSection {
