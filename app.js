@@ -206,18 +206,6 @@ if (refCode) {
         hideAllSections();
         butterflySection.style.display = 'block';
     });
-    
-    document.addEventListener('DOMContentLoaded', () => {
-        // Додавання активного класу до кнопок
-        document.querySelectorAll('.footer__button').forEach(button => {
-            button.addEventListener('click', () => {
-                // Видаляємо клас 'active' з усіх кнопок
-                document.querySelectorAll('.footer__button').forEach(btn => btn.classList.remove('active'));
-                // Додаємо 'active' до натиснутої кнопки
-                button.classList.add('active');
-            });
-        });
-    });
 
     friendsButton.addEventListener('click', () => {
         hideAllSections();

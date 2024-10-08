@@ -39,11 +39,15 @@
             <img src="static/wheel.png" alt="Wheel">
         </div>
         
+        <div class="wheel-button-container">
+            <button class="spin-button" id="spinButton">Spin Lucky Wheel</button>
+        </div>
+        
         <div class="button-group">
-            <button class="footer__button" id="homeButton">Home</button>
-            <button class="footer__button" id="friendsButton">Friends</button>
-            <button class="footer__button" id="tasksButton">Tasks</button>
-            <button class="footer__button" id="marketButton">Market</button>
+            <button class="button" id="homeButton">Home</button>
+            <button class="button" id="friendsButton">Friends</button>
+            <button class="button" id="tasksButton">Tasks</button>
+            <button class="button" id="marketButton">Market</button>
         </div>
     </div>
 
@@ -85,6 +89,26 @@
         <h2>Market</h2>
         <p>Coming Soon...</p>
         <button class="button" id="backToHomeFromMarket">Back to Home</button>
+    </div>
+
+    <!-- Нова секція для Lucky Wheel -->
+    <div class="container" id="luckyWheelSection" style="display: none;">
+        <div class="header">
+            <button class="button back-button" id="backToHomeFromWheel">Back</button>
+            <h2>Lucky Wheel</h2>
+        </div>
+        <div class="wheel-container">
+            <img src="static/wheel.png" alt="Wheel" id="luckyWheel">
+        </div>
+        <button class="spin-button" id="startSpinButton">Spin</button>
+        <div id="lastResults">
+            <h3>Последние выигрыши:</h3>
+            <ul>
+                <li>id:72117712 +0.5 Ton</li>
+                <li>id:7373738 +15 Ton</li>
+                <li>id:7373738 +50 Points</li>
+            </ul>
+        </div>
     </div>
 
     <script src="app.js"></script>

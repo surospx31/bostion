@@ -123,52 +123,26 @@ img {
     flex-wrap: wrap;
 }
 
-.footer {
-    background: #fff;
-    padding: 14px 36px 32px;
-    display: flex;
-    width: 100%;
-    justify-content: space-between;
-    position: fixed;
-    bottom: 0;
-}
-
-.footer__button {
-    background: transparent;
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-}
-
 .button {
-    padding: 10px 20px;
-    border-radius: 30px;
-    background-color: #007bff; /* Основний колір */
-    color: #ffffff; /* Колір тексту */
-    font-weight: 600;
-    font-size: 15px;
-    line-height: 18px;
+    background-color: #007bff;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    color: white;
+    padding: 10px 15px;
     border: none;
-    transition: background-color 0.3s, transform 0.1s;
+    border-radius: 5px;
     cursor: pointer;
-}
-
-.button:active {
-    transform: scale(0.95); /* Зменшення кнопки при натисканні */
-    background-color: #0069da; /* Трохи темніший колір при натисканні */
-}
-
-.footer__button.active {
-    background-color: #007bff; /* Основний колір */
-    color: #000; /* Колір тексту */
+    font-size: 14px;
+    margin: 5px;
+    flex-grow: 1;
+    max-width: 100px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
 }
 
 .button:hover {
-    background-color: #007bff; /* Колір при наведенні */
+    background-color: #0056b3;
 }
 
 .progress-bar-container {
