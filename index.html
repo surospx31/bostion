@@ -54,7 +54,6 @@
     <div class="container" id="friendsSection" style="display: none;">
         <h2>Friends</h2>
         <p>Your referral link: <span id="referralLink">Generating...</span></p>
-        <button class="button" id="backToHome">Back to Home</button>
     </div>
 
     <div class="container" id="tasksSection" style="display: none;">
@@ -71,44 +70,32 @@
                 <span>Subscribe to Wellact on Instagram</span>
                 <span class="task-points">+5 points</span>
             </div>
-            <div class="task-item" data-link="https://example.com/task3">
-                <img src="static/telegram.png" alt="Task Icon" class="task-icon">
-                <span>Subscribe to Pulse on Telegram</span>
-                <span class="task-points">+5 points</span>
-            </div>
-            <div class="task-item" data-link="https://example.com/task4">
-                <img src="static/Crypto.png" alt="Task Icon" class="task-icon">
-                <span>Subscribe to DevionsxCrypto on Telegram</span>
-                <span class="task-points">+5 points</span>
-            </div>
         </div>
-        <button class="button" id="backToHomeFromTasks">Back to Home</button>
     </div>
 
     <div class="container" id="marketSection" style="display: none;">
         <h2>Market</h2>
         <p>Coming Soon...</p>
-        <button class="button" id="backToHomeFromMarket">Back to Home</button>
     </div>
 
-    <!-- Нова секція для Lucky Wheel -->
-    <div class="container" id="luckyWheelSection" style="display: none;">
-        <div class="header">
-            <button class="button back-button" id="backToHomeFromWheel">Back</button>
-            <h2>Lucky Wheel</h2>
-        </div>
-        <div class="wheel-container">
-            <img src="static/wheel.png" alt="Wheel" id="luckyWheel">
-        </div>
-        <button class="spin-button" id="startSpinButton">Spin</button>
-        <div id="lastResults">
-            <h3>Последние выигрыши:</h3>
-            <ul>
-                <li>id:72117712 +0.5 Ton</li>
-                <li>id:7373738 +15 Ton</li>
-                <li>id:7373738 +50 Points</li>
-            </ul>
-        </div>
+    <!-- Навігаційна панель -->
+    <div class="navbar">
+        <button class="nav-btn active" id="homeBtn">
+            <img src="static/home-icon.png" alt="Home">
+            <p>Home</p>
+        </button>
+        <button class="nav-btn" id="earnsBtn">
+            <img src="static/earns-icon.png" alt="Earns">
+            <p>Earns</p>
+        </button>
+        <button class="nav-btn" id="friendsBtn">
+            <img src="static/friends-icon.png" alt="Friends">
+            <p>Friends</p>
+        </button>
+        <button class="nav-btn" id="leadersBtn">
+            <img src="static/leaders-icon.png" alt="Leaders">
+            <p>Leaders</p>
+        </button>
     </div>
 
     <script src="app.js"></script>
