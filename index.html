@@ -22,7 +22,7 @@
             <p id="userNickname">Username</p>
             <p id="userBalance">Balance: 12.71 TON</p>
         </div>
-        <img src="static/butterfly2.png" alt="Butterfly" class="centered-image">
+        <img src="static/butterfly2.png" alt="Butterfly">
         <div class="level-info">
             <span id="level">1</span> LVL
         </div>
@@ -31,7 +31,7 @@
                 <div id="progress" style="width: 0%;"></div>
             </div>
             <p class="points-info">
-                <span id="currentPoints">0</span>/<span id="pointsForNextLevel">50</span> Points
+                <span id="currentPoints">0</span>/<span id="pointsForNextLevel">5</span> Points
             </p>
         </div>
         
@@ -42,11 +42,19 @@
         <div class="wheel-button-container">
             <button class="spin-button" id="spinButton">Spin Lucky Wheel</button>
         </div>
+        
+        <div class="button-group">
+            <button class="button" id="homeButton">Home</button>
+            <button class="button" id="friendsButton">Friends</button>
+            <button class="button" id="tasksButton">Tasks</button>
+            <button class="button" id="marketButton">Market</button>
+        </div>
     </div>
 
     <div class="container" id="friendsSection" style="display: none;">
         <h2>Friends</h2>
         <p>Your referral link: <span id="referralLink">Generating...</span></p>
+        <button class="button" id="backToHome">Back to Home</button>
     </div>
 
     <div class="container" id="tasksSection" style="display: none;">
@@ -63,32 +71,44 @@
                 <span>Subscribe to Wellact on Instagram</span>
                 <span class="task-points">+5 points</span>
             </div>
+            <div class="task-item" data-link="https://example.com/task3">
+                <img src="static/telegram.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to Pulse on Telegram</span>
+                <span class="task-points">+5 points</span>
+            </div>
+            <div class="task-item" data-link="https://example.com/task4">
+                <img src="static/Crypto.png" alt="Task Icon" class="task-icon">
+                <span>Subscribe to DevionsxCrypto on Telegram</span>
+                <span class="task-points">+5 points</span>
+            </div>
         </div>
+        <button class="button" id="backToHomeFromTasks">Back to Home</button>
     </div>
 
     <div class="container" id="marketSection" style="display: none;">
         <h2>Market</h2>
         <p>Coming Soon...</p>
+        <button class="button" id="backToHomeFromMarket">Back to Home</button>
     </div>
 
-    <!-- Навігаційна панель -->
-    <div class="navbar">
-        <button class="nav-btn active" id="homeBtn">
-            <img src="static/home_icon_negate.png" alt="Home">
-            <p>Home</p>
-        </button>
-        <button class="nav-btn" id="earnsBtn">
-            <img src="static/earns_icon_negate.png" alt="Earns">
-            <p>Earns</p>
-        </button>
-        <button class="nav-btn" id="friendsBtn">
-            <img src="static/friends_icon_negate.png" alt="Friends">
-            <p>Friends</p>
-        </button>
-        <button class="nav-btn" id="leadersBtn">
-            <img src="static/market_icon_negate.png" alt="Market">
-            <p>Market</p>
-        </button>
+    <!-- Нова секція для Lucky Wheel -->
+    <div class="container" id="luckyWheelSection" style="display: none;">
+        <div class="header">
+            <button class="button back-button" id="backToHomeFromWheel">Back</button>
+            <h2>Lucky Wheel</h2>
+        </div>
+        <div class="wheel-container">
+            <img src="static/wheel.png" alt="Wheel" id="luckyWheel">
+        </div>
+        <button class="spin-button" id="startSpinButton">Spin</button>
+        <div id="lastResults">
+            <h3>Последние выигрыши:</h3>
+            <ul>
+                <li>id:72117712 +0.5 Ton</li>
+                <li>id:7373738 +15 Ton</li>
+                <li>id:7373738 +50 Points</li>
+            </ul>
+        </div>
     </div>
 
     <script src="app.js"></script>

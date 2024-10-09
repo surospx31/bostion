@@ -7,20 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null; 
+    let referredBy = null; // Додаємо змінну для реферального коду
 
-    const levels = [0, 50, 500, 1000, 5000]; 
+    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
+    // Отримуємо реферальний код із URL
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('startapp'); 
-    console.log("Параметр startapp:", refCode); 
+    const refCode = urlParams.get('startapp'); // Шукаємо параметр startapp
+    console.log("Параметр startapp:", refCode); // Перевірка, чи правильно зчитано код
 
-    if (refCode) {
-        referredBy = refCode; 
-        console.log(`Реферальний код отримано: ${referredBy}`);
-    } else {
-        console.warn('Реферальний код не знайдено у URL');
-    }
+    
+if (refCode) {
+    referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
+    console.log(`Реферальний код отримано: ${referredBy}`);
+} else {
+    console.warn('Реферальний код не знайдено у URL');
+}
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -49,9 +51,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
+    const homeButton = document.getElementById('homeButton');
+    const friendsButton = document.getElementById('friendsButton');
+    const tasksButton = document.getElementById('tasksButton');
+    const marketButton = document.getElementById('marketButton');
     const friendsSection = document.getElementById('friendsSection');
     const tasksSection = document.getElementById('tasksSection');
     const marketSection = document.getElementById('marketSection');
+    const backToHome = document.getElementById('backToHome');
+    const backToHomeFromTasks = document.getElementById('backToHomeFromTasks');
+    const backToHomeFromMarket = document.getElementById('backToHomeFromMarket');
     const referralLinkElement = document.getElementById('referralLink');
     const taskItems = document.querySelectorAll('.task-item');
     const progressElement = document.getElementById('progress');
@@ -59,14 +68,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentPointsElement = document.getElementById('currentPoints');
     const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
-    const startSpinButton = document.getElementById('spinButton');
+    const startSpinButton = document.getElementById('startSpinButton');
     const luckyWheel = document.getElementById('luckyWheel');
     
+    // Завантаження даних користувача при завантаженні сторінки
     async function loadUserData() {
         try {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
 
+            // Оновлюємо змінні з отриманими даними
             points = data.points;
             level = data.level;
             name = data.name || name;
@@ -75,26 +86,29 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            // Перевіряємо, чи вже є метелик
+            // Перевірка наявності метелика
             if (hasButterfly) {
+                // Якщо метелик вже отриманий, одразу переходимо до основного екрану
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
             } else {
+                // Якщо метелик ще не отриманий, показуємо кнопку GET
                 welcomeSection.style.display = 'block';
                 butterflySection.style.display = 'none';
             }
 
-            updateUI(); 
+            updateUI(); // Оновлюємо інтерфейс після завантаження даних
         } catch (error) {
             console.error('Error loading user data:', error);
         }
     }
 
+    // Функція для обчислення кількості поінтів, необхідних для наступного рівня
     function calculatePointsForNextLevel(level) {
         if (level < levels.length) {
-            return levels[level]; 
+            return levels[level]; // Повертаємо поінти для поточного рівня
         } else {
-            return levels[levels.length - 1]; 
+            return levels[levels.length - 1]; // Якщо рівень більше 5, повертаємо максимальне значення
         }
     }
 
@@ -107,6 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         updateProgress(pointsForNextLevel);
     }
 
+    // Оновлення прогресу
     function updateProgress(pointsForNextLevel) {
         let progress = (points / pointsForNextLevel) * 100 + '%';
         progressElement.style.width = progress;
@@ -126,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy,
+                    referred_by: referredBy, // Відправляємо реферальний код, якщо він присутній
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
@@ -142,8 +157,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
         hasButterfly = true;
+
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'block';
+
         await saveUserData();
     });
 
@@ -162,14 +179,15 @@ document.addEventListener('DOMContentLoaded', () => {
             points += prize.points;
             let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-            while (points >= pointsForNextLevel && level < 5) {
+            // Перевірка, чи поінти достатні для переходу на новий рівень
+            while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
                 points -= pointsForNextLevel;
                 level += 1;
                 pointsForNextLevel = calculatePointsForNextLevel(level);
             }
 
-            updateUI();
-            await saveUserData();
+            updateUI();  // Оновлюємо інтерфейс
+            await saveUserData();  // Зберігаємо оновлені дані
             startSpinButton.disabled = false;
         }, 5000);
     });
@@ -183,6 +201,42 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         return prizes[Math.floor(Math.random() * prizes.length)];
     }
+
+    homeButton.addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
+    });
+
+    friendsButton.addEventListener('click', () => {
+        hideAllSections();
+        friendsSection.style.display = 'block';
+        generateReferralLink();
+    });
+
+    tasksButton.addEventListener('click', () => {
+        hideAllSections();
+        tasksSection.style.display = 'block';
+    });
+
+    marketButton.addEventListener('click', () => {
+        hideAllSections();
+        marketSection.style.display = 'block';
+    });
+
+    backToHome.addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
+    });
+
+    backToHomeFromTasks.addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
+    });
+
+    backToHomeFromMarket.addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
+    });
 
     taskItems.forEach((task) => {
         task.addEventListener('click', () => {
@@ -198,7 +252,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 points += 5;
                 let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-                while (points >= pointsForNextLevel && level < 5) {
+                while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
                     points -= pointsForNextLevel;
                     level += 1;
                     pointsForNextLevel = calculatePointsForNextLevel(level);
@@ -214,53 +268,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
         let code = '';
         for (let i = 0; i < 6; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return code;
     }
-
+    
     async function generateReferralLink() {
         if (!referralCode) {
+            // Генерація реферального коду, якщо його ще немає
             referralCode = generateReferralCode();
             await saveUserData();
         }
         
-        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`;
-        referralLinkElement.textContent = telegramBotLink;
+        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`; // Формуємо посилання
+        referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
     }
-
-    function hideAllSections() {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'none';
-        friendsSection.style.display = 'none';
-        tasksSection.style.display = 'none';
-        marketSection.style.display = 'none';
-    }
-
-    // Навігаційна панель для перемикання секцій
-    document.getElementById('homeBtn').addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    document.getElementById('earnsBtn').addEventListener('click', () => {
-        hideAllSections();
-        marketSection.style.display = 'block';
-    });
-
-    document.getElementById('friendsBtn').addEventListener('click', () => {
-        hideAllSections();
-        friendsSection.style.display = 'block';
-        generateReferralLink();
-    });
-
-    document.getElementById('marketBtn').addEventListener('click', () => {
-        hideAllSections();
-        tasksSection.style.display = 'block';
-    });
+    
 
     function hideAllSections() {
         welcomeSection.style.display = 'none';
@@ -272,4 +298,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     loadUserData();
 });
-
