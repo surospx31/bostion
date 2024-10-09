@@ -15,13 +15,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const refCode = urlParams.get('startapp'); 
     console.log("Параметр startapp:", refCode); 
 
-    
-if (refCode) {
-    referredBy = refCode; 
-    console.log(`Реферальний код отримано: ${referredBy}`);
-} else {
-    console.warn('Реферальний код не знайдено у URL');
-}
+    if (refCode) {
+        referredBy = refCode; 
+        console.log(`Реферальний код отримано: ${referredBy}`);
+    } else {
+        console.warn('Реферальний код не знайдено у URL');
+    }
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -60,7 +59,7 @@ if (refCode) {
     const currentPointsElement = document.getElementById('currentPoints');
     const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
-    const startSpinButton = document.getElementById('startSpinButton');
+    const startSpinButton = document.getElementById('spinButton');
     const luckyWheel = document.getElementById('luckyWheel');
     
     async function loadUserData() {
@@ -76,6 +75,7 @@ if (refCode) {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
+            // Перевіряємо, чи вже є метелик
             if (hasButterfly) {
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
@@ -257,10 +257,18 @@ if (refCode) {
         generateReferralLink();
     });
 
-    document.getElementById('leadersBtn').addEventListener('click', () => {
+    document.getElementById('marketBtn').addEventListener('click', () => {
         hideAllSections();
         tasksSection.style.display = 'block';
     });
+
+    function hideAllSections() {
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'none';
+        friendsSection.style.display = 'none';
+        tasksSection.style.display = 'none';
+        marketSection.style.display = 'none';
+    }
 
     loadUserData();
 });

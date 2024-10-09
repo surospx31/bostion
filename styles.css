@@ -172,9 +172,15 @@ body, html {
     color: #FFD700;
 }
 
+/* Центрування зображення метелика */
+.centered-image {
+    display: block;
+    margin: 0 auto;
+}
+
 .navbar {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
     background-color: #000000;
     padding: 14px 36px 32px;
@@ -201,7 +207,7 @@ body, html {
 }
 
 .nav-btn.active {
-    color: #f1c40f;
+    color: #007bff;
 }
 
 .nav-btn p {
