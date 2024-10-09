@@ -262,14 +262,6 @@ document.addEventListener('DOMContentLoaded', () => {
         tasksSection.style.display = 'block';
     });
 
-    function hideAllSections() {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'none';
-        friendsSection.style.display = 'none';
-        tasksSection.style.display = 'none';
-        marketSection.style.display = 'none';
-    }
-
     loadUserData();
 });
 
