@@ -7,22 +7,20 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null; // Додаємо змінну для реферального коду
+    let referredBy = null; 
 
-    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
+    const levels = [0, 50, 500, 1000, 5000]; 
 
-    // Отримуємо реферальний код із URL
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('startapp'); // Шукаємо параметр startapp
-    console.log("Параметр startapp:", refCode); // Перевірка, чи правильно зчитано код
+    const refCode = urlParams.get('startapp'); 
+    console.log("Параметр startapp:", refCode); 
 
-    
-if (refCode) {
-    referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
-    console.log(`Реферальний код отримано: ${referredBy}`);
-} else {
-    console.warn('Реферальний код не знайдено у URL');
-}
+    if (refCode) {
+        referredBy = refCode; 
+        console.log(`Реферальний код отримано: ${referredBy}`);
+    } else {
+        console.warn('Реферальний код не знайдено у URL');
+    }
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -51,16 +49,9 @@ if (refCode) {
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
-    const homeButton = document.getElementById('homeButton');
-    const friendsButton = document.getElementById('friendsButton');
-    const tasksButton = document.getElementById('tasksButton');
-    const marketButton = document.getElementById('marketButton');
     const friendsSection = document.getElementById('friendsSection');
     const tasksSection = document.getElementById('tasksSection');
     const marketSection = document.getElementById('marketSection');
-    const backToHome = document.getElementById('backToHome');
-    const backToHomeFromTasks = document.getElementById('backToHomeFromTasks');
-    const backToHomeFromMarket = document.getElementById('backToHomeFromMarket');
     const referralLinkElement = document.getElementById('referralLink');
     const taskItems = document.querySelectorAll('.task-item');
     const progressElement = document.getElementById('progress');
@@ -68,16 +59,14 @@ if (refCode) {
     const currentPointsElement = document.getElementById('currentPoints');
     const pointsForNextLevelElement = document.getElementById('pointsForNextLevel');
 
-    const startSpinButton = document.getElementById('startSpinButton');
+    const startSpinButton = document.getElementById('spinButton');
     const luckyWheel = document.getElementById('luckyWheel');
     
-    // Завантаження даних користувача при завантаженні сторінки
     async function loadUserData() {
         try {
             const response = await fetch(`/api/user/${userId}`);
             const data = await response.json();
 
-            // Оновлюємо змінні з отриманими даними
             points = data.points;
             level = data.level;
             name = data.name || name;
@@ -86,29 +75,26 @@ if (refCode) {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            // Перевірка наявності метелика
+            // Перевіряємо, чи вже є метелик
             if (hasButterfly) {
-                // Якщо метелик вже отриманий, одразу переходимо до основного екрану
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
             } else {
-                // Якщо метелик ще не отриманий, показуємо кнопку GET
                 welcomeSection.style.display = 'block';
                 butterflySection.style.display = 'none';
             }
 
-            updateUI(); // Оновлюємо інтерфейс після завантаження даних
+            updateUI(); 
         } catch (error) {
             console.error('Error loading user data:', error);
         }
     }
 
-    // Функція для обчислення кількості поінтів, необхідних для наступного рівня
     function calculatePointsForNextLevel(level) {
         if (level < levels.length) {
-            return levels[level]; // Повертаємо поінти для поточного рівня
+            return levels[level]; 
         } else {
-            return levels[levels.length - 1]; // Якщо рівень більше 5, повертаємо максимальне значення
+            return levels[levels.length - 1]; 
         }
     }
 
@@ -121,7 +107,6 @@ if (refCode) {
         updateProgress(pointsForNextLevel);
     }
 
-    // Оновлення прогресу
     function updateProgress(pointsForNextLevel) {
         let progress = (points / pointsForNextLevel) * 100 + '%';
         progressElement.style.width = progress;
@@ -141,7 +126,7 @@ if (refCode) {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy, // Відправляємо реферальний код, якщо він присутній
+                    referred_by: referredBy,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
@@ -157,10 +142,8 @@ if (refCode) {
     // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
         hasButterfly = true;
-
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'block';
-
         await saveUserData();
     });
 
@@ -179,15 +162,14 @@ if (refCode) {
             points += prize.points;
             let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-            // Перевірка, чи поінти достатні для переходу на новий рівень
-            while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
+            while (points >= pointsForNextLevel && level < 5) {
                 points -= pointsForNextLevel;
                 level += 1;
                 pointsForNextLevel = calculatePointsForNextLevel(level);
             }
 
-            updateUI();  // Оновлюємо інтерфейс
-            await saveUserData();  // Зберігаємо оновлені дані
+            updateUI();
+            await saveUserData();
             startSpinButton.disabled = false;
         }, 5000);
     });
@@ -201,42 +183,6 @@ if (refCode) {
         ];
         return prizes[Math.floor(Math.random() * prizes.length)];
     }
-
-    homeButton.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    friendsButton.addEventListener('click', () => {
-        hideAllSections();
-        friendsSection.style.display = 'block';
-        generateReferralLink();
-    });
-
-    tasksButton.addEventListener('click', () => {
-        hideAllSections();
-        tasksSection.style.display = 'block';
-    });
-
-    marketButton.addEventListener('click', () => {
-        hideAllSections();
-        marketSection.style.display = 'block';
-    });
-
-    backToHome.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    backToHomeFromTasks.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    backToHomeFromMarket.addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
 
     taskItems.forEach((task) => {
         task.addEventListener('click', () => {
@@ -252,7 +198,7 @@ if (refCode) {
                 points += 5;
                 let pointsForNextLevel = calculatePointsForNextLevel(level);
 
-                while (points >= pointsForNextLevel && level < 5) {  // Перевіряємо, що рівень менше 5
+                while (points >= pointsForNextLevel && level < 5) {
                     points -= pointsForNextLevel;
                     level += 1;
                     pointsForNextLevel = calculatePointsForNextLevel(level);
@@ -268,25 +214,62 @@ if (refCode) {
     });
 
     function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'; // Символи для коду
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         let code = '';
         for (let i = 0; i < 6; i++) {
             code += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return code;
     }
-    
+
     async function generateReferralLink() {
         if (!referralCode) {
-            // Генерація реферального коду, якщо його ще немає
             referralCode = generateReferralCode();
             await saveUserData();
         }
         
-        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`; // Формуємо посилання
-        referralLinkElement.textContent = telegramBotLink; // Виводимо посилання на сторінку
+        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`;
+        referralLinkElement.textContent = telegramBotLink;
     }
-    
+
+    function hideAllSections() {
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'none';
+        friendsSection.style.display = 'none';
+        tasksSection.style.display = 'none';
+        marketSection.style.display = 'none';
+    }
+
+    // Навігаційна панель для перемикання секцій
+    document.getElementById('homeBtn').addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
+    });
+
+    document.getElementById('earnsBtn').addEventListener('click', () => {
+        hideAllSections();
+        marketSection.style.display = 'block';
+    });
+
+    document.getElementById('friendsBtn').addEventListener('click', () => {
+        hideAllSections();
+        friendsSection.style.display = 'block';
+        generateReferralLink();
+    });
+
+    document.getElementById('marketBtn').addEventListener('click', () => {
+        hideAllSections();
+        tasksSection.style.display = 'block';
+    });
+
+    function hideAllSections() {
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'none';
+        friendsSection.style.display = 'none';
+        tasksSection.style.display = 'none';
+        marketSection.style.display = 'none';
+    }
 
     loadUserData();
 });
+

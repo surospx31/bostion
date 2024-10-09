@@ -8,8 +8,20 @@ body, html {
     justify-content: center;
     align-items: center;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    overflow: hidden; /* Заборона прокрутки */
-    touch-action: none; /* Заборона на жестові дії */
+    overflow: hidden;
+}
+
+.container {
+    text-align: center;
+    padding: 10px;
+    width: 90%;
+    max-width: 400px;
+    height: calc(var(--tg-viewport-height) - 40px);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-sizing: border-box;
 }
 
 .footer-content {
@@ -24,125 +36,28 @@ body, html {
     max-width: 200px;
 }
 
-body, html {
-    width: 100%;
-    height: var(--tg-viewport-height);
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    background-color: #000000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-body {
-    margin: 0;
-    padding: 0;
+.user-info {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    height: var(--tg-viewport-height);
-    overflow-y: hidden;
-}
-
-.task-item.completed {
-    background-color: #1a1a1a;
-    color: #76c7c0;
-    border: 2px solid #76c7c0;
-    cursor: default;
-}
-
-.task-item.completed .task-icon {
-    filter: grayscale(100%);
-}
-
-.container {
-    text-align: center;
-    padding: 10px;
-    width: 90%;
-    max-width: 400px;
-    height: calc(var(--tg-viewport-height) - 40px); /* Повна висота з врахуванням відступів */
-    overflow-y: hidden;
-    margin: 0; /* Прибираємо зайві відступи */
-    color: #fff;
-    box-sizing: border-box;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Вирівнювання елементів зверху */
-}
-
-#butterflySection, #luckyWheelSection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Вирівнювання елементів зверху */
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-}
-
-.back-button {
-    background-color: #007bff;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 5px;
-    max-width: 100px;
-    text-align: center;
-}
-
-img {
-    width: 150px;
+    align-items: flex-start;
+    margin-left: 20px;
     margin-bottom: 10px;
-}
-
-.button-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed; /* Закріпити кнопки на певному місці */
-    bottom: 30px; /* Відступ від нижнього краю */
-    width: 90%; /* Ширина контейнера з кнопками */
-    margin: 0 auto; /* Центрування контейнера */
-    left: 50%; /* Вирівнювання по центру */
-    transform: translateX(-50%); /* Центрування контейнера по горизонталі */
-    flex-wrap: wrap;
-}
-
-.button {
-    background-color: #007bff;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     font-weight: 500;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 14px;
-    margin: 5px;
-    flex-grow: 1;
-    max-width: 100px;
-    text-align: center;
-    box-sizing: border-box;
-    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
 }
 
-.button:hover {
-    background-color: #0056b3;
+.user-info p {
+    margin: 0;
+    color: #ffffff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.level-info {
+    font-size: 24px;
+    color: #ffffff;
+    font-weight: bold;
+    margin-top: 10px;
 }
 
 .progress-bar-container {
@@ -164,33 +79,30 @@ img {
     height: 15px;
     background-color: #007bff;
     width: 0;
-    transition: width 0.5s;
+    transition: width 0.5s ease;
 }
 
 .points-info {
     margin-top: 5px;
     color: #ffffff;
     font-weight: bold;
-    white-space: nowrap;
 }
 
-.user-info {
+.wheel-container {
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-left: 20px;
-    margin-bottom: 10px; /* Зменшений відступ */
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
+    justify-content: center;
+    align-items: flex-end;
+    width: 100%;
+    height: 90px;
+    overflow: hidden;
+    margin-top: 10px;
 }
 
-.user-info p {
-    margin: 0;
-    color: #ffffff;
-    font-weight: bold;
-    font-size: 18px;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
+.wheel-container img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    transform: translateY(65%);
 }
 
 .wheel-button-container {
@@ -199,7 +111,7 @@ img {
     align-items: center;
     width: 100%;
     position: relative;
-    bottom: 15px; /* Відступ щоб кнопка заходила на колесо */
+    bottom: 15px;
     z-index: 10;
 }
 
@@ -210,37 +122,21 @@ img {
     color: white;
     padding: 10px 50px;
     border: none;
-    border-radius: 25px; /* Зробити кнопки закругленими */
+    border-radius: 25px;
     cursor: pointer;
     font-size: 16px;
-    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4); /* Додаємо тінь для кнопки */
-    transition: all 0.3s ease; /* Плавна зміна стилів */
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
+    transition: all 0.3s ease;
 }
 
 .spin-button:hover {
-    background-color: #0056b3; /* Зміна кольору при наведенні */
-    box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.6); /* Посилена тінь при наведенні */
-}
-
-.wheel-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end; /* Вирівнювання по нижньому краю */
-    width: 100%;
-    height: 90px; /* Висота контейнера для обрізки зображення */
-    overflow: hidden; /* Приховати нижню частину колеса */
-    margin-top: 10px; /* Менший відступ */
-}
-
-.wheel-container img {
-    width: 100%;
-    max-width: 300px; /* Максимальна ширина колеса */
-    height: auto;
-    transform: translateY(65%); /* Підняти зображення вище */
+    background-color: #0056b3;
+    box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.6);
 }
 
 .task-list {
     text-align: left;
+    width: 100%;
 }
 
 .task-item {
@@ -252,46 +148,17 @@ img {
     margin: 10px 0;
     border-radius: 5px;
     cursor: pointer;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
-}
-
-.task-item.loading {
-    opacity: 0.6;
-    cursor: not-allowed;
-}
-
-.task-item.loading .task-points {
-    display: none;
-}
-
-.task-item.loading .task-icon {
-    margin-right: 5px;
-}
-
-.task-item.loading::after {
-    content: "";
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #fff;
-    border-top: 2px solid #007bff;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
 }
 
 .task-item.completed {
     background-color: #1a1a1a;
+    color: #76c7c0;
+    border: 2px solid #76c7c0;
     cursor: default;
+}
+
+.task-item.completed .task-icon {
+    filter: grayscale(100%);
 }
 
 .task-icon {
@@ -305,55 +172,83 @@ img {
     color: #FFD700;
 }
 
-@media (max-height: 1000px) {
-    body {
-        flex-direction: column;
-        height: var(--tg-viewport-height);
-        overflow-y: hidden;
-    }
+/* Центрування зображення метелика */
+.centered-image {
+    display: block;
+    margin: 0 auto;
+}
 
-    .container {
-        width: 100%;
-        margin: 0;
-        border-radius: 0;
-        box-shadow: none;
-        padding: 15px;
-    }
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #000000;
+    padding: 14px 36px 32px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
 
-    .button {
-        font-size: 16px;
-        padding: 12px;
-        width: 100%;
-    }
+.nav-btn {
+    background: none;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+    transition: color 0.3s ease;
+}
 
-    h1, h2 {
-        font-size: 24px;
-        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-        font-weight: 500;
-    }
+.nav-btn img {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 5px;
+}
 
-    p {
-        font-size: 18px;
-        font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-        font-weight: 500;
-    }
+.nav-btn.active {
+    color: #007bff;
+}
 
-    img {
-        width: 80%;
-        height: 1;
-        margin: 0px 0;
-    }
+.nav-btn p {
+    font-size: 12px;
+    margin: 0;
+}
 
-    .progress-bar {
-        margin: 10px 0;
-    }
+.nav-btn.active img {
+    filter: brightness(1.5);
+}
 
-    #progress {
-        height: 25px;
-    }
+.button-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 30px;
+    width: 90%;
+    margin: 0 auto;
+    left: 50%;
+    transform: translateX(-50%);
+    flex-wrap: wrap;
+}
 
-    .button-group {
-        flex-direction: row;
-        flex-wrap: nowrap;
-    }
+.button {
+    background-color: #007bff;
+    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+    font-weight: 500;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin: 5px;
+    max-width: 100px;
+    text-align: center;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
+}
+
+.button:hover {
+    background-color: #0056b3;
 }
