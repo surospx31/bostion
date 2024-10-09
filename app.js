@@ -248,7 +248,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('earnsBtn').addEventListener('click', () => {
         hideAllSections();
-        marketSection.style.display = 'block';
+        tasksSection.style.display = 'block';
     });
 
     document.getElementById('friendsBtn').addEventListener('click', () => {
@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('marketBtn').addEventListener('click', () => {
         hideAllSections();
-        tasksSection.style.display = 'block';
+        marketSection.style.display = 'block';
     });
 
     function hideAllSections() {
