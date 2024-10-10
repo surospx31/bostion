@@ -16,7 +16,7 @@ body, html {
     padding: 10px;
     width: 100%;
     max-width: 400px;
-    height: calc(var(--tg-viewport-height) - 40px);
+    height: calc(var(--tg-viewport-height) - 80px);
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -33,7 +33,8 @@ body, html {
 
 .footer-content img {
     width: 100%;
-    max-width: 150px;
+    max-width: 200px; /* Збільшуємо зображення метелика */
+    margin-bottom: 20px; /* Додаємо відступи зверху і знизу */
 }
 
 .user-info {
@@ -92,17 +93,19 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    width: 100%;
-    height: 90px;
+    width: 60px; /* Маленьке колесо */
+    height: 60px;
+    background-color: #007bff; /* Синій фон для квадрата */
+    position: absolute;
+    bottom: 100px; /* Розташування над кнопкою Market */
+    right: 10px; /* Вирівнювання колеса над кнопкою Market */
+    border-radius: 10px;
     overflow: hidden;
-    margin-top: 10px;
 }
 
 .wheel-container img {
-    width: 100%;
-    max-width: 300px;
-    height: auto;
-    transform: translateY(65%);
+    width: 50px; /* Зменшуємо розмір колеса */
+    height: 50px;
 }
 
 .wheel-button-container {
