@@ -52,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const friendsSection = document.getElementById('friendsSection');
     const tasksSection = document.getElementById('tasksSection');
     const marketSection = document.getElementById('marketSection');
+    const navbarSection = document.getElementById('navbarSection');
     const referralLinkElement = document.getElementById('referralLink');
     const taskItems = document.querySelectorAll('.task-item');
     const progressElement = document.getElementById('progress');
@@ -76,12 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
             claimedButterfly = data.claimedbutterfly;
 
             // Перевіряємо, чи вже є метелик
-            if (hasButterfly=true) {
+            if (hasButterfly || claimedButterfly) {
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
+                navbarSection.style.display = 'flex';
+                console.log("Навігаційна панель показана, метелик є.");
             } else {
                 welcomeSection.style.display = 'block';
                 butterflySection.style.display = 'none';
+                navbarSection.style.display = 'none';
+                console.log("Навігаційна панель прихована, метелика немає.");
             }
 
             updateUI(); 
@@ -238,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         friendsSection.style.display = 'none';
         tasksSection.style.display = 'none';
         marketSection.style.display = 'none';
+        navbarSection.style.display = 'none';
     }
 
     // Навігаційна панель для перемикання секцій
