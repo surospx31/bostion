@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
             claimedButterfly = data.claimedbutterfly;
 
             // Перевіряємо, чи вже є метелик
-            if (hasButterfly || claimedButterfly) {
+            if (hasButterfly) {
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
                 navbarSection.style.display = 'flex';
