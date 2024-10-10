@@ -7,26 +7,46 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null;
+    let referredBy = null; // Додаємо змінну для реферального коду
 
-    const levels = [0, 50, 500, 1000, 5000];
+    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
+    // Отримуємо реферальний код із URL
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('startapp');
-    console.log("Параметр startapp:", refCode);
+    const refCode = urlParams.get('startapp'); // Шукаємо параметр startapp
+    console.log("Параметр startapp:", refCode); // Перевірка, чи правильно зчитано код
 
-    if (refCode) {
-        referredBy = refCode;
-        console.log(`Реферальний код отримано: ${referredBy}`);
+    
+if (refCode) {
+    referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
+    console.log(`Реферальний код отримано: ${referredBy}`);
+} else {
+    console.warn('Реферальний код не знайдено у URL');
+}
+
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id;
+            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
+        } else {
+            console.error("Telegram WebApp не повертає дані користувача");
+        }
+
+        const userNicknameElement = document.getElementById('userNickname');
+        userNicknameElement.textContent = name;
     }
 
-    const tg = window.Telegram.WebApp;
-    tg.expand();
+    if (!userId) {
+        console.error('Не вдалося отримати telegram_id користувача');
+        return;
+    }
 
-    document.addEventListener('touchmove', function (event) {
+    document.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
-
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
@@ -43,6 +63,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startSpinButton = document.getElementById('spinButton');
     const luckyWheel = document.getElementById('luckyWheel');
+    const navButtons = document.querySelectorAll('.nav-btn');
+
+    navButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Знімаємо клас active з усіх кнопок і замінюємо іконки на неактивні
+            navButtons.forEach(btn => {
+                btn.classList.remove('active');
+                const img = btn.querySelector('img');
+                img.src = img.src.replace('_active.png', '_inactive.png'); // Замінюємо іконку на неактивну
+            });
+            
+            // Додаємо клас active до натиснутої кнопки і замінюємо іконку на активну
+            this.classList.add('active');
+            const img = this.querySelector('img');
+            img.src = img.src.replace('_inactive.png', '_active.png'); // Замінюємо іконку на активну
+        });
+    });
 
     // Завантажуємо дані користувача та керуємо відображенням панелі
     async function loadUserData() {

@@ -16,7 +16,7 @@ body, html {
     padding: 10px;
     width: 100%;
     max-width: 400px;
-    height: calc(var(--tg-viewport-height) - 80px);
+    height: 100%;
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -41,8 +41,8 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    margin-left: 15px;
-    margin-bottom: 10px;
+    margin-left: 30px;
+    margin-bottom: 140px;
     font-family: 'Roboto', 'Helvetica Neue', sans-serif;
     font-weight: 500;
 }
@@ -67,6 +67,7 @@ body, html {
     align-items: center;
     width: 100%;
     margin: 10px 0;
+    bottom: 50px;
 }
 
 .progress-bar {
@@ -74,6 +75,7 @@ body, html {
     background-color: #3c3c3c;
     border-radius: 5px;
     overflow: hidden;
+    bottom: 50px;
 }
 
 #progress {
@@ -87,54 +89,6 @@ body, html {
     margin-top: 5px;
     color: #ffffff;
     font-weight: bold;
-}
-
-.wheel-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    width: 60px; /* Маленьке колесо */
-    height: 60px;
-    background-color: #007bff; /* Синій фон для квадрата */
-    position: absolute;
-    bottom: 100px; /* Розташування над кнопкою Market */
-    right: 10px; /* Вирівнювання колеса над кнопкою Market */
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.wheel-container img {
-    width: 50px; /* Зменшуємо розмір колеса */
-    height: 50px;
-}
-
-.wheel-button-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    position: relative;
-    bottom: 15px;
-    z-index: 10;
-}
-
-.spin-button {
-    background-color: #007bff;
-    font-family: 'Roboto', 'Helvetica Neue', sans-serif;
-    font-weight: 500;
-    color: white;
-    padding: 10px 50px;
-    border: none;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 16px;
-    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.4);
-    transition: all 0.3s ease;
-}
-
-.spin-button:hover {
-    background-color: #0056b3;
-    box-shadow: 0px 6px 15px rgba(0, 123, 255, 0.6);
 }
 
 .task-list {
@@ -207,6 +161,8 @@ body, html {
     width: 30px;
     height: 30px;
     margin-bottom: 5px;
+    filter: grayscale(100%); /* Іконка у відтінках сірого за замовчуванням */
+    transition: filter 0.3s ease;
 }
 
 .nav-btn.active {
@@ -219,7 +175,7 @@ body, html {
 }
 
 .nav-btn.active img {
-    filter: brightness(1.5);
+    filter: brightness(1.5); /* Підсвітка іконки синім кольором */
 }
 
 .button-group {
@@ -253,7 +209,7 @@ body, html {
 }
 
 .button:hover {
-    background-color: #0056b3;
+    background-color: #007bff;
 }
 
 @media (max-height: 1000px) {
@@ -268,7 +224,7 @@ body, html {
         margin: 0;
         border-radius: 0;
         box-shadow: none;
-        padding: 15px;
+        padding: 5px;
     }
 
     .button {
