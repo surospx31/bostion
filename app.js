@@ -7,42 +7,23 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null; 
+    let referredBy = null;
 
-    const levels = [0, 50, 500, 1000, 5000]; 
+    const levels = [0, 50, 500, 1000, 5000];
 
     const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('startapp'); 
-    console.log("Параметр startapp:", refCode); 
+    const refCode = urlParams.get('startapp');
+    console.log("Параметр startapp:", refCode);
 
     if (refCode) {
-        referredBy = refCode; 
+        referredBy = refCode;
         console.log(`Реферальний код отримано: ${referredBy}`);
-    } else {
-        console.warn('Реферальний код не знайдено у URL');
     }
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+    const tg = window.Telegram.WebApp;
+    tg.expand();
 
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
-        } else {
-            console.error("Telegram WebApp не повертає дані користувача");
-        }
-
-        const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name;
-    }
-
-    if (!userId) {
-        console.error('Не вдалося отримати telegram_id користувача');
-        return;
-    }
-
-    document.addEventListener('touchmove', function(event) {
+    document.addEventListener('touchmove', function (event) {
         event.preventDefault();
     }, { passive: false });
 
@@ -52,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const friendsSection = document.getElementById('friendsSection');
     const tasksSection = document.getElementById('tasksSection');
     const marketSection = document.getElementById('marketSection');
-    const navbarSection = document.getElementById('navbarSection');
+    const navbarSection = document.getElementById('navbarSection');  // Панель навігації
     const referralLinkElement = document.getElementById('referralLink');
     const taskItems = document.querySelectorAll('.task-item');
     const progressElement = document.getElementById('progress');
@@ -62,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const startSpinButton = document.getElementById('spinButton');
     const luckyWheel = document.getElementById('luckyWheel');
-    
+
+    // Завантажуємо дані користувача та керуємо відображенням панелі
     async function loadUserData() {
         try {
             const response = await fetch(`/api/user/${userId}`);
@@ -76,22 +58,22 @@ document.addEventListener('DOMContentLoaded', () => {
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
 
-            // Перевіряємо, чи вже є метелик
-            if (hasButterfly) {
+            // Перевіряємо, чи вже є метелик, і керуємо відображенням навігаційної панелі
+            if (hasButterfly || claimedButterfly) {
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
-                navbarSection.style.display = 'flex';
-                console.log("Навігаційна панель показана, метелик є.");
+                navbarSection.style.display = 'flex'; // Явно показуємо панель
+                console.log("Метелик є, панель навігації показана.");
             } else {
                 welcomeSection.style.display = 'block';
                 butterflySection.style.display = 'none';
-                navbarSection.style.display = 'none';
-                console.log("Навігаційна панель прихована, метелика немає.");
+                navbarSection.style.display = 'none'; // Ховаємо панель
+                console.log("Метелика немає, панель навігації прихована.");
             }
 
-            updateUI(); 
+            updateUI();
         } catch (error) {
-            console.error('Error loading user data:', error);
+            console.error('Помилка при завантаженні даних користувача:', error);
         }
     }
 
