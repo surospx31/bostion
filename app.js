@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
             claimedButterfly = data.claimedbutterfly;
 
             // Перевіряємо, чи вже є метелик, і керуємо відображенням навігаційної панелі
-            if (hasButterfly || claimedButterfly) {
+            if (hasButterfly) {
                 welcomeSection.style.display = 'none';
                 butterflySection.style.display = 'block';
                 navbarSection.style.display = 'flex'; // Явно показуємо панель
@@ -78,11 +78,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function calculatePointsForNextLevel(level) {
-        if (level < levels.length) {
-            return levels[level]; 
-        } else {
-            return levels[levels.length - 1]; 
-        }
+        return level < levels.length ? levels[level] : levels[levels.length - 1];
     }
 
     function updateUI() {
@@ -122,8 +118,28 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log('Дані успішно збережені');
             updateUI();
         } catch (error) {
-            console.error('Error saving user data:', error);
+            console.error('Помилка при збереженні даних користувача:', error);
         }
+    }
+
+    // Генерація реферального посилання
+    function generateReferralCode() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        let code = '';
+        for (let i = 0; i < 6; i++) {
+            code += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return code;
+    }
+
+    async function generateReferralLink() {
+        if (!referralCode) {
+            referralCode = generateReferralCode();
+            await saveUserData();
+        }
+        
+        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`;
+        referralLinkElement.textContent = telegramBotLink;
     }
 
     // Подія для кнопки GET
@@ -131,45 +147,40 @@ document.addEventListener('DOMContentLoaded', () => {
         hasButterfly = true;
         welcomeSection.style.display = 'none';
         butterflySection.style.display = 'block';
+        navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
+        console.log("Метелик отриманий, навігаційна панель показана.");
         await saveUserData();
     });
 
-    // Логіка обертання колеса
-    startSpinButton.addEventListener('click', async () => {
-        startSpinButton.disabled = true;
+    // Логіка для перемикання секцій
+    function hideAllSections() {
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'none';
+        friendsSection.style.display = 'none';
+        tasksSection.style.display = 'none';
+        marketSection.style.display = 'none';
+    }
 
-        luckyWheel.style.transition = 'transform 5s ease-out';
-        const randomDegree = Math.floor(Math.random() * 360) + 1440;
-        luckyWheel.style.transform = `rotate(${randomDegree}deg)`;
-
-        setTimeout(async () => {
-            const prize = getRandomPrize();
-            alert(`You won ${prize.text}`);
-
-            points += prize.points;
-            let pointsForNextLevel = calculatePointsForNextLevel(level);
-
-            while (points >= pointsForNextLevel && level < 5) {
-                points -= pointsForNextLevel;
-                level += 1;
-                pointsForNextLevel = calculatePointsForNextLevel(level);
-            }
-
-            updateUI();
-            await saveUserData();
-            startSpinButton.disabled = false;
-        }, 5000);
+    document.getElementById('homeBtn').addEventListener('click', () => {
+        hideAllSections();
+        butterflySection.style.display = 'block';
     });
 
-    function getRandomPrize() {
-        const prizes = [
-            { text: '0.5 TON', points: 0 },
-            { text: '5 Points', points: 5 },
-            { text: '10 Points', points: 10 },
-            { text: '1 TON', points: 0 },
-        ];
-        return prizes[Math.floor(Math.random() * prizes.length)];
-    }
+    document.getElementById('earnsBtn').addEventListener('click', () => {
+        hideAllSections();
+        tasksSection.style.display = 'block';
+    });
+
+    document.getElementById('friendsBtn').addEventListener('click', () => {
+        hideAllSections();
+        friendsSection.style.display = 'block';
+        generateReferralLink();
+    });
+
+    document.getElementById('marketBtn').addEventListener('click', () => {
+        hideAllSections();
+        marketSection.style.display = 'block';
+    });
 
     taskItems.forEach((task) => {
         task.addEventListener('click', () => {
@@ -200,64 +211,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    function generateReferralCode() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-        let code = '';
-        for (let i = 0; i < 6; i++) {
-            code += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return code;
-    }
-
-    async function generateReferralLink() {
-        if (!referralCode) {
-            referralCode = generateReferralCode();
-            await saveUserData();
-        }
-        
-        const telegramBotLink = `https://t.me/wellact_bot?startapp=${referralCode}`;
-        referralLinkElement.textContent = telegramBotLink;
-    }
-
-    function hideAllSections() {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'none';
-        friendsSection.style.display = 'none';
-        tasksSection.style.display = 'none';
-        marketSection.style.display = 'none';
-        navbarSection.style.display = 'none';
-    }
-
-    // Навігаційна панель для перемикання секцій
-    document.getElementById('homeBtn').addEventListener('click', () => {
-        hideAllSections();
-        butterflySection.style.display = 'block';
-    });
-
-    document.getElementById('earnsBtn').addEventListener('click', () => {
-        hideAllSections();
-        tasksSection.style.display = 'block';
-    });
-
-    document.getElementById('friendsBtn').addEventListener('click', () => {
-        hideAllSections();
-        friendsSection.style.display = 'block';
-        generateReferralLink();
-    });
-
-    document.getElementById('marketBtn').addEventListener('click', () => {
-        hideAllSections();
-        marketSection.style.display = 'block';
-    });
-
-    function hideAllSections() {
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'none';
-        friendsSection.style.display = 'none';
-        tasksSection.style.display = 'none';
-        marketSection.style.display = 'none';
-    }
-
     loadUserData();
 });
-
