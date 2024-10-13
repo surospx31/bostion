@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        //saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+        saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
     } else {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
@@ -212,7 +212,15 @@ document.addEventListener('DOMContentLoaded', () => {
         butterflySection.style.display = 'block';
         navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
         console.log("Метелик отриманий, навігаційна панель показана.");
-        await saveUserData();
+    
+        // Зберігаємо дані тільки один раз, залежно від того, є реферальний код чи ні
+        if (startParam) {
+            console.log('Реферальний код:', startParam);
+            await saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+        } else {
+            console.log('Немає реферального коду, зберігаємо стандартний запис');
+            await saveUserData(); // Виклик функції без реферального коду
+        }
     });
 
     // Логіка для перемикання секцій
