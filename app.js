@@ -11,18 +11,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
-    // Отримуємо реферальний код із URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const refCode = urlParams.get('startapp'); // Шукаємо параметр startapp
-    console.log("Параметр startapp:", refCode); // Перевірка, чи правильно зчитано код
+    // Отримуємо значення параметра tgWebAppStartParam
+    const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
 
-    
-if (refCode) {
-    referredBy = refCode; // Присвоюємо реферальний код змінній referred_by
-    console.log(`Реферальний код отримано: ${referredBy}`);
-} else {
-    console.warn('Реферальний код не знайдено у URL');
-}
+    if (startParam) {
+        console.log('Реферальний код:', startParam);
+        // Використайте startParam для ваших дій (наприклад, зберегти в базу даних)
+    } else {
+        console.log('Реферальний код не передано');
+    }
+
 
     if (window.Telegram && window.Telegram.WebApp) {
         const tg = window.Telegram.WebApp;
@@ -49,7 +47,7 @@ if (refCode) {
     }, { passive: false });
 
 
-    
+
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
     const butterflySection = document.getElementById('butterflySection');
