@@ -212,14 +212,7 @@ document.addEventListener('DOMContentLoaded', () => {
         butterflySection.style.display = 'block';
         navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
         console.log("Метелик отриманий, навігаційна панель показана.");
-        if (startParam) {
-            console.log('Реферальний код:', startParam);
-            saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
-        } else {
-            console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
-            await saveUserData()
-        }
-        
+        await saveUserData();
     });
 
     // Логіка для перемикання секцій
