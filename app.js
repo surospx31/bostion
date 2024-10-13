@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+        //saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
     } else {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
