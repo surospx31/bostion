@@ -59,12 +59,23 @@ app.get('/api/user/:telegram_id', async (req, res) => {
 // Маршрут для оновлення даних користувача
 // Маршрут для оновлення даних користувача
 app.post('/api/user/:telegram_id', async (req, res) => {
-    const { name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly } = req.body;
+    const telegramId = req.params.telegram_id;
+    const {
+        name, has_butterfly, level, points, referral_code,
+        referred_by, friends, wallet_address, claimedbutterfly
+    } = req.body;
+
+    console.log('Referred by:', referred_by); // Додаємо логування
+
+    if (!telegramId) {
+        return res.status(400).json({ error: "telegram_id не отримано" });
+    }
 
     try {
         await pool.query(
-            `INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+            `UPDATE users
+             SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
+             WHERE telegram_id = $1`,
             [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
         );
         res.status(200).json({ success: true });
