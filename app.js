@@ -16,9 +16,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        // Використайте startParam для ваших дій (наприклад, зберегти в базу даних)
+        saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
     } else {
-        console.log('Реферальний код не передано');
+        console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
 
 
@@ -131,6 +131,31 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateProgress(pointsForNextLevel) {
         let progress = (points / pointsForNextLevel) * 100 + '%';
         progressElement.style.width = progress;
+    }
+    
+    async function saveUserDataWithReferral(referralCode) {
+        try {
+            await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    has_butterfly: hasButterfly,
+                    level,
+                    points,
+                    referral_code: startParam, // Генеруємо новий код або використовуємо існуючий
+                    referred_by: referralCode, // Якщо є реферальний код
+                    friends: 0,
+                    wallet_address: walletAddress,
+                    claimedbutterfly: claimedButterfly
+                }),
+            });
+            console.log('Дані успішно збережені');
+        } catch (error) {
+            console.error('Помилка при збереженні даних користувача:', error);
+        }
     }
 
     async function saveUserData() {
