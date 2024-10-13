@@ -68,6 +68,7 @@ body, html {
     width: 100%;
     margin: 10px 0;
     bottom: 50px;
+    margin-top: 90px;
 }
 
 .progress-bar {
@@ -211,6 +212,8 @@ body, html {
 .button:hover {
     background-color: #007bff;
 }
+
+
 
 @media (max-height: 1000px) {
     body {
