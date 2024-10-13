@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(referralCode) {
+    async function saveUserDataWithReferral(startParam) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -145,8 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     has_butterfly: hasButterfly,
                     level,
                     points,
-                    referral_code: startParam, // Генеруємо новий код або використовуємо існуючий
-                    referred_by: referralCode, // Якщо є реферальний код
+                    referral_code: referralCode, // Генеруємо новий код або використовуємо існуючий
+                    referred_by: startParam, // Якщо є реферальний код
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
@@ -212,7 +212,14 @@ document.addEventListener('DOMContentLoaded', () => {
         butterflySection.style.display = 'block';
         navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
         console.log("Метелик отриманий, навігаційна панель показана.");
-        await saveUserData();
+        if (startParam) {
+            console.log('Реферальний код:', startParam);
+            saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+        } else {
+            console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
+            await saveUserData()
+        }
+        
     });
 
     // Логіка для перемикання секцій
