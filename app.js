@@ -37,12 +37,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             const userPhotoUrl = tg.initDataUnsafe.user.photo_url;
             if (userPhotoUrl) {
-                const userPhotoElement = document.getElementById('userPhoto');
-                userPhotoElement.src = userPhotoUrl;
-                userPhotoElement.style.display = 'block'; // Показуємо фото
-                console.log(tg.initDataUnsafe.user.photo_url);
-            }
-        }
+                const userPhotoUrl = user.photo_url || 'static/default_user.png'; // Використовуємо стандартне фото
+        const userPhotoElement = document.getElementById('userPhoto');
+        userPhotoElement.src = userPhotoUrl;
+        userPhotoElement.style.display = 'block'; // Показуємо фото
+        console.log('Фото користувача або стандартне фото:', userPhotoUrl);
+    } else {
+        console.warn('Користувач не має інформації про фото або інші дані.');
+    }
+} else {
+    console.error('initDataUnsafe недоступне.');
+}
         console.log(tg.initDataUnsafe.user);
 
     }
