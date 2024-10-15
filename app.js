@@ -43,7 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 console.log(tg.initDataUnsafe.user.photo_url);
             }
         }
-        
+        console.log(tg.initDataUnsafe.user);
+
     }
 
     if (!userId) {
