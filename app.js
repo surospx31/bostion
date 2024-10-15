@@ -34,6 +34,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userNicknameElement = document.getElementById('userNickname');
         userNicknameElement.textContent = name;
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            const userPhotoUrl = tg.initDataUnsafe.user.photo_url;
+            if (userPhotoUrl) {
+                const userPhotoElement = document.getElementById('userPhoto');
+                userPhotoElement.src = userPhotoUrl;
+                userPhotoElement.style.display = 'block'; // Показуємо фото
+                console.log(tg.initDataUnsafe.user)
+            }
+        }
+        
     }
 
     if (!userId) {
@@ -41,14 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        const userPhotoUrl = tg.initDataUnsafe.user.photo_url;
-        if (userPhotoUrl) {
-            const userPhotoElement = document.getElementById('userPhoto');
-            userPhotoElement.src = userPhotoUrl;
-            userPhotoElement.style.display = 'block'; // Показуємо фото
-        }
-    }
+    
     
 
     document.addEventListener('touchmove', function(event) {
