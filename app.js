@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const userPhotoElement = document.getElementById('userPhoto');
                 userPhotoElement.src = userPhotoUrl;
                 userPhotoElement.style.display = 'block'; // Показуємо фото
-                console.log(tg.initDataUnsafe.user)
+                console.log(tg.initDataUnsafe.user.photo_url);
             }
         }
         
