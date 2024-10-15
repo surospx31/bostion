@@ -34,30 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userNicknameElement = document.getElementById('userNickname');
         userNicknameElement.textContent = name;
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const userPhotoUrl = tg.initDataUnsafe.user.photo_url;
-            if (userPhotoUrl) {
-                const userPhotoUrl = user.photo_url || 'static/default_user.png'; // Використовуємо стандартне фото
+    }
+    
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        const userPhotoUrl = tg.initDataUnsafe.user.photo_url || 'static/my_default_photo.png'; // Ваше фото замість стандартного
         const userPhotoElement = document.getElementById('userPhoto');
         userPhotoElement.src = userPhotoUrl;
         userPhotoElement.style.display = 'block'; // Показуємо фото
-        console.log('Фото користувача або стандартне фото:', userPhotoUrl);
     } else {
         console.warn('Користувач не має інформації про фото або інші дані.');
     }
-} else {
-    console.error('initDataUnsafe недоступне.');
-}
-        console.log(tg.initDataUnsafe.user);
-
-    }
-
+    
     if (!userId) {
         console.error('Не вдалося отримати telegram_id користувача');
         return;
     }
 
-    
     
 
     document.addEventListener('touchmove', function(event) {
