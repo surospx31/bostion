@@ -47,6 +47,10 @@ body, html {
     font-weight: 500;
 }
 
+.user-info img {
+    margin-right: 10px; /* Відступ між фото і нікнеймом */
+}
+
 .user-info p {
     margin: 0;
     color: #ffffff;
