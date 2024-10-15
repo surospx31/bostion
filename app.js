@@ -22,26 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
-        } else {
-            console.error("Telegram WebApp не повертає дані користувача");
-        }
-
-        const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name;
-    }
-
-    if (!userId) {
-        console.error('Не вдалося отримати telegram_id користувача');
-        return;
-    }
-
+    
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
@@ -282,6 +263,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    document.getElementById('wheelButton').addEventListener('click', function() {
+        // Відкриваємо wheel.html в тій самій вкладці
+        window.location.href = `wheel.html?userId=${userId}`;
+    });
+    
+    
     
     loadUserData();
 });
