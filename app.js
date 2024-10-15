@@ -34,9 +34,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const userNicknameElement = document.getElementById('userNickname');
         userNicknameElement.textContent = name;
-        
+
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const userPhotoUrl = tg.initDataUnsafe.user.photo_url || 'static/my_default_photo.png'; // Ваше фото замість стандартного
+            const userPhotoUrl = tg.initDataUnsafe.user.photo_url || 'static/default_user.png'; // Ваше фото замість стандартного
             const userPhotoElement = document.getElementById('userPhoto');
             userPhotoElement.src = userPhotoUrl;
             userPhotoElement.style.display = 'block'; // Показуємо фото
