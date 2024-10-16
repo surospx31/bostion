@@ -21,29 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
+   
 
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
-        } else {
-            console.error("Telegram WebApp не повертає дані користувача");
-        }
-
-        const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name;
-    }
-
-    if (!userId) {
-        console.error('Не вдалося отримати telegram_id користувача');
-        return;
-    }
+    
 
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
+    
     
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
@@ -130,10 +115,9 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral() {
-        console.log('Зберігаємо дані користувача з реферальним кодом...');
+    async function saveUserDataWithReferral(startParam) {
         try {
-            const response = await fetch(`/api/user/${userId}`, {
+            await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -143,30 +127,23 @@ document.addEventListener('DOMContentLoaded', () => {
                     has_butterfly: hasButterfly,
                     level,
                     points,
-                    referral_code: referralCode,
-                    referred_by: referredBy,  // Записуємо реферальний код
+                    referral_code: referralCode, // Генеруємо новий код або використовуємо існуючий
+                    referred_by: startParam, // Якщо є реферальний код
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
                 }),
             });
-    
-            if (response.ok) {
-                console.log('Дані з реферальним кодом успішно збережені');
-            } else {
-                console.error('Помилка при збереженні даних з реферальним кодом');
-            }
-    
-            updateUI();
+            console.log('Дані успішно збережені');
         } catch (error) {
-            console.error('Помилка при збереженні даних з реферальним кодом:', error);
+            console.error('Помилка при збереженні даних користувача:', error);
         }
     }
 
     async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
-            const response = await fetch(`/api/user/${userId}`, {
+            await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -177,20 +154,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy,  // Тільки оновлюємо дані
+                    referred_by: referredBy,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
                 }),
             });
-    
-            if (response.ok) {
-                console.log('Дані успішно збережені');
-            } else {
-                console.error('Помилка при збереженні даних користувача');
-            }
-    
-            updateUI(); // Оновлення інтерфейсу після збереження даних
+            console.log('Дані успішно збережені');
+            updateUI();
         } catch (error) {
             console.error('Помилка при збереженні даних користувача:', error);
         }
@@ -256,8 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('friendsBtn').addEventListener('click', () => {
         hideAllSections();
         friendsSection.style.display = 'block';
-        generateReferralLink(); // Генерація посилання
-        loadFriends(); // Завантаження друзів
+        generateReferralLink();
     });
 
     document.getElementById('marketBtn').addEventListener('click', () => {
@@ -293,32 +263,6 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(link, '_blank');
         });
     });
-    
-    document.getElementById('copyButton').addEventListener('click', () => {
-        const referralLink = document.getElementById('referralLink').textContent;
-        navigator.clipboard.writeText(referralLink).then(() => {
-            alert('Посилання скопійовано!');
-        }).catch(err => {
-            console.error('Помилка при копіюванні:', err);
-        });
-    });
-    
-    async function loadFriends() {
-        try {
-            const response = await fetch(`/api/friends/${userId}`);
-            const friends = await response.json();
-    
-            const friendsListElement = document.getElementById('friendsList');
-            if (friends.length > 0) {
-                friendsListElement.innerHTML = friends.map((friend, index) => `<p>${index + 1}. ${friend.name}</p>`).join('');
-            } else {
-                friendsListElement.innerHTML = '<p>У вас ще немає запрошених друзів.</p>';
-            }
-        } catch (error) {
-            console.error('Помилка при завантаженні друзів:', error);
-        }
-    }
-    
     
     
     
