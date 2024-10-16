@@ -295,7 +295,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const friends = await response.json();
     
             const friendsListElement = document.getElementById('friendsList');
-            friendsListElement.innerHTML = friends.map((friend, index) => `<p>${index + 1}. ${friend.name}</p>`).join('');
+            if (friends.length > 0) {
+                friendsListElement.innerHTML = friends.map((friend, index) => `<p>${index + 1}. ${friend.name}</p>`).join('');
+            } else {
+                friendsListElement.innerHTML = '<p>У вас ще немає запрошених друзів.</p>';
+            }
         } catch (error) {
             console.error('Помилка при завантаженні друзів:', error);
         }
