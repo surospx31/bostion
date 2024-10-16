@@ -64,25 +64,34 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         referred_by, friends, wallet_address, claimedbutterfly
     } = req.body;
 
-    console.log('Referred by:', referred_by); // Додаємо логування
+    console.log('Referred by:', referred_by); // Логування реферального коду
 
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
 
     try {
-        // Отримуємо поточне значення referred_by з бази
-        const currentUser = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
-        const currentReferredBy = currentUser.rows[0].referred_by;
+        // Якщо користувача запросили
+        if (referred_by) {
+            // Збільшуємо кількість друзів у того, хто запросив
+            await pool.query(
+                `UPDATE users SET friends = friends + 1 WHERE telegram_id = $1`,
+                [referred_by]
+            );
 
-        // Якщо referred_by не передано, зберігаємо поточне значення
-        const finalReferredBy = referred_by || currentReferredBy;
+            // Додаємо запис про запрошення
+            await pool.query(
+                `INSERT INTO friends (inviter_id, invited_id) VALUES ($1, $2)`,
+                [referred_by, telegramId]
+            );
+        }
 
+        // Оновлюємо або створюємо новий запис для користувача
         await pool.query(
             `UPDATE users
              SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
              WHERE telegram_id = $1`,
-            [telegramId, name, has_butterfly, level, points, referral_code, finalReferredBy, friends, wallet_address, claimedbutterfly]
+            [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
         );
         res.status(200).json({ success: true });
     } catch (err) {
@@ -91,6 +100,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 });
 
+// Маршрут для отримання списку друзів
 app.get('/api/friends/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
 
@@ -108,9 +118,7 @@ app.get('/api/friends/:telegram_id', async (req, res) => {
     }
 });
 
-
 // Запуск сервера на порту 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
-
