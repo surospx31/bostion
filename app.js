@@ -130,35 +130,10 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam) {
+    async function saveUserDataWithReferral() {
+        console.log('Зберігаємо дані користувача з реферальним кодом...');
         try {
-            await fetch(`/api/user/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    has_butterfly: hasButterfly,
-                    level,
-                    points,
-                    referral_code: referralCode, // Генеруємо новий код або використовуємо існуючий
-                    referred_by: startParam, // Якщо є реферальний код
-                    friends: 0,
-                    wallet_address: walletAddress,
-                    claimedbutterfly: claimedButterfly
-                }),
-            });
-            console.log('Дані успішно збережені');
-        } catch (error) {
-            console.error('Помилка при збереженні даних користувача:', error);
-        }
-    }
-
-    async function saveUserData() {
-        console.log('Зберігаємо дані користувача...');
-        try {
-            await fetch(`/api/user/${userId}`, {
+            const response = await fetch(`/api/user/${userId}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -169,14 +144,53 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy,
+                    referred_by: referredBy,  // Записуємо реферальний код
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
                 }),
             });
-            console.log('Дані успішно збережені');
+    
+            if (response.ok) {
+                console.log('Дані з реферальним кодом успішно збережені');
+            } else {
+                console.error('Помилка при збереженні даних з реферальним кодом');
+            }
+    
             updateUI();
+        } catch (error) {
+            console.error('Помилка при збереженні даних з реферальним кодом:', error);
+        }
+    }
+
+    async function saveUserData() {
+        console.log('Зберігаємо дані користувача...');
+        try {
+            const response = await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,
+                    has_butterfly: hasButterfly,
+                    level,
+                    points,
+                    referral_code: referralCode,
+                    referred_by: referredBy,  // Тільки оновлюємо дані
+                    friends: 0,
+                    wallet_address: walletAddress,
+                    claimedbutterfly: claimedButterfly
+                }),
+            });
+    
+            if (response.ok) {
+                console.log('Дані успішно збережені');
+            } else {
+                console.error('Помилка при збереженні даних користувача');
+            }
+    
+            updateUI(); // Оновлення інтерфейсу після збереження даних
         } catch (error) {
             console.error('Помилка при збереженні даних користувача:', error);
         }
