@@ -272,4 +272,8 @@ body, html {
         flex-direction: row;
         flex-wrap: nowrap;
     }
+    image-button {
+        width: 80%;
+        height: 80%;
+    }
 }
