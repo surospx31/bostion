@@ -21,14 +21,29 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
 
-    
+    if (window.Telegram && window.Telegram.WebApp) {
+        const tg = window.Telegram.WebApp;
+        tg.expand();
 
-    
+        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+            userId = tg.initDataUnsafe.user.id;
+            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
+        } else {
+            console.error("Telegram WebApp не повертає дані користувача");
+        }
+
+        const userNicknameElement = document.getElementById('userNickname');
+        userNicknameElement.textContent = name;
+    }
+
+    if (!userId) {
+        console.error('Не вдалося отримати telegram_id користувача');
+        return;
+    }
 
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
-    
     
     const getButterflyButton = document.getElementById('getButterflyButton');
     const welcomeSection = document.getElementById('welcome');
@@ -227,7 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('friendsBtn').addEventListener('click', () => {
         hideAllSections();
         friendsSection.style.display = 'block';
-        generateReferralLink();
+        generateReferralLink(); // Генерація посилання
+        loadFriends(); // Завантаження друзів
     });
 
     document.getElementById('marketBtn').addEventListener('click', () => {
@@ -263,7 +279,30 @@ document.addEventListener('DOMContentLoaded', () => {
             window.open(link, '_blank');
         });
     });
-
+    
+    document.getElementById('copyButton').addEventListener('click', () => {
+        const referralLink = document.getElementById('referralLink').textContent;
+        navigator.clipboard.writeText(referralLink).then(() => {
+            alert('Посилання скопійовано!');
+        }).catch(err => {
+            console.error('Помилка при копіюванні:', err);
+        });
+    });
+    
+    async function loadFriends() {
+        try {
+            const response = await fetch(`/api/friends/${userId}`);
+            const friends = await response.json();
+    
+            const friendsListElement = document.getElementById('friendsList');
+            friendsListElement.innerHTML = friends.map((friend, index) => `<p>${index + 1}. ${friend.name}</p>`).join('');
+        } catch (error) {
+            console.error('Помилка при завантаженні друзів:', error);
+        }
+    }
+    
+    
+    
     
     
     

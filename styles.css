@@ -14,9 +14,9 @@ body, html {
 .container {
     text-align: center;
     padding: 10px;
-    width: 100%;
+    width: var(--tg-viewport-width);
     max-width: 400px;
-    height: 100%;
+    height: var(--tg-viewport-height);
     color: #fff;
     display: flex;
     flex-direction: column;
@@ -219,9 +219,7 @@ body, html {
     background-color: #007bff;
 }
 
-
-
-@media (max-height: 600px) {
+@media (max-width: 550px) {
     body {
         flex-direction: column;
         height: var(--tg-viewport-height);
@@ -272,8 +270,5 @@ body, html {
         flex-direction: row;
         flex-wrap: nowrap;
     }
-    image-button {
-        width: 80%;
-        height: 80%;
-    }
+    
 }

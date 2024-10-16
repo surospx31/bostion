@@ -91,7 +91,26 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 });
 
+app.get('/api/friends/:telegram_id', async (req, res) => {
+    const telegramId = req.params.telegram_id;
+
+    try {
+        const result = await pool.query('SELECT name FROM users WHERE referred_by = $1', [telegramId]);
+
+        if (result.rows.length) {
+            res.json(result.rows);
+        } else {
+            res.json([]);
+        }
+    } catch (err) {
+        console.error('Database error:', err);
+        res.status(500).json({ error: 'Database error', details: err.message });
+    }
+});
+
+
 // Запуск сервера на порту 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
+
