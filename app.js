@@ -264,7 +264,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
     
-    
+    document.getElementById('copyButton').addEventListener('click', () => {
+        const referralLink = document.getElementById('referralLink').textContent;
+        navigator.clipboard.writeText(referralLink).then(() => {
+            alert('Посилання скопійовано!');
+        }).catch(err => {
+            console.error('Помилка при копіюванні:', err);
+        });
+    });
     
     
     
