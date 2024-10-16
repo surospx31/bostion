@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Отримуємо значення параметра tgWebAppStartParam
     const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
 
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        window.location.href = "onpc.html"; // Якщо це не мобільний пристрій, перенаправляємо на onpc.html
+    }
+    
     if (startParam) {
         console.log('Реферальний код:', startParam);
         saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
