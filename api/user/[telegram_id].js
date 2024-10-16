@@ -59,12 +59,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
 // Маршрут для оновлення даних користувача
 app.post('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
-    const {
-        name, has_butterfly, level, points, referral_code,
-        referred_by, friends, wallet_address, claimedbutterfly
-    } = req.body;
-
-    console.log('Referred by:', referred_by); // Логування реферального коду
+    const { name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly } = req.body;
 
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
@@ -73,32 +68,35 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     try {
         // Якщо користувача запросили
         if (referred_by) {
-            // Збільшуємо кількість друзів у того, хто запросив
+            // Оновлюємо кількість друзів того, хто запросив
             await pool.query(
                 `UPDATE users SET friends = friends + 1 WHERE telegram_id = $1`,
                 [referred_by]
             );
 
-            // Додаємо запис про запрошення
+            // Додаємо запис у таблицю запрошень
             await pool.query(
                 `INSERT INTO friends (inviter_id, invited_id) VALUES ($1, $2)`,
                 [referred_by, telegramId]
             );
         }
 
-        // Оновлюємо або створюємо новий запис для користувача
+        // Оновлюємо або створюємо нового користувача
         await pool.query(
-            `UPDATE users
-             SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
-             WHERE telegram_id = $1`,
+            `INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            ON CONFLICT (telegram_id) 
+            DO UPDATE SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10`,
             [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
         );
+
         res.status(200).json({ success: true });
     } catch (err) {
         console.error('Database error:', err);
         res.status(500).json({ error: 'Database error', details: err.message });
     }
 });
+
 
 // Маршрут для отримання списку друзів
 app.get('/api/friends/:telegram_id', async (req, res) => {
