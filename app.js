@@ -14,9 +14,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Отримуємо значення параметра tgWebAppStartParam
     const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
 
-    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) && !window.Telegram.WebApp.initData) {
-        window.location.href = "onpc.html"; // Якщо це не мобільний пристрій або не Telegram WebApp
+    if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
+        && !(window.Telegram && window.Telegram.WebApp)) {
+        window.location.href = "onpc.html"; // Якщо не мобільний пристрій і не Telegram WebApp
     }
+    
     
     
     if (startParam) {
