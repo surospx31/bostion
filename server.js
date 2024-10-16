@@ -64,54 +64,27 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         referred_by, friends, wallet_address, claimedbutterfly
     } = req.body;
 
-    console.log('Referred by:', referred_by); // Логування реферального коду
+    console.log('Referred by:', referred_by); // Додаємо логування
 
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
 
     try {
-        // Якщо користувача запросили
-        if (referred_by) {
-            // Збільшуємо кількість друзів у того, хто запросив
-            await pool.query(
-                `UPDATE users SET friends = friends + 1 WHERE telegram_id = $1`,
-                [referred_by]
-            );
+        // Отримуємо поточне значення referred_by з бази
+        const currentUser = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
+        const currentReferredBy = currentUser.rows[0].referred_by;
 
-            // Додаємо запис про запрошення
-            await pool.query(
-                `INSERT INTO friends (inviter_id, invited_id) VALUES ($1, $2)`,
-                [referred_by, telegramId]
-            );
-        }
+        // Якщо referred_by не передано, зберігаємо поточне значення
+        const finalReferredBy = referred_by || currentReferredBy;
 
-        // Оновлюємо або створюємо новий запис для користувача
         await pool.query(
             `UPDATE users
              SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
              WHERE telegram_id = $1`,
-            [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
+            [telegramId, name, has_butterfly, level, points, referral_code, finalReferredBy, friends, wallet_address, claimedbutterfly]
         );
         res.status(200).json({ success: true });
-    } catch (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: 'Database error', details: err.message });
-    }
-});
-
-// Маршрут для отримання списку друзів
-app.get('/api/friends/:telegram_id', async (req, res) => {
-    const telegramId = req.params.telegram_id;
-
-    try {
-        const result = await pool.query('SELECT name FROM users WHERE referred_by = $1', [telegramId]);
-
-        if (result.rows.length) {
-            res.json(result.rows);
-        } else {
-            res.json([]);
-        }
     } catch (err) {
         console.error('Database error:', err);
         res.status(500).json({ error: 'Database error', details: err.message });
