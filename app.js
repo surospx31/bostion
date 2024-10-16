@@ -21,35 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
 
-    if (window.Telegram && window.Telegram.WebApp) {
-        const tg = window.Telegram.WebApp;
-        tg.expand();
-
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
-        } else {
-            console.error("Telegram WebApp не повертає дані користувача");
-        }
-
-        const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = name;
-
-        if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-            const userPhotoUrl = tg.initDataUnsafe.user.photo_url || 'static/default_user.png'; // Ваше фото замість стандартного
-            const userPhotoElement = document.getElementById('userPhoto');
-            userPhotoElement.src = userPhotoUrl;
-            userPhotoElement.style.display = 'block'; // Показуємо фото
-        } else {
-            console.warn('Користувач не має інформації про фото або інші дані.');
-        }
-        
-    }
-
-    if (!userId) {
-        console.error('Не вдалося отримати telegram_id користувача');
-        return;
-    }
+    
 
     
 
@@ -298,31 +270,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     loadUserData();
     
-});
-
-const TelegramBot = require('node-telegram-bot-api');
-
-// Токен бота
-const TOKEN = '6540307506:AAFlc4_ZMwmKScwO8mRaJrs38d-Dm3gB_d0';
-
-// Ініціалізація бота
-const bot = new TelegramBot(TOKEN, { polling: true });
-
-// Обробник для команди /start без реферального коду
-bot.onText(/\/start/, (msg) => {
-    const chatId = msg.chat.id;
-
-    // Привітальне повідомлення
-    bot.sendMessage(chatId, "Ласкаво просимо до бота!");
-
-    // Додаємо кнопку з посиланням на mini web app
-    const webAppUrl = "https://www.wellactcodepages.xyz/";
-    const opts = {
-        reply_markup: {
-            inline_keyboard: [
-                [{ text: "Відкрити додаток", web_app: { url: webAppUrl } }]
-            ]
-        }
-    };
-    bot.sendMessage(chatId, "Натисніть для відкриття додатку", opts);
 });
