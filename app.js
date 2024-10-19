@@ -23,7 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        referredBy = startParam; // Виклик функції з реферальним кодом
         saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
     } else {
         console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
@@ -104,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             referralCode = data.referral_code;
             walletAddress = data.wallet_address;
             claimedButterfly = data.claimedbutterfly;
-            referredBy = data.referred_by;
 
             // Перевіряємо, чи вже є метелик, і керуємо відображенням навігаційної панелі
             if (hasButterfly) {
@@ -218,16 +216,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Подія для кнопки GET
     getButterflyButton.addEventListener('click', async () => {
         hasButterfly = true;
-        document.getElementById('welcome').style.display = 'none';
-        document.getElementById('butterflySection').style.display = 'block';
-        document.getElementById('navbarSection').style.display = 'flex';
-
-        // Зберігаємо дані тільки якщо це новий користувач або користувач без метелика
-        if (!hasButterfly) {
-            // Якщо користувач вперше отримає метелика, зберігаємо його дані
-            await saveUserData();
+        welcomeSection.style.display = 'none';
+        butterflySection.style.display = 'block';
+        navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
+        console.log("Метелик отриманий, навігаційна панель показана.");
+    
+        // Зберігаємо дані тільки один раз, залежно від того, є реферальний код чи ні
+        if (startParam) {
+            console.log('Реферальний код:', startParam);
+            await saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
         } else {
-            console.log("Метелик вже отримано раніше.");
+            console.log('Немає реферального коду, зберігаємо стандартний запис');
+            await saveUserData(); // Виклик функції без реферального коду
         }
     });
 
