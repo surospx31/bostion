@@ -48,11 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
         return;
     }
 
-    document.addEventListener('touchmove', function(event) {
-        event.preventDefault();
-    }, { passive: false });
-
     
+
 
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();

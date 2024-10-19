@@ -93,7 +93,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
                 const referrerId = referrer.rows[0].telegram_id;
                 await pool.query(
                     `UPDATE users
-                     SET friends = friends + 1
+                     SET friends = (friends + 1) / 2
                      WHERE telegram_id = $1`,
                     [referrerId]
                 );
