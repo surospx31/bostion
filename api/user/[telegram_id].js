@@ -97,7 +97,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
                     // Оновлюємо кількість друзів: додаємо 1 і ділимо на 2
                     await pool.query(
                         `UPDATE users
-                         SET friends = (friends + 1) / 2
+                         SET friends = friends + 1
                          WHERE telegram_id = $1`,
                         [referrerId]
                     );
