@@ -76,7 +76,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     console.log('Referred by:', referred_by); // Логування для перевірки реферального коду
 
     try {
-        // Оновлюємо дані користувача
+        // Оновлюємо дані користувача, включаючи реферальний код
         await pool.query(
             `UPDATE users
              SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
@@ -92,7 +92,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
 
                 // Перевіряємо, щоб новий користувач не був "null"
                 if (telegramId !== null) {
-                    // Оновлюємо кількість друзів: віднімаємо 1
+                    // Оновлюємо кількість друзів
                     await pool.query(
                         `UPDATE users
                          SET friends = friends + 1
