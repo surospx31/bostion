@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
-    let name = 'Username';
+    let name = null;
     let hasButterfly = false;
     let points = 0;
     let level = 1;
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username || 'Username';
+            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username;
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
