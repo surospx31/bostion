@@ -82,7 +82,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         const currentReferredBy = currentUser.rows[0]?.referred_by;
 
         // Якщо користувач раніше заходив як "Username", то оновлюємо на правильний нікнейм
-        const finalName = name || currentUser.rows[0]?.name || 'Username'; // Зберігаємо "Username", якщо нікнейм не отримано
+        const finalName = name || currentUser.rows[0]?.name; // Зберігаємо "Username", якщо нікнейм не отримано
 
         await pool.query(
             `UPDATE users
