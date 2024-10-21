@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name || tg.initDataUnsafe.user.username;
+            name = tg.initDataUnsafe.user.first_name;
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
