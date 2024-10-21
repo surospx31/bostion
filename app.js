@@ -1,6 +1,6 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
-    let name = null;  // Не встановлюємо "Username" як тимчасове значення
+    let name = null;
     let hasButterfly = false;
     let points = 0;
     let level = 1;
@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         && !(window.Telegram && window.Telegram.WebApp)) {
         window.location.href = "onpc.html"; // Якщо не мобільний пристрій і не Telegram WebApp
     }
-
+    
+    
+    
     if (startParam) {
         console.log('Реферальний код:', startParam);
         saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
@@ -32,18 +34,14 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name; // Коректно беремо username або first_name
+            name = tg.initDataUnsafe.user.first_name;
             console.log('Нікнейм користувача:', name);
-
-            // Виводимо нікнейм в інтерфейсі
-            const userNicknameElement = document.getElementById('userNickname');
-            userNicknameElement.textContent = name;
-
-            // Викликаємо функцію збереження тільки після отримання нікнейму
-            await saveUserData(userId, name);
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
+
+        const userNicknameElement = document.getElementById('userNickname');
+        userNicknameElement.textContent = name;
     }
 
     if (!userId) {
@@ -51,10 +49,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         return;
     }
 
+    
+
+
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
     }, { passive: false });
-
     
     
     const getButterflyButton = document.getElementById('getButterflyButton');
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    async function saveUserData(userId, name) {
+    async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
