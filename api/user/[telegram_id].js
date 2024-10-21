@@ -27,7 +27,13 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
 
         if (result.rows.length) {
-            res.json(result.rows[0]);
+            const user = result.rows[0];
+
+            // Отримуємо нікнейми друзів
+            const friendsResult = await pool.query('SELECT name FROM users WHERE referred_by = $1', [user.referral_code]);
+            const friends = friendsResult.rows.map(friend => friend.name);  // Отримуємо імена друзів
+            
+            res.json({ ...user, friends });
         } else {
             const newUser = {
                 telegram_id: telegramId,
@@ -40,6 +46,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 friends: 0,
                 wallet_address: null,
                 claimedbutterfly: false,
+                friendNames: [],
             };
 
             await pool.query(
@@ -51,10 +58,11 @@ app.get('/api/user/:telegram_id', async (req, res) => {
             res.json(newUser);
         }
     } catch (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: 'Database error', details: err.message });
+        console.error('Помилка бази даних:', err);
+        res.status(500).json({ error: 'Помилка бази даних', details: err.message });
     }
 });
+
 
 // Маршрут для оновлення даних користувача з урахуванням реферального коду
 app.post('/api/user/:telegram_id', async (req, res) => {

@@ -250,11 +250,33 @@ document.addEventListener('DOMContentLoaded', () => {
         tasksSection.style.display = 'block';
     });
 
-    document.getElementById('friendsBtn').addEventListener('click', () => {
+    document.getElementById('friendsBtn').addEventListener('click', async () => {
         hideAllSections();
         friendsSection.style.display = 'block';
+    
+        try {
+            const response = await fetch(`/api/user/${userId}`);
+            const data = await response.json();
+            
+            const friendsList = document.getElementById('friendsList');
+            friendsList.innerHTML = ''; // Очищуємо поточний список
+    
+            if (data.friends.length > 0) {
+                data.friends.forEach(friend => {
+                    const friendItem = document.createElement('p');
+                    friendItem.textContent = friend; // Встановлюємо нікнейм друга
+                    friendsList.appendChild(friendItem);
+                });
+            } else {
+                friendsList.textContent = 'No friends yet';
+            }
+        } catch (error) {
+            console.error('Помилка при отриманні списку друзів:', error);
+        }
+        
         generateReferralLink();
     });
+    
 
     document.getElementById('marketBtn').addEventListener('click', () => {
         hideAllSections();
