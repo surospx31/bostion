@@ -185,6 +185,21 @@ body, html {
     filter: brightness(1.5); /* Підсвітка іконки синім кольором */
 }
 
+/* Секція для списку друзів */
+#friendsList {
+    text-align: left; /* Вирівнювання тексту зліва */
+    background-color: #2e2e2e; /* Темно-сірий фон */
+    padding: 10px; /* Відступи всередині блоку */
+    border-radius: 5px; /* Округлені кути */
+    color: #ffffff; /* Білий колір тексту */
+    font-size: 16px; /* Розмір тексту */
+}
+
+#friendsList p {
+    margin: 5px 0; /* Відступи між нікнеймами */
+}
+
+
 .button-group {
     display: flex;
     justify-content: center;
