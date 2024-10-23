@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam, name) {
+    async function saveUserDataWithReferral(startParam, name, userId) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveUserData(name) {
+    async function saveUserData(name, userId) {
         console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
