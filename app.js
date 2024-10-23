@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam, name) {
+    async function saveUserDataWithReferral(startParam) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name: name,
+                    name,
                     has_butterfly: hasButterfly,
                     level,
                     points,
@@ -167,7 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveUserData(name) {
+    async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name: name,
+                    name,
                     has_butterfly: hasButterfly,
                     level,
                     points,
