@@ -18,7 +18,6 @@ const pool = new Pool({
 // Маршрут для отримання даних користувача або створення нового, якщо його немає
 app.get('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
-    const name = req.params.name;
 
 
     if (!telegramId) {
@@ -39,7 +38,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         } else {
             const newUser = {
                 telegram_id: telegramId,
-                name: name,
+                name: 'Username',
                 has_butterfly: false,
                 level: 1,
                 points: 0,
