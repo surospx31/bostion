@@ -210,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
             await saveUserData();
         }
         
-        const telegramBotLink = `https://t.me/wellact_bot/app?startapp=${referralCode}`;
+        const telegramBotLink = `Your refferal code is: ${referralCode}`;
         referralLinkElement.textContent = telegramBotLink;
     }
 
