@@ -149,8 +149,7 @@ body, html {
     padding: 12px 12px 24px;
     position: fixed;
     bottom: 0;
-    width: 90%;
-    border-radius: 50px;
+    width: 100%;
 }
 
 .nav-btn {
