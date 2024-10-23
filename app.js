@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
-    let name = null;
+    let name = 'User';
     let hasButterfly = false;
     let points = 0;
     let level = 1;
