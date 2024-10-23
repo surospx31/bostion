@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', async () => {
+document.addEventListener('DOMContentLoaded', () => {
     let userId = null;
     let name = null;
     let hasButterfly = false;
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null; // Змінна для реферального коду
+    let referredBy = null; // Додаємо змінну для реферального коду
 
     const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
 
@@ -18,10 +18,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         && !(window.Telegram && window.Telegram.WebApp)) {
         window.location.href = "onpc.html"; // Якщо не мобільний пристрій і не Telegram WebApp
     }
-
+    
+    
+    
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        referredBy = startParam; // Зберігаємо реферальний код
+        saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+    } else {
+        console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
     }
 
     if (window.Telegram && window.Telegram.WebApp) {
@@ -30,24 +34,23 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name;
+            name = tg.initDataUnsafe.user.first_name;
             console.log('Нікнейм користувача:', name);
-
-            // Показуємо нікнейм в інтерфейсі
-            const userNicknameElement = document.getElementById('userNickname');
-            userNicknameElement.textContent = name;
-
-            // Викликаємо функцію збереження тільки після отримання нікнейму
-            await saveUserData(userId, name, hasButterfly, level, points, referralCode, referredBy, walletAddress, claimedButterfly);
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
+
+        const userNicknameElement = document.getElementById('userNickname');
+        userNicknameElement.textContent = name;
     }
 
     if (!userId) {
         console.error('Не вдалося отримати telegram_id користувача');
         return;
     }
+
+    
+
 
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
@@ -139,7 +142,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam) {
+    async function saveUserDataWithReferral(startParam, name) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -164,7 +167,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
     }
 
-    async function saveUserData(userId, name, hasButterfly, level, points, referralCode, referredBy, walletAddress, claimedButterfly) {
+    async function saveUserData(name) {
+        console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -184,6 +188,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                 }),
             });
             console.log('Дані успішно збережені');
+            updateUI();
         } catch (error) {
             console.error('Помилка при збереженні даних користувача:', error);
         }
