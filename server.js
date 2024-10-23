@@ -27,7 +27,13 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         const result = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
 
         if (result.rows.length) {
-            res.json(result.rows[0]);
+            const user = result.rows[0];
+
+            // Отримуємо нікнейми друзів
+            const friendsResult = await pool.query('SELECT name FROM users WHERE referred_by = $1', [user.referral_code]);
+            const friends = friendsResult.rows.map(friend => friend.name);  // Отримуємо імена друзів
+            
+            res.json({ ...user, friends });
         } else {
             const newUser = {
                 telegram_id: telegramId,
@@ -40,6 +46,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 friends: 0,
                 wallet_address: null,
                 claimedbutterfly: false,
+                friendNames: [],
             };
 
             await pool.query(
@@ -51,10 +58,11 @@ app.get('/api/user/:telegram_id', async (req, res) => {
             res.json(newUser);
         }
     } catch (err) {
-        console.error('Database error:', err);
-        res.status(500).json({ error: 'Database error', details: err.message });
+        console.error('Помилка бази даних:', err);
+        res.status(500).json({ error: 'Помилка бази даних', details: err.message });
     }
 });
+
 
 // Маршрут для оновлення даних користувача з урахуванням реферального коду
 app.post('/api/user/:telegram_id', async (req, res) => {
@@ -91,15 +99,23 @@ app.post('/api/user/:telegram_id', async (req, res) => {
             const referrer = await pool.query('SELECT * FROM users WHERE referral_code = $1', [referred_by]);
             if (referrer.rows.length > 0) {
                 const referrerId = referrer.rows[0].telegram_id;
-                await pool.query(
-                    `UPDATE users
-                     SET friends = friends + 1
-                     WHERE telegram_id = $1`,
-                    [referrerId]
-                );
-                console.log(`Кількість друзів для користувача з telegram_id ${referrerId} збільшено`);
+        
+                // Перевіряємо, чи новий користувач не є "null"
+                if (telegramId !== null) {
+                    // Оновлюємо кількість друзів: додаємо 1 і ділимо на 2
+                    await pool.query(
+                        `UPDATE users
+                         SET friends = friends + 1
+                         WHERE telegram_id = $1`,
+                        [referrerId]
+                    );
+                    console.log(`Кількість друзів для користувача з telegram_id ${referrerId} збільшено та поділено на 2`);
+                } else {
+                    console.log('Новий користувач має telegram_id null, кількість друзів не змінюється');
+                }
             }
         }
+        
 
         res.status(200).json({ success: true });
     } catch (err) {

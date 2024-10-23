@@ -7,25 +7,22 @@ document.addEventListener('DOMContentLoaded', () => {
     let walletAddress = "";
     let referralCode = "";
     let claimedButterfly = false;
-    let referredBy = null; // Додаємо змінну для реферального коду
+    let referredBy = null;
 
-    const levels = [0, 50, 500, 1000, 5000]; // Кількість поінтів для кожного рівня
+    const levels = [0, 50, 500, 1000, 5000];
 
-    // Отримуємо значення параметра tgWebAppStartParam
     const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
 
     if (!/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) 
         && !(window.Telegram && window.Telegram.WebApp)) {
-        window.location.href = "onpc.html"; // Якщо не мобільний пристрій і не Telegram WebApp
+        window.location.href = "onpc.html";
     }
-    
-    
-    
+
     if (startParam) {
         console.log('Реферальний код:', startParam);
-        saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
+        saveUserDataWithReferral(startParam);
     } else {
-        console.log('Немає реферального коду, зберігаємо стандартний запис'); // Виклик без реферального коду
+        console.log('Немає реферального коду, зберігаємо стандартний запис');
     }
 
     if (window.Telegram && window.Telegram.WebApp) {
@@ -34,8 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
-            name = tg.initDataUnsafe.user.first_name;
-            console.log('Нікнейм користувача:', name);
+            name = tg.initDataUnsafe.user.first_name;  // Отримуємо ім'я користувача з Telegram API
+            console.log('Нікнейм користувача:', name);  // Логування імені користувача
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
         }
@@ -48,9 +45,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Не вдалося отримати telegram_id користувача');
         return;
     }
-
-    
-
 
     document.addEventListener('touchmove', function(event) {
         event.preventDefault();
@@ -142,33 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam, name) {
-        try {
-            await fetch(`/api/user/${userId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name,
-                    has_butterfly: hasButterfly,
-                    level,
-                    points,
-                    referral_code: referralCode, // Генеруємо новий код або використовуємо існуючий
-                    referred_by: startParam, // Якщо є реферальний код
-                    friends: 0,
-                    wallet_address: walletAddress,
-                    claimedbutterfly: claimedButterfly
-                }),
-            });
-            console.log('Дані успішно збережені');
-        } catch (error) {
-            console.error('Помилка при збереженні даних користувача:', error);
-        }
-    }
-
-    async function saveUserData(name) {
-        console.log('Зберігаємо дані користувача...');
+    async function saveUserDataWithReferral(startParam) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -181,10 +149,36 @@ document.addEventListener('DOMContentLoaded', () => {
                     level,
                     points,
                     referral_code: referralCode,
-                    referred_by: referredBy,
+                    referred_by: startParam,
                     friends: 0,
                     wallet_address: walletAddress,
                     claimedbutterfly: claimedButterfly
+                }),
+            });
+            console.log('Дані успішно збережені');
+        } catch (error) {
+            console.error('Помилка при збереженні даних користувача:', error);
+        }
+    }
+
+    async function saveUserData() {
+        console.log('Зберігаємо дані користувача...');
+        try {
+            await fetch(`/api/user/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name,  // Передаємо ім'я користувача
+                    has_butterfly: hasButterfly,
+                    level,
+                    points,
+                    referral_code: referralCode,
+                    referred_by: referredBy,
+                    friends: 0,
+                    wallet_address: walletAddress,
+                    claimedbutterfly: claimedbutterfly
                 }),
             });
             console.log('Дані успішно збережені');
