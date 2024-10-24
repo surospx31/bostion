@@ -19,6 +19,7 @@ const pool = new Pool({
 app.get('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
 
+
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
@@ -35,12 +36,9 @@ app.get('/api/user/:telegram_id', async (req, res) => {
             
             res.json({ ...user, friends });
         } else {
-            const telegramUser = req.query; // Отримай дані з Telegram API через запит
-            const name = telegramUser.username || telegramUser.first_name || 'New User'; // Використовуй username, якщо він є
-
             const newUser = {
                 telegram_id: telegramId,
-                name: name,  // Використовуємо username або ім'я
+                name: 'Username',
                 has_butterfly: false,
                 level: 1,
                 points: 0,
@@ -49,6 +47,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 friends: 0,
                 wallet_address: null,
                 claimedbutterfly: false,
+                friendNames: [],
             };
 
             await pool.query(

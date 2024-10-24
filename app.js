@@ -216,32 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Подія для кнопки GET
-    getButterflyButton.addEventListener('click', async () => {
+    setTimeout(() => {
         hasButterfly = true;
-        welcomeSection.style.display = 'none';
-        butterflySection.style.display = 'block';
-        navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
-        console.log("Метелик отриманий, навігаційна панель показана.");
-    
-        // Отримуємо username користувача, якщо він є
-        const userUsername = tg.initDataUnsafe.user.username || name; // Якщо є username, використовуємо його, інакше залишаємо ім'я
-        
-        // Оновлюємо відображення нікнейму на екрані
-        const userNicknameElement = document.getElementById('userNickname');
-        userNicknameElement.textContent = userUsername;
-    
-        // Оновлюємо значення змінної name, яке буде збережено в базі
-        name = userUsername;
-    
-        // Зберігаємо дані користувача після натискання кнопки GET
-        if (startParam) {
-            console.log('Реферальний код:', startParam);
-            await saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
-        } else {
-            console.log('Немає реферального коду, зберігаємо стандартний запис');
-            await saveUserData(); // Виклик функції без реферального коду
-        }
-    });
+        welcomeSection.style.display = 'none'; // Ховаємо екран завантаження
+        butterflySection.style.display = 'block'; // Показуємо головний екран
+        navbarSection.style.display = 'flex'; // Показуємо панель навігації
+        console.log("Завантаження завершено, головний екран показано.");
+    }, 3000);
     
     
 
