@@ -35,6 +35,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
             userId = tg.initDataUnsafe.user.id;
             name = tg.initDataUnsafe.user.first_name;
+            const username = tg.initDataUnsafe.user.username || tg.initDataUnsafe.user.first_name;
+            checkAndUpdateUserName(userId, username);
             console.log('Нікнейм користувача:', name);
         } else {
             console.error("Telegram WebApp не повертає дані користувача");
@@ -142,7 +144,23 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function saveUserDataWithReferral(startParam) {
+    async function checkAndUpdateUserName(userId, username) {
+        try {
+            // Отримуємо поточні дані користувача з бази
+            const response = await fetch(`/api/user/${userId}`);
+            const data = await response.json();
+
+            // Перевіряємо, чи потрібно оновити ім'я
+            if (data.name === 'New User' || data.name !== username) {
+                console.log(`Оновлюємо ім'я користувача з '${data.name}' на '${username}'`);
+                await saveUserData(userId, username);
+            }
+        } catch (error) {
+            console.error('Помилка при перевірці та оновленні імені користувача:', error);
+        }
+    }
+
+    async function saveUserDataWithReferral(startParam, username) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -150,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,
+                    name: username,
                     has_butterfly: hasButterfly,
                     level,
                     points,
@@ -167,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveUserData() {
+    async function saveUserData(userId, username) {
         console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
@@ -176,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,  // Тут буде username або first_name
+                    name: username,  // Тут буде username або first_name
                     has_butterfly: hasButterfly,
                     level,
                     points,
