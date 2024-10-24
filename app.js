@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', () => {
         progressElement.style.width = progress;
     }
     
-    async function checkAndUpdateUserName(userId, username) {
+    async function checkAndUpdateUserName() {
         try {
             // Отримуємо поточні дані користувача з бази
             const response = await fetch(`/api/user/${userId}`);
@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveUserDataWithReferral(startParam, username) {
+    async function saveUserDataWithReferral(startParam) {
         try {
             await fetch(`/api/user/${userId}`, {
                 method: 'POST',
@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    async function saveUserData(userId, username) {
+    async function saveUserData() {
         console.log('Зберігаємо дані користувача...');
         try {
             await fetch(`/api/user/${userId}`, {
