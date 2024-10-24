@@ -19,7 +19,6 @@ const pool = new Pool({
 app.get('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
 
-
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
@@ -36,9 +35,11 @@ app.get('/api/user/:telegram_id', async (req, res) => {
             
             res.json({ ...user, friends });
         } else {
+            const defaultName = req.body.name || 'New User'; // Використовуємо дані, передані з фронтенду
+
             const newUser = {
                 telegram_id: telegramId,
-                name: 'Username',
+                name: defaultName,  // Використовуємо ім'я або нікнейм з фронтенду
                 has_butterfly: false,
                 level: 1,
                 points: 0,
@@ -47,7 +48,6 @@ app.get('/api/user/:telegram_id', async (req, res) => {
                 friends: 0,
                 wallet_address: null,
                 claimedbutterfly: false,
-                friendNames: [],
             };
 
             await pool.query(
@@ -63,7 +63,6 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         res.status(500).json({ error: 'Помилка бази даних', details: err.message });
     }
 });
-
 
 // Маршрут для оновлення даних користувача з урахуванням реферального коду
 app.post('/api/user/:telegram_id', async (req, res) => {
