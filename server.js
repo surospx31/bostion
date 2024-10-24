@@ -35,11 +35,12 @@ app.get('/api/user/:telegram_id', async (req, res) => {
             
             res.json({ ...user, friends });
         } else {
-            const defaultName = req.body.name || 'New User'; // Використовуємо дані, передані з фронтенду
+            const telegramUser = req.query; // Отримай дані з Telegram API через запит
+            const name = telegramUser.username || telegramUser.first_name || 'New User'; // Використовуй username, якщо він є
 
             const newUser = {
                 telegram_id: telegramId,
-                name: defaultName,  // Використовуємо ім'я або нікнейм з фронтенду
+                name: name,  // Використовуємо username або ім'я
                 has_butterfly: false,
                 level: 1,
                 points: 0,
@@ -63,6 +64,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         res.status(500).json({ error: 'Помилка бази даних', details: err.message });
     }
 });
+
 
 // Маршрут для оновлення даних користувача з урахуванням реферального коду
 app.post('/api/user/:telegram_id', async (req, res) => {
