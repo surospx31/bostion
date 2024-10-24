@@ -19,6 +19,7 @@ const pool = new Pool({
 app.get('/api/user/:telegram_id', async (req, res) => {
     const telegramId = req.params.telegram_id;
 
+
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }

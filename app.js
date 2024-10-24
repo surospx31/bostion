@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    name,
+                    name,  // Тут буде username або first_name
                     has_butterfly: hasButterfly,
                     level,
                     points,
@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
             console.error('Помилка при збереженні даних користувача:', error);
         }
     }
+    
 
     // Генерація реферального посилання
     function generateReferralCode() {
@@ -222,7 +223,17 @@ document.addEventListener('DOMContentLoaded', () => {
         navbarSection.style.display = 'flex'; // Упевнюємось, що панель показується
         console.log("Метелик отриманий, навігаційна панель показана.");
     
-        // Зберігаємо дані тільки один раз, залежно від того, є реферальний код чи ні
+        // Отримуємо username користувача, якщо він є
+        const userUsername = tg.initDataUnsafe.user.username || name; // Якщо є username, використовуємо його, інакше залишаємо ім'я
+        
+        // Оновлюємо відображення нікнейму на екрані
+        const userNicknameElement = document.getElementById('userNickname');
+        userNicknameElement.textContent = userUsername;
+    
+        // Оновлюємо значення змінної name, яке буде збережено в базі
+        name = userUsername;
+    
+        // Зберігаємо дані користувача після натискання кнопки GET
         if (startParam) {
             console.log('Реферальний код:', startParam);
             await saveUserDataWithReferral(startParam); // Виклик функції з реферальним кодом
@@ -231,6 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
             await saveUserData(); // Виклик функції без реферального коду
         }
     });
+    
+    
 
     // Логіка для перемикання секцій
     function hideAllSections() {
