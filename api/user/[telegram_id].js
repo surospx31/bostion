@@ -93,9 +93,6 @@ app.post('/api/user/:telegram_id', async (req, res) => {
     }
 });
 
-
-
-
 // Запуск сервера на порту 3000
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
