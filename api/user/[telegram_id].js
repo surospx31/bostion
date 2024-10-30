@@ -73,32 +73,28 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         referred_by, friends, wallet_address, claimedbutterfly
     } = req.body;
 
-    console.log('Referred by:', referred_by); // Логування для перевірки реферального коду
+    console.log('Referred by:', referred_by);
 
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
 
     try {
-        const currentUser = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
-        const currentReferredBy = currentUser.rows[0]?.referred_by;
+        const currentUserResult = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
+        const isExistingUser = currentUserResult.rows.length > 0;
 
-        // Визначаємо, чи новий реферальний код повинен оновитися
-        const finalReferredBy = referred_by || currentReferredBy;
+        // Якщо це новий користувач, встановлюємо `referred_by`
+        if (!isExistingUser && referred_by) {
+            await pool.query(
+                `INSERT INTO users (telegram_id, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+                [telegramId, name, has_butterfly, level, points, referral_code, referred_by, friends, wallet_address, claimedbutterfly]
+            );
 
-        // Оновлюємо дані користувача
-        await pool.query(
-            `UPDATE users
-             SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, referred_by = $7, friends = $8, wallet_address = $9, claimedbutterfly = $10
-             WHERE telegram_id = $1`,
-            [telegramId, name, has_butterfly, level, points, referral_code, finalReferredBy, friends, wallet_address, claimedbutterfly]
-        );
-
-        // Якщо реферальний код існує, оновлюємо друзів реферера
-        if (referred_by) {
-            const referrer = await pool.query('SELECT * FROM users WHERE referral_code = $1', [referred_by]);
-            if (referrer.rows.length > 0) {
-                const referrerId = referrer.rows[0].telegram_id;
+            // Оновлюємо кількість друзів у реферера
+            const referrerResult = await pool.query('SELECT * FROM users WHERE referral_code = $1', [referred_by]);
+            if (referrerResult.rows.length > 0) {
+                const referrerId = referrerResult.rows[0].telegram_id;
                 await pool.query(
                     `UPDATE users
                      SET friends = friends + 1
@@ -107,6 +103,15 @@ app.post('/api/user/:telegram_id', async (req, res) => {
                 );
                 console.log(`Кількість друзів для користувача з telegram_id ${referrerId} збільшено`);
             }
+
+        } else if (isExistingUser) {
+            // Оновлюємо існуючого користувача без зміни `referred_by`
+            await pool.query(
+                `UPDATE users
+                 SET name = $2, has_butterfly = $3, level = $4, points = $5, referral_code = $6, friends = $7, wallet_address = $8, claimedbutterfly = $9
+                 WHERE telegram_id = $1`,
+                [telegramId, name, has_butterfly, level, points, referral_code, friends, wallet_address, claimedbutterfly]
+            );
         }
 
         res.status(200).json({ success: true });
@@ -115,6 +120,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         res.status(500).json({ error: 'Помилка бази даних', details: err.message });
     }
 });
+
 
 
 // Запуск сервера на порту 3000
