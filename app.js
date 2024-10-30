@@ -216,12 +216,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Подія для кнопки GET
-    setTimeout(() => {
-        hasButterfly = true;
+    setTimeout(async () => {
+        hasButterfly = true; // Встановлюємо hasButterfly в true
         welcomeSection.style.display = 'none'; // Ховаємо екран завантаження
         butterflySection.style.display = 'block'; // Показуємо головний екран
         navbarSection.style.display = 'flex'; // Показуємо панель навігації
-        console.log("Завантаження завершено, головний екран показано.");
+        console.log("Метелик отриманий, навігаційна панель показана.");
+    
+        // Логіка збереження даних тільки після 6 секунд
+        await saveUserData(); // Викликаємо функцію для збереження даних один раз
     }, 3000);
     
     

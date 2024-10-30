@@ -38,7 +38,7 @@ app.get('/api/user/:telegram_id', async (req, res) => {
         } else {
             const newUser = {
                 telegram_id: telegramId,
-                name: 'Username',
+                name: req.body.name,
                 has_butterfly: false,
                 level: 1,
                 points: 0,
