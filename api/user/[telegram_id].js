@@ -75,17 +75,23 @@ app.post('/api/user/:telegram_id', async (req, res) => {
 
     console.log('Referred by:', referred_by); // Логування для перевірки реферального коду
 
+    // Перевіряємо, що telegramId передано
     if (!telegramId) {
         return res.status(400).json({ error: "telegram_id не отримано" });
     }
 
     try {
         // Отримуємо поточні дані користувача
-        const currentUser = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
-        const currentReferredBy = currentUser.rows[0]?.referred_by;
+        const currentUserResult = await pool.query('SELECT * FROM users WHERE telegram_id = $1', [telegramId]);
+        const currentUser = currentUserResult.rows[0];
 
-        // Визначаємо, чи є новий реферальний код
-        const finalReferredBy = referred_by || currentReferredBy;
+        // Якщо користувача не існує, створюємо його запис
+        if (!currentUser) {
+            return res.status(404).json({ error: "Користувача не знайдено" });
+        }
+
+        // Використовуємо значення referred_by з запиту або залишаємо поточне
+        const finalReferredBy = referred_by || currentUser.referred_by;
 
         // Оновлюємо дані користувача
         await pool.query(
@@ -95,22 +101,22 @@ app.post('/api/user/:telegram_id', async (req, res) => {
             [telegramId, name, has_butterfly, level, points, referral_code, finalReferredBy, friends, wallet_address, claimedbutterfly]
         );
 
-        // Обробляємо реферальний код, якщо він переданий
-        if (referred_by && referred_by !== finalReferredBy) { // Перевірка, що referred_by новий
+        // Якщо є реферальний код, збільшуємо кількість друзів у реферера
+        if (referred_by) {
             const referrerResult = await pool.query('SELECT * FROM users WHERE referral_code = $1', [referred_by]);
             if (referrerResult.rows.length > 0) {
                 const referrerId = referrerResult.rows[0].telegram_id;
 
-                // Оновлюємо кількість друзів для реферера
+                // Збільшуємо кількість друзів для реферера
                 await pool.query(
                     `UPDATE users
                      SET friends = friends + 1
                      WHERE telegram_id = $1`,
                     [referrerId]
                 );
-                console.log(`Кількість друзів для користувача з telegram_id ${referrerId} збільшено на 1.`);
+                console.log(`Кількість друзів для користувача з telegram_id ${referrerId} збільшено`);
             } else {
-                console.log(`Реферальний код ${referred_by} не знайдено.`);
+                console.log('Реферера з таким referral_code не знайдено');
             }
         }
 
@@ -120,6 +126,7 @@ app.post('/api/user/:telegram_id', async (req, res) => {
         res.status(500).json({ error: 'Database error', details: err.message });
     }
 });
+
 
 
 // Запуск сервера на порту 3000
